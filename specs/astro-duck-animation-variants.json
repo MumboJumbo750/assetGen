@@ -1,0 +1,119 @@
+{
+  "id": "astro-duck-animation-variants",
+  "sourceRequest": "requests/14-visual-assets.md",
+  "baseAnimations": [
+    {
+      "id": "astro-duck-idle",
+      "file": "assets/zelos/sprites/astro-duck/base/astro-duck-base-idle-sheet.png",
+      "frameSize": {
+        "width": 256,
+        "height": 256
+      },
+      "frameCount": 8,
+      "layout": "horizontal-strip",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.6
+      }
+    },
+    {
+      "id": "astro-duck-fly",
+      "file": "assets/zelos/sprites/astro-duck/base/astro-duck-base-fly-sheet.png",
+      "frameSize": {
+        "width": 256,
+        "height": 256
+      },
+      "frameCount": 6,
+      "layout": "horizontal-strip",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.6
+      }
+    }
+  ],
+  "variants": [
+    {
+      "outfitId": "outfit-default-suit",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-default-suit-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-default-suit-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-pirate",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-pirate-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-pirate-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-wizard",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-wizard-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-wizard-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-detective",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-detective-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-detective-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-chef",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-chef-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-chef-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-superhero",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-superhero-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-superhero-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-scientist",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-scientist-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-scientist-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-musician",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-musician-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-musician-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-explorer",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-explorer-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-explorer-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-ninja",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-ninja-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-ninja-fly-sheet.png"
+      }
+    },
+    {
+      "outfitId": "outfit-royal",
+      "files": {
+        "idle": "assets/zelos/sprites/astro-duck/outfits/outfit-royal-idle-sheet.png",
+        "fly": "assets/zelos/sprites/astro-duck/outfits/outfit-royal-fly-sheet.png"
+      }
+    }
+  ],
+  "rules": [
+    "All outfit animation sheets must match the base frame size, count, and order.",
+    "Keep identical sheet dimensions and horizontal strip layout.",
+    "Use the same pivot for all variants (0.5, 0.6).",
+    "Outfit animation files are drop-in replacements for the base animations."
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "id": "astro-duck-character-sheet",
+  "sourceRequest": "requests/14-visual-assets.md",
+  "imageFiles": [
+    "assets/zelos/sprites/astro-duck/base/astro-duck-base-front.png",
+    "assets/zelos/sprites/astro-duck/base/astro-duck-base-side.png",
+    "assets/zelos/sprites/astro-duck/base/astro-duck-base-three-quarter.png"
+  ],
+  "size": {
+    "width": 1024,
+    "height": 1024
+  },
+  "layout": {
+    "type": "separate-files",
+    "views": [
+      {
+        "name": "front",
+        "file": "assets/zelos/sprites/astro-duck/base/astro-duck-base-front.png",
+        "w": 1024,
+        "h": 1024
+      },
+      {
+        "name": "side",
+        "file": "assets/zelos/sprites/astro-duck/base/astro-duck-base-side.png",
+        "w": 1024,
+        "h": 1024
+      },
+      {
+        "name": "three-quarter",
+        "file": "assets/zelos/sprites/astro-duck/base/astro-duck-base-three-quarter.png",
+        "w": 1024,
+        "h": 1024
+      }
+    ]
+  },
+  "styleLock": {
+    "palette": [
+      "#0a0a0f",
+      "#12121a",
+      "#1a1a2e",
+      "#252538",
+      "#2f2f45",
+      "#00f5ff",
+      "#ff00ff",
+      "#39ff14",
+      "#ff6b35",
+      "#ff073a",
+      "#bf00ff",
+      "#fff01f",
+      "#ff69b4",
+      "#f0f0f5",
+      "#a0a0b0",
+      "#606070"
+    ],
+    "lineWeight": "consistent",
+    "shading": "soft gradients",
+    "lighting": "top-left"
+  },
+  "notes": [
+    "Use transparent background.",
+    "Head is ~40% of body height.",
+    "Base layer is a minimal undersuit; no outer suit/armor.",
+    "Expression ids are face-only overlays (action-like ids remain face-only to preserve outfit swaps).",
+    "Full-body poses are separate base pose files; pair with outfit pose overlays."
+  ],
+  "actions": {
+    "baseViews": "front, side, three-quarter (minimal undersuit base)",
+    "baseSpritesheets": [
+      "astro-duck-base-idle-sheet.png",
+      "astro-duck-base-fly-sheet.png"
+    ],
+    "expressionOverlays": true,
+    "expressionViews": [
+      "front",
+      "side",
+      "three-quarter"
+    ],
+    "expressions": [
+      {
+        "id": "happy",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-happy-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-happy-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-happy-three-quarter.png"
+        }
+      },
+      {
+        "id": "excited",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-excited-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-excited-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-excited-three-quarter.png"
+        }
+      },
+      {
+        "id": "curious",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-curious-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-curious-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-curious-three-quarter.png"
+        }
+      },
+      {
+        "id": "concerned",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-concerned-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-concerned-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-concerned-three-quarter.png"
+        }
+      },
+      {
+        "id": "celebrating",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-celebrating-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-celebrating-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-celebrating-three-quarter.png"
+        }
+      },
+      {
+        "id": "sleeping",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-sleeping-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-sleeping-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-sleeping-three-quarter.png"
+        }
+      },
+      {
+        "id": "waving",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-waving-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-waving-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-waving-three-quarter.png"
+        }
+      },
+      {
+        "id": "pointing",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/expressions/astro-duck-pointing-front.png",
+          "side": "assets/zelos/sprites/astro-duck/expressions/astro-duck-pointing-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/expressions/astro-duck-pointing-three-quarter.png"
+        }
+      }
+    ],
+    "poses": [
+      {
+        "id": "celebrating",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/poses/astro-duck-celebrating-front.png",
+          "side": "assets/zelos/sprites/astro-duck/poses/astro-duck-celebrating-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/poses/astro-duck-celebrating-three-quarter.png"
+        }
+      },
+      {
+        "id": "sleeping",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/poses/astro-duck-sleeping-front.png",
+          "side": "assets/zelos/sprites/astro-duck/poses/astro-duck-sleeping-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/poses/astro-duck-sleeping-three-quarter.png"
+        }
+      },
+      {
+        "id": "waving",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/poses/astro-duck-waving-front.png",
+          "side": "assets/zelos/sprites/astro-duck/poses/astro-duck-waving-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/poses/astro-duck-waving-three-quarter.png"
+        }
+      },
+      {
+        "id": "pointing",
+        "paths": {
+          "front": "assets/zelos/sprites/astro-duck/poses/astro-duck-pointing-front.png",
+          "side": "assets/zelos/sprites/astro-duck/poses/astro-duck-pointing-side.png",
+          "three-quarter": "assets/zelos/sprites/astro-duck/poses/astro-duck-pointing-three-quarter.png"
+        }
+      }
+    ]
+  }
+}

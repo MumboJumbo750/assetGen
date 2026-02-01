@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "root": "assets/zelos",
+  "lists": {
+    "shooterSfx": [
+      "engine-idle-loop",
+      "engine-thrust-loop",
+      "shoot-single-01",
+      "shoot-single-02",
+      "shoot-single-03",
+      "shoot-spread-01",
+      "shoot-spread-02",
+      "shoot-spread-03",
+      "laser-start",
+      "laser-loop",
+      "laser-end",
+      "charge-build",
+      "charge-release",
+      "hit-zap",
+      "death-explosion",
+      "missile-launch",
+      "missile-explosion",
+      "plasma-impact",
+      "bomb-drop",
+      "bomb-explosion",
+      "shockwave-pulse",
+      "ice-shard-hit",
+      "enemy-spawn",
+      "enemy-hit",
+      "enemy-explode-small",
+      "enemy-explode-medium",
+      "enemy-explode-large",
+      "boss-intro-sting",
+      "boss-phase-riser",
+      "pickup-powerup",
+      "score-tick",
+      "pause-in",
+      "pause-out",
+      "game-over"
+    ],
+    "platformerSfx": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "jump-start",
+      "jump-land",
+      "crouch-stand",
+      "hit",
+      "death",
+      "coin-pickup",
+      "checkpoint",
+      "platform-move-loop",
+      "hazard-hit",
+      "enemy-hit",
+      "enemy-defeat",
+      "boss-intro-sting",
+      "boss-phase-riser",
+      "pause-in",
+      "pause-out",
+      "game-over"
+    ],
+    "bgm": [
+      "bgm-menu-loop",
+      "bgm-shooter-loop",
+      "bgm-boss-loop",
+      "bgm-platformer-loop",
+      "bgm-win-sting"
+    ]
+  },
+  "entries": [
+    {
+      "id": "shooterSfx",
+      "type": "pattern",
+      "pattern": "audio/shooter/{name}.wav",
+      "vars": { "name": "shooterSfx" },
+      "format": "wav",
+      "status": "planned"
+    },
+    {
+      "id": "platformerSfx",
+      "type": "pattern",
+      "pattern": "audio/platformer/{name}.wav",
+      "vars": { "name": "platformerSfx" },
+      "format": "wav",
+      "status": "planned"
+    },
+    {
+      "id": "bgm",
+      "type": "pattern",
+      "pattern": "audio/{name}.wav",
+      "vars": { "name": "bgm" },
+      "format": "wav",
+      "status": "planned"
+    },
+    {
+      "id": "shooterSfxOgg",
+      "type": "pattern",
+      "pattern": "audio/shooter/{name}.ogg",
+      "vars": { "name": "shooterSfx" },
+      "format": "ogg",
+      "status": "optional"
+    },
+    {
+      "id": "platformerSfxOgg",
+      "type": "pattern",
+      "pattern": "audio/platformer/{name}.ogg",
+      "vars": { "name": "platformerSfx" },
+      "format": "ogg",
+      "status": "optional"
+    },
+    {
+      "id": "bgmOgg",
+      "type": "pattern",
+      "pattern": "audio/{name}.ogg",
+      "vars": { "name": "bgm" },
+      "format": "ogg",
+      "status": "optional"
+    }
+  ]
+}

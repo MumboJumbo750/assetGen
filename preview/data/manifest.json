@@ -1,0 +1,527 @@
+{
+  "title": "Assets Preview",
+  "background": "#0c1320",
+  "defaultProject": "zelos",
+  "projects": [
+    {
+      "id": "zelos",
+      "label": "Zelos V2",
+      "root": "../assets/zelos",
+      "games": [
+        {
+          "id": "space-shooter",
+          "label": "Space Shooter",
+          "path": "../assets/zelos/pixi/games/space-shooter/index.html",
+          "description": "Top-down shooter (uses Astro-Duck)."
+        },
+        {
+          "id": "jump-run",
+          "label": "Jump & Run",
+          "path": "../assets/zelos/pixi/games/jump-run/index.html",
+          "description": "Side-scroller platformer."
+        }
+      ],
+      "cinematics": [
+        {
+          "id": "office-briefing",
+          "label": "Office Briefing",
+          "path": "video/office-briefing.mp4",
+          "poster": "video/office-briefing.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "intro-briefing-l1",
+          "label": "Intro L1",
+          "path": "video/intro-briefing-l1.mp4",
+          "poster": "video/intro-briefing-l1.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "boss-intro-l1",
+          "label": "Boss L1",
+          "path": "video/boss-intro-l1.mp4",
+          "poster": "video/boss-intro-l1.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "intro-briefing-l2",
+          "label": "Intro L2",
+          "path": "video/intro-briefing-l2.mp4",
+          "poster": "video/intro-briefing-l2.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "boss-intro-l2",
+          "label": "Boss L2",
+          "path": "video/boss-intro-l2.mp4",
+          "poster": "video/boss-intro-l2.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "mid-arc-l3-stargate",
+          "label": "Mid Arc L3",
+          "path": "video/mid-arc-l3-stargate.mp4",
+          "poster": "video/mid-arc-l3-stargate.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "boss-intro-l3",
+          "label": "Boss L3",
+          "path": "video/boss-intro-l3.mp4",
+          "poster": "video/boss-intro-l3.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "intro-briefing-l4",
+          "label": "Intro L4",
+          "path": "video/intro-briefing-l4.mp4",
+          "poster": "video/intro-briefing-l4.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "boss-intro-l4",
+          "label": "Boss L4",
+          "path": "video/boss-intro-l4.mp4",
+          "poster": "video/boss-intro-l4.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "intro-briefing-l5",
+          "label": "Intro L5",
+          "path": "video/intro-briefing-l5.mp4",
+          "poster": "video/intro-briefing-l5.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "final-boss-intro-l5",
+          "label": "Final Boss L5",
+          "path": "video/final-boss-intro-l5.mp4",
+          "poster": "video/final-boss-intro-l5.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "outro-wrap",
+          "label": "Outro",
+          "path": "video/outro-wrap.mp4",
+          "poster": "video/outro-wrap.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        },
+        {
+          "id": "stargate-travel",
+          "label": "Stargate Travel",
+          "path": "video/stargate-travel.mp4",
+          "poster": "video/stargate-travel.png",
+          "width": 1920,
+          "height": 1080,
+          "loop": false
+        }
+      ],
+      "assets": [
+          {
+            "id": "astro-duck-composite",
+            "type": "composite",
+            "kit": "astroDuck",
+            "label": "Astro-Duck (Layered)",
+            "views": [
+              "front",
+              "side",
+              "threeQuarter"
+            ],
+          "base": {
+            "paths": {
+              "front": "sprites/astro-duck/base/astro-duck-base-front.png",
+              "side": "sprites/astro-duck/base/astro-duck-base-side.png",
+              "threeQuarter": "sprites/astro-duck/base/astro-duck-base-three-quarter.png"
+            }
+          },
+          "outfits": [
+            {
+              "id": "outfit-default-suit",
+              "label": "Default Suit",
+              "paths": {
+                "front": "sprites/astro-duck/outfits/outfit-default-suit-front.png",
+                "side": "sprites/astro-duck/outfits/outfit-default-suit-side.png",
+                "threeQuarter": "sprites/astro-duck/outfits/outfit-default-suit-three-quarter.png"
+              }
+            },
+            {
+              "id": "outfit-pirate",
+              "label": "Pirate",
+              "paths": {
+                "front": "sprites/astro-duck/outfits/outfit-pirate-front.png",
+                "side": "sprites/astro-duck/outfits/outfit-pirate-side.png",
+                "threeQuarter": "sprites/astro-duck/outfits/outfit-pirate-three-quarter.png"
+              }
+            }
+          ],
+            "expressions": [
+              {
+                "id": "none",
+                "label": "None",
+                "path": null
+              },
+              {
+                "id": "happy",
+              "label": "Happy",
+              "paths": {
+                "front": "sprites/astro-duck/expressions/astro-duck-happy-front.png",
+                "side": "sprites/astro-duck/expressions/astro-duck-happy-side.png",
+                "threeQuarter": "sprites/astro-duck/expressions/astro-duck-happy-three-quarter.png"
+              }
+            },
+            {
+              "id": "excited",
+              "label": "Excited",
+                "paths": {
+                  "front": "sprites/astro-duck/expressions/astro-duck-excited-front.png",
+                  "side": "sprites/astro-duck/expressions/astro-duck-excited-side.png",
+                  "threeQuarter": "sprites/astro-duck/expressions/astro-duck-excited-three-quarter.png"
+                }
+              }
+            ],
+            "poses": [
+              { "id": "none", "label": "None" },
+              { "id": "celebrating", "label": "Celebrating" },
+              { "id": "sleeping", "label": "Sleeping" },
+              { "id": "waving", "label": "Waving" },
+              { "id": "pointing", "label": "Pointing" }
+            ],
+            "defaultView": "front",
+            "defaultOutfit": "outfit-default-suit",
+            "defaultExpression": "none",
+            "defaultPose": "none",
+            "maxSize": 260
+          },
+        {
+          "id": "planet-composite",
+          "type": "compositeLayers",
+          "kit": "planet",
+          "label": "Planet Builder",
+          "layers": [
+            {
+              "id": "texture",
+              "label": "Texture",
+              "kind": "select",
+              "options": [
+                { "id": "solid", "label": "Solid", "path": "sprites/planets/texture-solid.png" },
+                { "id": "marble", "label": "Marble", "path": "sprites/planets/texture-marble.png" },
+                { "id": "tech", "label": "Tech", "path": "sprites/planets/texture-tech.png" }
+              ],
+              "default": "solid"
+            },
+            {
+              "id": "rings",
+              "label": "Rings",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "cyan", "label": "Cyan", "path": "sprites/planets/ring-cyan.png" }
+              ]
+            },
+            {
+              "id": "atmosphere",
+              "label": "Atmosphere",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "thin", "label": "Thin", "path": "sprites/planets/atmosphere-thin.png" },
+                { "id": "normal", "label": "Normal", "path": "sprites/planets/atmosphere-normal.png" },
+                { "id": "stormy", "label": "Stormy", "path": "sprites/planets/atmosphere-stormy.png" }
+              ],
+              "default": "normal"
+            },
+            {
+              "id": "state",
+              "label": "State",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "selected", "label": "Selected", "path": "sprites/planets/state-selected.png" },
+                { "id": "warning", "label": "Warning", "path": "sprites/planets/state-warning.png" },
+                { "id": "error", "label": "Error", "path": "sprites/planets/state-error.png" }
+              ]
+            }
+          ],
+          "maxSize": 240
+        },
+        {
+          "id": "satellite-composite",
+          "type": "compositeLayers",
+          "kit": "satellite",
+          "label": "Satellite Builder",
+          "layers": [
+            {
+              "id": "icon",
+              "label": "Icon",
+              "kind": "select",
+              "options": [
+                { "id": "config", "label": "Config", "path": "sprites/satellites/satellite-config.png" },
+                { "id": "users", "label": "Users", "path": "sprites/satellites/satellite-users.png" },
+                {
+                  "id": "statistics",
+                  "label": "Statistics",
+                  "path": "sprites/satellites/satellite-statistics.png"
+                }
+              ],
+              "default": "config"
+            },
+            {
+              "id": "state",
+              "label": "State",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "selected", "label": "Selected", "path": "sprites/satellites/state-selected.png" },
+                { "id": "error", "label": "Error", "path": "sprites/satellites/state-error.png" },
+                { "id": "unsaved", "label": "Unsaved", "path": "sprites/satellites/state-unsaved.png" }
+              ]
+            },
+            {
+              "id": "glow",
+              "label": "Glow",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "hover", "label": "Hover", "path": "sprites/satellites/glow-hover.png" },
+                { "id": "selected", "label": "Selected", "path": "sprites/satellites/glow-selected.png" },
+                { "id": "error", "label": "Error", "path": "sprites/satellites/glow-error.png" }
+              ]
+            },
+            {
+              "id": "badge",
+              "label": "Badge",
+              "kind": "select",
+              "optional": true,
+              "options": [
+                { "id": "warning", "label": "Warning", "path": "sprites/satellites/badge-warning.png" },
+                { "id": "error", "label": "Error", "path": "sprites/satellites/badge-error.png" }
+              ]
+            }
+          ],
+          "maxSize": 180
+        },
+        {
+          "id": "stargate-composite",
+          "type": "compositeLayers",
+          "kit": "stargate",
+          "label": "Stargate Builder",
+          "layers": [
+            {
+              "id": "ring",
+              "label": "Ring",
+              "kind": "select",
+              "options": [
+                { "id": "default", "label": "Default", "path": "effects/stargate-ring.png" }
+              ]
+            },
+            {
+              "id": "glyphs",
+              "label": "Glyphs",
+              "kind": "toggle",
+              "options": [
+                { "id": "glyphs", "label": "Glyphs", "path": "effects/stargate-glyphs.png" },
+                {
+                  "id": "glyphs-active",
+                  "label": "Glyphs Active",
+                  "path": "effects/stargate-glyphs-active.png"
+                }
+              ]
+            },
+            {
+              "id": "energy",
+              "label": "Energy",
+              "kind": "select",
+              "options": [
+                { "id": "default", "label": "Default", "path": "effects/portal-energy.png" }
+              ]
+            },
+            {
+              "id": "warp",
+              "label": "Warp",
+              "kind": "toggle",
+              "options": [
+                { "id": "warp", "label": "Warp", "path": "effects/warp-streaks.png" }
+              ]
+            },
+            {
+              "id": "particles",
+              "label": "Particles",
+              "kind": "toggle",
+              "options": [
+                { "id": "particles", "label": "Particles", "path": "effects/stargate-particles.png" }
+              ]
+            }
+          ],
+          "maxSize": 260
+        },
+        {
+          "id": "background-composite",
+          "type": "compositeLayers",
+          "kit": "background",
+          "label": "Background Builder",
+          "layers": [
+            {
+              "id": "starfield",
+              "label": "Starfield",
+              "kind": "select",
+              "options": [
+                { "id": "default", "label": "Default", "path": "backgrounds/starfield-tile.png" }
+              ]
+            },
+            {
+              "id": "nebula",
+              "label": "Nebula",
+              "kind": "toggle",
+              "options": [
+                { "id": "nebula", "label": "Nebula", "path": "backgrounds/nebula-overlay.png" }
+              ]
+            },
+            {
+              "id": "constellation",
+              "label": "Constellation",
+              "kind": "toggle",
+              "options": [
+                {
+                  "id": "constellation",
+                  "label": "Constellation",
+                  "path": "backgrounds/constellation-pattern.png"
+                }
+              ]
+            },
+            {
+              "id": "vignette",
+              "label": "Vignette",
+              "kind": "toggle",
+              "options": [
+                { "id": "vignette", "label": "Soft", "path": "backgrounds/vignette-soft.png" }
+              ]
+            }
+          ],
+          "maxSize": 260
+        },
+        {
+          "id": "office-vignette",
+          "type": "image",
+          "label": "Office Vignette",
+          "path": "backgrounds/office-vignette.png",
+          "maxSize": 260
+        },
+        {
+          "id": "badge-composite",
+          "type": "compositeLayers",
+          "kit": "badge",
+          "label": "Badge Builder",
+          "layers": [
+            {
+              "id": "frame",
+              "label": "Frame",
+              "kind": "select",
+              "options": [
+                { "id": "common", "label": "Common", "path": "icons/achievements/frame-common.png" },
+                { "id": "uncommon", "label": "Uncommon", "path": "icons/achievements/frame-uncommon.png" },
+                { "id": "rare", "label": "Rare", "path": "icons/achievements/frame-rare.png" },
+                { "id": "epic", "label": "Epic", "path": "icons/achievements/frame-epic.png" },
+                { "id": "legendary", "label": "Legendary", "path": "icons/achievements/frame-legendary.png" }
+              ],
+              "default": "common"
+            },
+            {
+              "id": "icon",
+              "label": "Icon",
+              "kind": "select",
+              "options": [
+                { "id": "first-flight", "label": "First Flight", "path": "icons/achievements/first-flight.png" },
+                { "id": "explorer", "label": "Explorer", "path": "icons/achievements/explorer.png" },
+                { "id": "speed-demon", "label": "Speed Demon", "path": "icons/achievements/speed-demon.png" },
+                { "id": "night-owl", "label": "Night Owl", "path": "icons/achievements/night-owl.png" },
+                { "id": "perfectionist", "label": "Perfectionist", "path": "icons/achievements/perfectionist.png" },
+                { "id": "piano-master", "label": "Piano Master", "path": "icons/achievements/piano-master.png" }
+              ]
+            }
+          ],
+          "maxSize": 160
+        },
+        {
+          "id": "ui-composite",
+          "type": "compositeLayers",
+          "kit": "ui",
+          "label": "UI Builder",
+          "layers": [
+            {
+              "id": "modal",
+              "label": "Modal",
+              "kind": "toggle",
+              "options": [
+                { "id": "modal", "label": "Modal", "path": "ui/modal-frame.png" }
+              ]
+            },
+            {
+              "id": "button",
+              "label": "Button",
+              "kind": "select",
+              "options": [
+                { "id": "button", "label": "Primary Button States", "path": "ui/button-primary-states.png" }
+              ]
+            },
+            {
+              "id": "input",
+              "label": "Input",
+              "kind": "select",
+              "options": [
+                { "id": "input", "label": "Input States", "path": "ui/input-states.png" }
+              ]
+            },
+            {
+              "id": "toast",
+              "label": "Toast",
+              "kind": "select",
+              "options": [
+                { "id": "toast", "label": "Toast Variants", "path": "ui/toast-variants.png" }
+              ]
+            }
+          ],
+          "maxSize": 260
+        },
+        {
+          "id": "space-piano",
+          "type": "piano",
+          "label": "Space Piano",
+          "panel": "ui/space-piano-panel.png",
+          "whiteGlow": "ui/space-piano-key-glow-white.png",
+          "blackGlow": "ui/space-piano-key-glow-black.png",
+          "maxSize": 260
+        }
+      ]
+    },
+    {
+      "id": "demo",
+      "label": "Demo Project",
+      "root": "..",
+      "assets": []
+    }
+  ]
+}

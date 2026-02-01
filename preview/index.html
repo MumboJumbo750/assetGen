@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Assets Preview</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">AssetsGen</p>
+        <h1>Asset Preview Stage</h1>
+        <p class="subhead">Load assets from the manifest and validate alignment, scale, and style.</p>
+      </div>
+      <div class="meta-stack">
+        <div class="meta-card" id="stageMeta">Manifest: preview/data/manifest.json</div>
+        <label class="meta-select">
+          <span>Project</span>
+          <select id="projectSelect"></select>
+        </label>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel stage-panel">
+        <div class="panel-header">
+          <h2>Stage</h2>
+          <p class="panel-sub">Sprites and spritesheets render here.</p>
+        </div>
+        <div class="controls" id="controls"></div>
+        <div class="stage-wrap" id="stageWrap">
+          <div class="stage-hint" id="stageHint">Add assets in the manifest to preview them.</div>
+        </div>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="panel-header">
+          <h2>Asset List</h2>
+          <p class="panel-sub">Load status and quick metadata.</p>
+        </div>
+        <ul class="asset-list" id="assetList"></ul>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="panel-header">
+          <h2>Games</h2>
+          <p class="panel-sub">Launch Pixi mini-games (full screen).</p>
+        </div>
+        <ul class="asset-list" id="gameList"></ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Tip: keep spritesheet pivots consistent across animations.</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js/dist/pixi.min.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

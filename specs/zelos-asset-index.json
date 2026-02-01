@@ -1,0 +1,491 @@
+{
+  "version": 1,
+  "root": "assets/zelos",
+  "lists": {
+    "viewFiles": ["front", "side", "three-quarter"],
+    "expressions": [
+      "happy",
+      "excited",
+      "curious",
+      "concerned",
+      "celebrating",
+      "sleeping",
+      "waving",
+      "pointing"
+    ],
+    "poseIds": [
+      "celebrating",
+      "sleeping",
+      "waving",
+      "pointing"
+    ],
+    "outfits": [
+      "outfit-default-suit",
+      "outfit-pirate",
+      "outfit-wizard",
+      "outfit-detective",
+      "outfit-chef",
+      "outfit-superhero",
+      "outfit-scientist",
+      "outfit-musician",
+      "outfit-explorer",
+      "outfit-ninja",
+      "outfit-royal"
+    ],
+    "planetTextures": [
+      "solid",
+      "gradient",
+      "marble",
+      "rocky",
+      "gas-giant",
+      "ice",
+      "lava",
+      "ocean",
+      "forest",
+      "tech"
+    ],
+    "planetRings": ["cyan"],
+    "planetAtmospheres": ["thin", "normal", "thick", "stormy"],
+    "planetStates": [
+      "selected",
+      "hovered",
+      "warning",
+      "error",
+      "inherited",
+      "new"
+    ],
+    "satelliteIcons": [
+      "config",
+      "portals",
+      "style",
+      "modules",
+      "entrypoints",
+      "statistics",
+      "users",
+      "offerers",
+      "email",
+      "wordpress"
+    ],
+    "satelliteStates": [
+      "selected",
+      "hovered",
+      "error",
+      "unsaved",
+      "inherited",
+      "own-config"
+    ],
+    "satelliteGlows": ["hover", "selected", "error"],
+    "satelliteBadges": ["warning", "error"],
+    "badgeRarities": ["common", "uncommon", "rare", "epic", "legendary"],
+    "achievementIcons": [
+      "first-flight",
+      "explorer",
+      "speed-demon",
+      "night-owl",
+      "perfectionist",
+      "piano-master"
+    ],
+    "cinematicClips": [
+      "office-briefing",
+      "intro-briefing-l1",
+      "boss-intro-l1",
+      "intro-briefing-l2",
+      "boss-intro-l2",
+      "mid-arc-l3-stargate",
+      "boss-intro-l3",
+      "intro-briefing-l4",
+      "boss-intro-l4",
+      "intro-briefing-l5",
+      "final-boss-intro-l5",
+      "outro-wrap",
+      "stargate-travel"
+    ]
+  },
+  "entries": [
+    {
+      "id": "astroDuckBaseViews",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/base/astro-duck-base-{view}.png",
+      "vars": { "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "astroDuckBaseIdle",
+      "type": "file",
+      "path": "sprites/astro-duck/base/astro-duck-base-idle-sheet.png",
+      "format": "png",
+      "size": "2048x256"
+    },
+    {
+      "id": "astroDuckBaseFly",
+      "type": "file",
+      "path": "sprites/astro-duck/base/astro-duck-base-fly-sheet.png",
+      "format": "png",
+      "size": "1536x256"
+    },
+    {
+      "id": "astroDuckExpressions",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/expressions/astro-duck-{expression}-{view}.png",
+      "vars": { "expression": "expressions", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "astroDuckPoses",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/poses/astro-duck-{pose}-{view}.png",
+      "vars": { "pose": "poseIds", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "astroDuckOutfitViews",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-{view}.png",
+      "vars": { "outfit": "outfits", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "astroDuckOutfitPoses",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-{pose}-{view}.png",
+      "vars": { "outfit": "outfits", "pose": "poseIds", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "astroDuckOutfitIdle",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-idle-sheet.png",
+      "vars": { "outfit": "outfits" },
+      "format": "png",
+      "size": "2048x256"
+    },
+    {
+      "id": "astroDuckOutfitFly",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-fly-sheet.png",
+      "vars": { "outfit": "outfits" },
+      "format": "png",
+      "size": "1536x256"
+    },
+    {
+      "id": "planetTextures",
+      "type": "pattern",
+      "pattern": "sprites/planets/texture-{texture}.png",
+      "vars": { "texture": "planetTextures" },
+      "format": "png",
+      "size": "512x512"
+    },
+    {
+      "id": "planetMoonSmall",
+      "type": "file",
+      "path": "sprites/planets/moon-small.png",
+      "format": "png",
+      "size": "64x64",
+      "status": "planned"
+    },
+    {
+      "id": "planetRings",
+      "type": "pattern",
+      "pattern": "sprites/planets/ring-{ring}.png",
+      "vars": { "ring": "planetRings" },
+      "format": "png",
+      "size": "512x256"
+    },
+    {
+      "id": "planetAtmospheres",
+      "type": "pattern",
+      "pattern": "sprites/planets/atmosphere-{atmosphere}.png",
+      "vars": { "atmosphere": "planetAtmospheres" },
+      "format": "png",
+      "size": "600x600"
+    },
+    {
+      "id": "planetStates",
+      "type": "pattern",
+      "pattern": "sprites/planets/state-{state}.png",
+      "vars": { "state": "planetStates" },
+      "format": "png",
+      "size": "512x512"
+    },
+    {
+      "id": "satelliteIcons",
+      "type": "pattern",
+      "pattern": "sprites/satellites/satellite-{icon}.png",
+      "vars": { "icon": "satelliteIcons" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "satelliteStates",
+      "type": "pattern",
+      "pattern": "sprites/satellites/state-{state}.png",
+      "vars": { "state": "satelliteStates" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "satelliteGlows",
+      "type": "pattern",
+      "pattern": "sprites/satellites/glow-{glow}.png",
+      "vars": { "glow": "satelliteGlows" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "satelliteBadges",
+      "type": "pattern",
+      "pattern": "sprites/satellites/badge-{badge}.png",
+      "vars": { "badge": "satelliteBadges" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "backgroundStarfield",
+      "type": "file",
+      "path": "backgrounds/starfield-tile.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundNebula",
+      "type": "file",
+      "path": "backgrounds/nebula-overlay.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundConstellation",
+      "type": "file",
+      "path": "backgrounds/constellation-pattern.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundVignette",
+      "type": "file",
+      "path": "backgrounds/vignette-soft.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundOfficeVignette",
+      "type": "file",
+      "path": "backgrounds/office-vignette.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "uiModal",
+      "type": "file",
+      "path": "ui/modal-frame.png",
+      "format": "png",
+      "size": "800x600"
+    },
+    {
+      "id": "uiButton",
+      "type": "file",
+      "path": "ui/button-primary-states.png",
+      "format": "png",
+      "size": "800x50"
+    },
+    {
+      "id": "uiInput",
+      "type": "file",
+      "path": "ui/input-states.png",
+      "format": "png",
+      "size": "1200x50"
+    },
+    {
+      "id": "uiToast",
+      "type": "file",
+      "path": "ui/toast-variants.png",
+      "format": "png",
+      "size": "1400x80"
+    },
+    {
+      "id": "uiSpacePianoPanel",
+      "type": "file",
+      "path": "ui/space-piano-panel.png",
+      "format": "png",
+      "size": "600x200",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowWhite",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-white.png",
+      "format": "png",
+      "size": "50x150",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowBlack",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-black.png",
+      "format": "png",
+      "size": "30x100",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowWhiteSheet",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-white-sheet.png",
+      "format": "png",
+      "size": "200x150",
+      "status": "optional"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowBlackSheet",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-black-sheet.png",
+      "format": "png",
+      "size": "120x100",
+      "status": "optional"
+    },
+    {
+      "id": "uiLoadingSpinner",
+      "type": "file",
+      "path": "ui/loading-spinner.png",
+      "format": "png",
+      "size": "64x64",
+      "status": "optional"
+    },
+    {
+      "id": "uiLoadingSpinnerSheet",
+      "type": "file",
+      "path": "ui/loading-spinner-sheet.png",
+      "format": "png",
+      "size": "512x64",
+      "status": "planned"
+    },
+    {
+      "id": "uiCursorSet",
+      "type": "file",
+      "path": "ui/cursor-set.png",
+      "format": "png",
+      "size": "128x32",
+      "status": "planned"
+    },
+    {
+      "id": "uiEmptyState",
+      "type": "file",
+      "path": "ui/empty-state.png",
+      "format": "png",
+      "size": "400x300",
+      "status": "planned"
+    },
+    {
+      "id": "uiQuizPrompt",
+      "type": "file",
+      "path": "ui/quiz-glyphs-prompt.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "uiQuizPanel",
+      "type": "file",
+      "path": "ui/quiz-glyphs-panel.png",
+      "format": "png",
+      "size": "800x240",
+      "status": "planned"
+    },
+    {
+      "id": "effectsStargateRing",
+      "type": "file",
+      "path": "effects/stargate-ring.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateGlyphs",
+      "type": "file",
+      "path": "effects/stargate-glyphs.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateGlyphsActive",
+      "type": "file",
+      "path": "effects/stargate-glyphs-active.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsPortalEnergy",
+      "type": "file",
+      "path": "effects/portal-energy.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsWarpStreaks",
+      "type": "file",
+      "path": "effects/warp-streaks.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateParticles",
+      "type": "file",
+      "path": "effects/stargate-particles.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsGlowCyan",
+      "type": "file",
+      "path": "effects/glow-cyan.png",
+      "format": "png",
+      "size": "512x512"
+    },
+    {
+      "id": "achievementFrames",
+      "type": "pattern",
+      "pattern": "icons/achievements/frame-{rarity}.png",
+      "vars": { "rarity": "badgeRarities" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "achievementIcons",
+      "type": "pattern",
+      "pattern": "icons/achievements/{icon}.png",
+      "vars": { "icon": "achievementIcons" },
+      "format": "png",
+      "size": "64x64"
+    },
+    {
+      "id": "cinematicClips",
+      "type": "pattern",
+      "pattern": "video/{clip}.mp4",
+      "vars": {
+        "clip": "cinematicClips"
+      },
+      "format": "mp4",
+      "status": "planned"
+    },
+    {
+      "id": "cinematicPosters",
+      "type": "pattern",
+      "pattern": "video/{clip}.png",
+      "vars": {
+        "clip": "cinematicClips"
+      },
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    }
+  ],
+  "notes": {
+    "audio": "Audio assets are specified in specs/games/zelos-audio.md"
+  }
+}
