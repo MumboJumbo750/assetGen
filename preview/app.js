@@ -25,6 +25,7 @@ const assetList = document.getElementById("assetList");
 const gameList = document.getElementById("gameList");
 const stageMeta = document.getElementById("stageMeta");
 const projectSelect = document.getElementById("projectSelect");
+const variantSelect = document.getElementById("variantSelect");
 const controls = document.getElementById("controls");
 
 const manifestUrl = "./data/manifest.json";
@@ -32,6 +33,8 @@ const cards = new Map();
 let app = null;
 let items = [];
 let projects = [];
+let variants = [];
+let activeVariantId = "";
 const textureCache = new Map();
 const compositeStates = new Map();
 let cinematicLayer = null;
@@ -42,6 +45,8 @@ let busUnsubscribers = [];
 let audioContext = null;
 let audioGain = null;
 let audioEnabled = true;
+
+const variantStorageKey = "assetgen.preview.variant";
 
 const pianoNotes = {
   white: [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83],
@@ -121,6 +126,35 @@ function joinPath(root, path) {
   const cleanRoot = root.endsWith("/") ? root.slice(0, -1) : root;
   const cleanPath = path.startsWith("./") ? path.slice(2) : path;
   return `${cleanRoot}/${cleanPath}`;
+}
+
+function normalizeRelPath(path) {
+  if (!path) return "";
+  if (path.startsWith("./")) return path.slice(2);
+  return path;
+}
+
+function isGeneratedAssetPath(relPath) {
+  const path = normalizeRelPath(relPath);
+  return /^(sprites|backgrounds|ui|effects|icons)\//.test(path);
+}
+
+function getStaticRoot(project) {
+  return project?.root || ".";
+}
+
+function getActiveVariantRoot() {
+  const variant = variants.find((item) => (item.id || "") === (activeVariantId || ""));
+  return variant?.root || "";
+}
+
+function getAssetRoot(project, relPath) {
+  const staticRoot = getStaticRoot(project);
+  const variantRoot = getActiveVariantRoot();
+  if (variantRoot && isGeneratedAssetPath(relPath)) {
+    return variantRoot;
+  }
+  return staticRoot;
 }
 
 function createBus() {
@@ -597,7 +631,7 @@ function renderCinematicControls(project) {
     }
     playCinematic({
       clip,
-      root: project.root || ".",
+      root: getStaticRoot(project),
       onStatus: setStatus,
     });
     muteButton.textContent = "Unmute";
@@ -692,13 +726,15 @@ async function renderProject(project) {
     const useKit =
       rawAsset.useKit !== false &&
       (rawAsset.type === "composite" || rawAsset.type === "compositeLayers");
+
+    const resolvedRoot = getAssetRoot(project, rawAsset.path || "sprites/");
     const asset = useKit
-      ? { ...rawAsset, _root: project.root }
+      ? { ...rawAsset, _root: resolvedRoot }
       : rawAsset.type === "composite" || rawAsset.type === "compositeLayers"
-      ? resolveCompositePaths(rawAsset, project.root)
+      ? resolveCompositePaths(rawAsset, resolvedRoot)
       : {
           ...rawAsset,
-          path: joinPath(project.root, rawAsset.path),
+          path: joinPath(getAssetRoot(project, rawAsset.path), rawAsset.path),
         };
 
     createCard(asset);
@@ -1863,9 +1899,50 @@ async function start() {
   const defaultProject =
     projects.find((project) => project.id === defaultId) || projects[0];
   projectSelect.value = defaultProject.id || projectSelect.options[0].value;
+
+  variants = Array.isArray(manifest.variants) ? manifest.variants : [];
+  activeVariantId = "";
+  if (variants.length > 0 && variantSelect) {
+    const stored = window.localStorage ? localStorage.getItem(variantStorageKey) : null;
+    const defaultVariant = manifest.defaultVariant || "";
+    activeVariantId = (stored || defaultVariant || variants[0].id || "").toString();
+
+    variantSelect.innerHTML = "";
+    variants.forEach((variant, index) => {
+      const option = document.createElement("option");
+      option.value = variant.id || `variant-${index}`;
+      variant.id = option.value;
+      option.textContent = variant.label || variant.id || `Variant ${index + 1}`;
+      variantSelect.appendChild(option);
+    });
+    variantSelect.value = activeVariantId;
+
+    variantSelect.addEventListener("change", async (event) => {
+      activeVariantId = event.target.value;
+      if (window.localStorage) {
+        localStorage.setItem(variantStorageKey, activeVariantId);
+      }
+      const selectedProjectId = projectSelect.value;
+      const project =
+        projects.find((candidate) => (candidate.id || "") === selectedProjectId) ||
+        projects[0];
+      stageMeta.textContent = `Manifest: ${manifestUrl} | Project: ${
+        project.label || project.id || selectedProjectId
+      } | Variant: ${activeVariantId || "default"}`;
+      await renderProject(project);
+    });
+  } else if (variantSelect) {
+    variantSelect.innerHTML = "";
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "Default";
+    variantSelect.appendChild(option);
+    variantSelect.value = "";
+  }
+
   stageMeta.textContent = `Manifest: ${manifestUrl} | Project: ${
     defaultProject.label || defaultProject.id || "default"
-  }`;
+  } | Variant: ${activeVariantId || "default"}`;
   await renderProject(defaultProject);
 
   projectSelect.addEventListener("change", async (event) => {
@@ -1875,7 +1952,7 @@ async function start() {
       projects[0];
     stageMeta.textContent = `Manifest: ${manifestUrl} | Project: ${
       project.label || project.id || selectedId
-    }`;
+    } | Variant: ${activeVariantId || "default"}`;
     await renderProject(project);
   });
 

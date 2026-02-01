@@ -67,3 +67,43 @@ consistent style and reliable metadata.
 - Files are web optimized and correctly named.
 - Embedding/spec MD exists for spritesheets.
 - Preview app displays assets without errors.
+
+## Automation loop (validator → ComfyUI → assets)
+
+This repo includes a validator report mode and a small ComfyUI driver script so you
+can iterate quickly:
+
+1) Start ComfyUI
+    - Option A (in-repo, recommended):
+       - `powershell -ExecutionPolicy Bypass -File scripts/comfyui/setup-comfyui-local.ps1 -Python "py -3.11"`
+       - `powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-comfyui-local.ps1`
+    - Option B (external install under `C:\projects\imageai`):
+       - `powershell -ExecutionPolicy Bypass -File C:\projects\imageai\run-comfyui.ps1`
+   - Default URL: `http://127.0.0.1:8188`
+   - Note: ComfyUI needs at least one model installed (e.g. a checkpoint under
+     `ComfyUI/models/checkpoints/` or a Diffusers model under `ComfyUI/models/diffusers/`).
+
+2) Export a workflow JSON from ComfyUI
+   - In the ComfyUI UI: save/export the workflow in “API format”.
+   - Keep the file somewhere stable (recommended: `scripts/comfyui/workflows/`).
+   - The workflow must include a text-to-image path and a `SaveImage` output.
+
+3) Generate a machine-readable “what’s missing” report
+   - Use a stable Python (recommended: 3.11). On some Windows setups `py -3` may point to a newer Python that lacks wheels for common packages.
+   - `py -3.11 scripts/validate-assets.py --root assets/zelos --report json --report-path build/zelos-report.json`
+   - Add `--include-planned` if you also want planned assets included.
+
+4) Drive ComfyUI to generate missing assets
+   - Dry run (shows what will be generated):
+      - `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --dry-run --limit 10`
+   - Generate a subset (example: only planets):
+      - `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --only "^sprites/planets/" --limit 20`
+
+5) Re-validate and preview
+   - `py -3.11 scripts/validate-assets.py --root assets/zelos --check-size`
+   - `cd preview; py -3.11 -m http.server 5173`
+
+Notes
+- The ComfyUI driver currently has prompt mappings for Astro-Duck base/views/sheets,
+  expressions, outfit overlays, planets, and satellites. Unknown paths are skipped.
+- For prompt wording, see `specs/mage/zelos-mage-prompts.md`.

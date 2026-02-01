@@ -191,7 +191,9 @@ def collect_paths(index):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Validate Zelos asset plan files exist.")
+    parser = argparse.ArgumentParser(
+        description="Validate asset index files exist (and optionally emit a machine-readable report)."
+    )
     parser.add_argument(
         "--index",
         default="specs/zelos-asset-index.json",
@@ -228,6 +230,18 @@ def main():
         help="Fail when spritesheet spec files are missing on disk",
     )
 
+    parser.add_argument(
+        "--report",
+        choices=["text", "json"],
+        default="text",
+        help="Report output format: text (default) or json",
+    )
+    parser.add_argument(
+        "--report-path",
+        default=None,
+        help="Optional path to write the report (useful with --report json)",
+    )
+
     args = parser.parse_args()
 
     if not os.path.exists(args.index):
@@ -251,6 +265,7 @@ def main():
     missing = []
     size_mismatches = []
     present = 0
+    expected_by_rel_path = {}
 
     for entry in expected:
         rel_path = entry["rel_path"]
@@ -258,6 +273,15 @@ def main():
         status = entry["status"]
         if status not in allowed_status:
             continue
+
+        expected_by_rel_path[rel_path] = {
+            "rel_path": rel_path,
+            "full_path": full_path,
+            "status": status,
+            "format": entry.get("format"),
+            "size": entry.get("size"),
+        }
+
         if os.path.exists(full_path):
             present += 1
             if args.check_size:
@@ -273,23 +297,29 @@ def main():
     total = present + len(missing)
     print(f"Checked: {total} | Present: {present} | Missing: {len(missing)}")
 
-    if missing:
-        print("Missing files:")
-        for path in missing:
-            print(f"- {path}")
-    if size_mismatches:
-        print("Size mismatches:")
-        for path, expected_size, actual_size in size_mismatches:
-            print(f"- {path} expected {expected_size[0]}x{expected_size[1]}, got {actual_size[0]}x{actual_size[1]}")
-
+    exit_code = 0
     if missing or size_mismatches:
-        return 1
+        exit_code = 1
+
+    if args.report == "text":
+        if missing:
+            print("Missing files:")
+            for path in missing:
+                print(f"- {path}")
+        if size_mismatches:
+            print("Size mismatches:")
+            for path, expected_size, actual_size in size_mismatches:
+                print(
+                    f"- {path} expected {expected_size[0]}x{expected_size[1]}, got {actual_size[0]}x{actual_size[1]}"
+                )
+
+    sheet_entries = []
+    sheet_missing = []
+    sheet_mismatches = []
+    sheet_checked = 0
 
     if args.spritesheet_spec:
         sheet_entries = parse_spritesheet_spec(args.spritesheet_spec)
-        sheet_missing = []
-        sheet_mismatches = []
-        sheet_checked = 0
         root = index.get("root", "")
         for entry in sheet_entries:
             rel_path = entry["rel_path"]
@@ -316,9 +346,65 @@ def main():
                 print(f"- {path} expected {expected_size[0]}x{expected_size[1]}, got {actual_size[0]}x{actual_size[1]}")
 
         if sheet_mismatches or (sheet_missing and args.strict_spritesheets):
-            return 1
+            exit_code = 1
 
-    return 0
+    if args.report == "json":
+        missing_items = []
+        for rel_path in missing:
+            meta = expected_by_rel_path.get(rel_path, {"rel_path": rel_path})
+            expected_size = parse_size(meta.get("size"))
+            missing_items.append(
+                {
+                    **meta,
+                    "expected_size": expected_size,
+                }
+            )
+
+        mismatch_items = []
+        for rel_path, expected_size, actual_size in size_mismatches:
+            mismatch_items.append(
+                {
+                    "rel_path": rel_path,
+                    "full_path": expected_by_rel_path.get(rel_path, {}).get("full_path"),
+                    "expected_size": expected_size,
+                    "actual_size": actual_size,
+                }
+            )
+
+        sheet_mismatch_items = []
+        for rel_path, expected_size, actual_size in sheet_mismatches:
+            sheet_mismatch_items.append(
+                {
+                    "rel_path": rel_path,
+                    "expected_size": expected_size,
+                    "actual_size": actual_size,
+                }
+            )
+
+        report_obj = {
+            "index": args.index,
+            "root": index.get("root", ""),
+            "checked": total,
+            "present": present,
+            "missing": missing_items,
+            "size_mismatches": mismatch_items,
+            "spritesheet_spec": args.spritesheet_spec,
+            "spritesheet_entries": sheet_entries,
+            "spritesheet_checked": sheet_checked,
+            "spritesheet_missing": sheet_missing,
+            "spritesheet_size_mismatches": sheet_mismatch_items,
+        }
+
+        report_text = json.dumps(report_obj, indent=2)
+        if args.report_path:
+            os.makedirs(os.path.dirname(args.report_path) or ".", exist_ok=True)
+            with open(args.report_path, "w", encoding="utf-8") as f:
+                f.write(report_text)
+            print(f"Wrote report: {args.report_path}")
+        else:
+            print(report_text)
+
+    return exit_code
 
 
 if __name__ == "__main__":

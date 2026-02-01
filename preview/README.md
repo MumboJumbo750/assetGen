@@ -10,11 +10,23 @@ This is a lightweight Pixi preview to validate assets.
 ## Configure assets
 Edit `preview/data/manifest.json` and add items under a project in `projects`.
 
+### Variant switching (checkpoint comparison)
+The preview UI has a **Variant** dropdown to compare different checkpoint outputs.
+
+Configure it in `preview/data/manifest.json`:
+- `defaultVariant`: variant id selected on load
+- `variants`: array of `{ id, label, root }`
+
+Only generated art paths (e.g. `sprites/`, `backgrounds/`, `ui/`, `effects/`, `icons/`) are redirected to the variant root.
+Static content like `video/` stays on the project's `root` (so games and cinematics still work).
+
 Tip: preset buttons appear for kit-backed composites to quickly check common states,
 and the palette swatches render above the stage controls.
 
 Manifest fields
 - defaultProject: project id selected on load
+- defaultVariant: optional variant id selected on load
+- variants: optional list of variant roots shown in the Variant dropdown
 - projects: array of project objects
   - id: unique id for the project
   - label: display name in the menu

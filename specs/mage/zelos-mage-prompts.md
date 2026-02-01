@@ -3,6 +3,18 @@
 This file provides prompt-ready instructions optimized for Mage AI (or any
 text-to-image tool). It mirrors the project spec and keeps the style consistent.
 
+If you are using **Juggernaut XL (SDXL)** via ComfyUI, also see:
+- `specs/mage/zelos-juggernaut-prompts.md`
+
+If you are using **Animagine XL 3.x (SDXL)** via ComfyUI, also see:
+- `specs/mage/zelos-animagine-prompts.md`
+- `scripts/comfyui/ANIMAGINE_XL_PROMPTING.md`
+
+If you are testing additional SDXL checkpoints via ComfyUI, also see:
+- ProtoVision XL: `specs/mage/zelos-protovision-prompts.md`
+- SDXL base: `specs/mage/zelos-sdxl-prompts.md`
+- Copax Timeless: `specs/mage/zelos-copax-prompts.md`
+
 General rules
 - Style: 2D/2.5D flat vector, clean lines, subtle gradients, neon glow accents.
 - Not allowed: photorealistic, pixel art, heavy texture noise, 3D render.

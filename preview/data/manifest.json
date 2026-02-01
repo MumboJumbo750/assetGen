@@ -2,6 +2,44 @@
   "title": "Assets Preview",
   "background": "#0c1320",
   "defaultProject": "zelos",
+  "defaultVariant": "juggernaut",
+  "variants": [
+    {
+      "id": "default",
+      "label": "Default (assets/zelos)",
+      "root": ""
+    },
+    {
+      "id": "juggernaut",
+      "label": "Juggernaut XL",
+      "root": "../assets/zelos_variants/juggernaut"
+    },
+    {
+      "id": "animagine",
+      "label": "Animagine XL v3.1",
+      "root": "../assets/zelos_variants/animagine"
+    },
+    {
+      "id": "animagine_tags",
+      "label": "Animagine XL v3.1 (tag prompts)",
+      "root": "../assets/zelos_variants/animagine_tags"
+    },
+    {
+      "id": "protovision",
+      "label": "ProtoVision XL",
+      "root": "../assets/zelos_variants/protovision"
+    },
+    {
+      "id": "sdxl",
+      "label": "SDXL base",
+      "root": "../assets/zelos_variants/sdxl"
+    },
+    {
+      "id": "copax",
+      "label": "Copax Timeless",
+      "root": "../assets/zelos_variants/copax"
+    }
+  ],
   "projects": [
     {
       "id": "zelos",

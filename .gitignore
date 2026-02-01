@@ -1,0 +1,15 @@
+# Local build outputs
+/build/
+
+# Local ComfyUI install (kept out of git)
+/.comfyui/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
