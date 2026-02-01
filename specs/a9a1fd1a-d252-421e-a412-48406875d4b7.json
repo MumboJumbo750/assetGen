@@ -1,0 +1,12 @@
+{
+  "path": "assets/ui/button-primary-states.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "button-primary-states",
+  "id": "a9a1fd1a-d252-421e-a412-48406875d4b7"
+}

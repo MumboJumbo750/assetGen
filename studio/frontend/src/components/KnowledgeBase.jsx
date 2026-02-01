@@ -4,22 +4,32 @@ import { Book, HelpCircle, AlertTriangle, Layers, Info } from 'lucide-react';
 const Checkpoints = [
     {
         name: "Juggernaut XL",
-        desc: "Best for natural/realistic styles. Good general purpose base.",
-        tags: ["Natural", "Realistic", "Default"]
+        desc: "Subject-first rendering. Excellent for natural textures and coherent cartoon illustrations. Best general purpose SDXL model.",
+        tags: ["Natural", "Coherent", "Subject-First"]
     },
     {
         name: "Animagine XL 3.1",
-        desc: "Specialized for Anime/Cartoon styles. Requires Danbooru tags.",
-        tags: ["Anime", "Cel Shaded", "Tags"]
+        desc: "Strict tag-based structure (Danbooru style). High quality anime and game art. Requires structured tag ordering for best results.",
+        tags: ["Anime", "Tag-Based", "Danbooru"]
     },
     {
         name: "Pony Diffusion V6",
-        desc: "Highly versatile for stylized and character art. Follows strict score_9 tags.",
-        tags: ["Stylized", "Characters", "Strict"]
+        desc: "Specialized for stylization and character art. Requires CLIP skip 2 and prefix 'score_9, score_8_up...' to unlock quality.",
+        tags: ["Stylized", "Characters", "Score-Based"]
+    },
+    {
+        name: "ProtoVision XL",
+        desc: "Hyper-realistic rendering but adapts well to 3D anime styles. High fidelity and refined lighting.",
+        tags: ["Realistic", "3D Anime", "Hyper-Fidelity"]
+    },
+    {
+        name: "Copax Timeless",
+        desc: "Unique aesthetic focused on 'timeless' painterly or stylized illustration styles. Great for UI backgrounds.",
+        tags: ["Painterly", "Stylized", "Backgrounds"]
     },
     {
         name: "SDXL Base",
-        desc: "Standard Stable Diffusion XL base model. Good for training LoRAs on top of.",
+        desc: "Standard foundation model. Useful as a baseline for LoRA training or simple generic generations.",
         tags: ["Base", "Training"]
     }
 ];

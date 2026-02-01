@@ -1,0 +1,12 @@
+{
+  "path": "assets/sprites/astro-duck/astro-duck-excited.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "astro-duck-excited",
+  "id": "630ccb9a-3cc5-4992-a348-21ed3f9dc732"
+}

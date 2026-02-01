@@ -3,7 +3,8 @@ import TrainingWizard from './components/TrainingWizard';
 import StudioStep from './components/StudioStep';
 import Dashboard from './components/Dashboard';
 import KnowledgeBase from './components/KnowledgeBase';
-import { LayoutGrid, GraduationCap, Settings, Book, Activity } from 'lucide-react';
+import FreeMode from './components/FreeMode';
+import { LayoutGrid, GraduationCap, Settings, Book, Activity, Zap } from 'lucide-react';
 
 function Gallery() {
     return (
@@ -24,6 +25,7 @@ function App() {
 
     const tabs = [
         { id: 'dashboard', label: 'Dashboard', icon: Activity, component: (props) => <Dashboard {...props} onNavigateToStudio={handleNavigateToStudio} /> },
+        { id: 'free', label: 'Free Mode', icon: Zap, component: FreeMode },
         { id: 'gallery', label: 'Gallery', icon: LayoutGrid, component: Gallery },
         { id: 'studio', label: 'Studio Ops', icon: Settings, component: (props) => <StudioStep {...props} initialPath={studioInitialPath} /> },
         { id: 'training', label: 'LoRA Training', icon: GraduationCap, component: TrainingWizard },
@@ -50,8 +52,8 @@ function App() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === tab.id
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20'
-                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20'
+                                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                                 }`}
                         >
                             <tab.icon size={20} />

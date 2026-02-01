@@ -1,0 +1,12 @@
+{
+  "path": "assets/sprites/satellites/satellite-config.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "satellite-config",
+  "id": "4c170e8d-1445-45d0-83fc-a4c4c5bebcf0"
+}

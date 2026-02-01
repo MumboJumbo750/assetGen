@@ -1,0 +1,12 @@
+{
+  "path": "assets/ui/toast-variants.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "toast-variants",
+  "id": "814da34d-b6bd-48ff-b6f0-a99380c29f72"
+}

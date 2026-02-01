@@ -1,0 +1,12 @@
+{
+  "path": "assets/ui/input-states.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "input-states",
+  "id": "f2c6758a-1c9a-465c-8d88-93a9d50eb3da"
+}

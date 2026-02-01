@@ -1,0 +1,12 @@
+{
+  "path": "assets/sprites/satellites/...",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "...",
+  "id": "480a825d-2278-45d6-9001-d2f02cd5106f"
+}

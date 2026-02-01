@@ -1,0 +1,12 @@
+{
+  "path": "assets/effects/glow-cyan.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "glow-cyan",
+  "id": "e52a8173-0068-474f-b39f-be776b836716"
+}

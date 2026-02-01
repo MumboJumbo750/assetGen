@@ -9,10 +9,31 @@ from . import comfy, prompts, stitcher
 COMFY_URL = "http://127.0.0.1:8188"
 OUTPUT_DIR = "c:/projects/assetsGen/assets"
 
-def generate_asset(rel_path: str, workflow_path: str, count: int = 1):
-    positive, negative = prompts.get_prompts(rel_path)
+def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: dict = None):
+    if config:
+        checkpoint = config.get("checkpoint")
+        prompts_dict = config.get("prompts", {})
+        
+        # Resolve positive prompt
+        if checkpoint and checkpoint in prompts_dict:
+            positive = prompts_dict[checkpoint]
+        elif "default" in prompts_dict:
+            positive = prompts_dict["default"]
+        else:
+            positive = config.get("prompt", "")
+            
+        negative = config.get("negative_prompt", "")
+        seed = config.get("seed", random.randint(1, 999999999))
+        repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+        abs_output_dir = os.path.join(repo_root, config.get("output_folder", "assets"))
+    else:
+        checkpoint = None
+        positive, negative = prompts.get_prompts(rel_path)
+        seed = random.randint(1, 999999999)
+        # Default output dir
+        abs_output_dir = OUTPUT_DIR
     
-    print(f"Generating {rel_path}...")
+    print(f"Generating {rel_path} with ckpt={checkpoint}...")
     
     # Reload workflow for each run to be safe
     with open(workflow_path, "r", encoding="utf-8") as f:
@@ -34,8 +55,9 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1):
         workflow = json.loads(json.dumps(workflow_base))
         
         # Settings
-        seed = random.randint(1, 999999999)
-        comfy.set_workflow_inputs(workflow, positive, negative, 512, 512, seed=seed)
+        # Use provided seed or random
+        current_seed = seed + i 
+        comfy.set_workflow_inputs(workflow, positive, negative, 512, 512, seed=current_seed, ckpt_name=checkpoint)
         
         # Dispatch
         try:
@@ -65,7 +87,7 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1):
         final_img = generated_images[0]
         
     # Save
-    full_path = os.path.join(OUTPUT_DIR, rel_path)
+    full_path = os.path.join(abs_output_dir, rel_path)
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
     final_img.save(full_path)
     print(f"Saved to {full_path}")

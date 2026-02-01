@@ -1,0 +1,12 @@
+{
+  "path": "assets/backgrounds/constellation-pattern.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "constellation-pattern",
+  "id": "2495bc79-5ce3-4630-a5d5-8ec5757f595b"
+}

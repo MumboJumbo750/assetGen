@@ -1,0 +1,12 @@
+{
+  "path": "assets/backgrounds/starfield-tile.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "starfield-tile",
+  "id": "33311cdf-7731-4630-a23e-43db2bc6da9b"
+}

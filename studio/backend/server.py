@@ -16,40 +16,22 @@ FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "../frontend/dist")
 # Ensure we serve from absolute path
 FRONTEND_DIR = os.path.abspath(FRONTEND_DIR)
 
+from . import specs
+from .importer import RequestImporter
+
 class StudioHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
+        # We need to setup managers before calling super because super calls do_GET/etc immediately
+        # But SimpleHTTPRequestHandler is an old style class in some versions, 
+        # actually standard way is to set server.importer and access via self.server if using ThreadingHTTPServer.
+        # But here we are just instantiating per request? No, Handler is instantiated per request.
+        # We should probably initialize managers globally or check if they are lightweight.
+        # SpecManager scans FS, so maybe lightweight enough.
+        repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+        self.spec_manager = specs.SpecManager(repo_root)
+        self.importer = RequestImporter(repo_root)
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
 
-    def do_GET(self):
-        # API Routes
-        if self.path.startswith("/api/"):
-            self.handle_api()
-            return
-
-        # SPA Fallback for non-API routes (if file not found)
-        # Check if file exists, if not serve index.html for client-side routing
-        path = self.translate_path(self.path)
-        if not os.path.exists(path) and not "." in os.path.basename(path):
-            self.path = "/index.html"
-            
-        super().do_GET()
-
-    def handle_api(self):
-        try:
-            url_parts = self.path.split("?")
-            endpoint = url_parts[0]
-            query = url_parts[1] if len(url_parts) > 1 else ""
-            
-            if endpoint == "/api/list-files":
-                self.api_list_files(query)
-            elif endpoint == "/api/read-caption":
-                self.api_read_caption(query)
-            elif endpoint == "/api/image":
-                self.api_serve_image(query)
-            else:
-                self.send_error(404, "API Endpoint not found")
-        except Exception as e:
-            self.send_error(500, str(e))
 
     def api_list_files(self, query):
         from urllib.parse import parse_qs
@@ -126,64 +108,114 @@ class StudioHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
-    def do_POST(self):
-        if self.path.startswith("/api/save-caption"):
-            self.api_save_caption()
-        elif self.path.startswith("/api/save-config"):
-            self.api_save_config()
-        elif self.path.startswith("/api/generate"):
-            self.api_generate()
-        elif self.path.startswith("/api/project-status"):
-            self.api_project_status()
-        else:
-            self.send_error(404, "Not Found")
 
-    def api_generate(self):
-        from . import generator
+    def api_project_status(self):
+        # Placeholder for now
+        self.send_json({"status": "active"})
+
+    def api_list_specs(self):
+        from . import specs
+        repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+        manager = specs.SpecManager(repo_root)
+        self.send_json({"specs": manager.list_specs()})
+
+    def api_save_spec(self):
+        from . import specs
+        repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+        manager = specs.SpecManager(repo_root)
+        
         length = int(self.headers["Content-Length"])
         data = json.loads(self.rfile.read(length))
         
-        rel_path = data.get("path")
-        if not rel_path:
-            self.send_error(400, "Missing path")
-            return
+        saved = manager.save_spec(data)
+        self.send_json(saved)
 
-        # Locate workflow
+    def api_list_checkpoints(self):
+        from . import specs
         repo_root = os.path.join(os.path.dirname(__file__), "../../../")
-        workflow_path = os.path.join(repo_root, "scripts/comfyui/workflows/assetgen_sdxl_api.json")
-        if not os.path.exists(workflow_path):
-             self.send_error(500, f"Workflow not found at {workflow_path}")
-             return
+        manager = specs.SpecManager(repo_root)
+        self.send_json({"checkpoints": manager.get_checkpoints()})
 
-        try:
-            result = generator.generate_asset(rel_path, workflow_path)
-            self.send_json(result)
-        except Exception as e:
-            self.send_json({"status": "error", "error": str(e)})
+    def api_system_info(self):
+        info = {
+            "python_version": sys.version,
+            "platform": sys.platform,
+            "cwd": os.getcwd()
+        }
+        self.send_json(info)
 
     def api_save_caption(self):
-        length = int(self.headers["Content-Length"])
-        data = json.loads(self.rfile.read(length))
-        
-        txt_path = data.get("path")
-        content = data.get("content", "")
-        
-        if txt_path:
+        try:
+            length = int(self.headers["Content-Length"])
+            data = json.loads(self.rfile.read(length))
+            
+            txt_path = data.get("path")
+            content = data.get("content", "")
+            
+            if not txt_path:
+                self.send_error(400, "Missing path")
+                return
+                
+            # Security: ensure path is within allowed dirs?
+            # For now assume mostly trusted local usage.
+            if not os.path.abspath(txt_path).startswith(os.getcwd()):
+                 # maybe warn?
+                 pass
+
             with open(txt_path, "w", encoding="utf-8") as f:
                 f.write(content)
+                
             self.send_json({"status": "saved"})
-        else:
-            self.send_error(400, "Missing path")
+        except Exception as e:
+             self.send_error(500, str(e))
 
     def api_save_config(self):
-        length = int(self.headers["Content-Length"])
-        data = json.loads(self.rfile.read(length))
-        
-        output_file = "lora_config.json"
-        with open(output_file, "w") as f:
-            json.dump(data, f, indent=4)
+        try:
+            length = int(self.headers["Content-Length"])
+            data = json.loads(self.rfile.read(length))
             
-        self.send_json({"status": "saved", "file": output_file})
+            # Save to project root or specific config dir
+            output_file = "lora_config.json"
+            repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+            full_path = os.path.join(repo_root, output_file)
+            
+            with open(full_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+                
+            self.send_json({"status": "saved", "file": output_file})
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def api_generate(self):
+        from .generator import generate_asset
+        
+        length = int(self.headers["Content-Length"])
+        try:
+            config = json.loads(self.rfile.read(length))
+            repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+            workflow_path = os.path.join(repo_root, "scripts/comfyui/workflow-api.json")
+            
+            path = config.get("path")
+            result = generate_asset(path, workflow_path, config=config)
+            self.send_json(result)
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def api_import_request(self):
+        try:
+            length = int(self.headers.get('content-length', 0))
+            body = self.rfile.read(length).decode('utf-8')
+            data = json.loads(body)
+            filename = data.get("filename")
+            
+            result = self.importer.parse_and_import(filename)
+            self.send_json(result)
+        except Exception as e:
+            self.send_error(500, str(e))
+
+    def api_list_requests(self):
+        requests = self.importer.list_requests()
+        self.send_json({"requests": requests})
 
     def send_json(self, data):
         self.send_response(200)
@@ -191,16 +223,79 @@ class StudioHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(json.dumps(data).encode("utf-8"))
 
-def run_server():
-    print(f"Starting Asset Studio on http://localhost:{PORT}")
-    print(f"Serving frontend from: {FRONTEND_DIR}")
-    
-    # Ensure frontend dir exists
-    if not os.path.exists(FRONTEND_DIR):
-        print(f"WARNING: Frontend directory not found at {FRONTEND_DIR}")
-        print("Please run 'npm run build' in studio/frontend/")
+    def serve_asset_file(self):
+        # Serve from ../../../assets or similar
+        repo_root = os.path.join(os.path.dirname(__file__), "../../../")
+        asset_path = os.path.join(repo_root, self.path.lstrip("/"))
+        if not os.path.exists(asset_path):
+            self.send_error(404, "Asset not found")
+            return
+        
+        mime_type, _ = mimetypes.guess_type(asset_path)
+        self.send_response(200)
+        self.send_header("Content-type", mime_type or "application/octet-stream")
+        self.end_headers()
+        with open(asset_path, "rb") as f:
+            self.wfile.write(f.read())
 
-    with socketserver.TCPServer(("", PORT), StudioHandler) as httpd:
+    def serve_react_app(self):
+        # Serve index.html for all non-API routes to support SPA routing
+        path = os.path.join(FRONTEND_DIR, "index.html")
+        if not os.path.exists(path):
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(b"<h1>Frontend not built. Run npm run build in studio/frontend</h1>")
+            return
+            
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        with open(path, "rb") as f:
+            self.wfile.write(f.read())
+
+    def do_POST(self):
+        if self.path.startswith("/api/save-caption"):
+            self.api_save_caption()
+        elif self.path.startswith("/api/save-config"):
+            self.api_save_config()
+        elif self.path.startswith("/api/generate"):
+            self.api_generate()
+        elif self.path.startswith("/api/specs"):
+             self.api_save_spec()
+        elif self.path.startswith("/api/import-request"):
+             self.api_import_request()
+        elif self.path.startswith("/api/project-status"):
+            self.api_project_status()
+        else:
+            self.send_error(404, "Not Found")
+
+    def do_GET(self):
+        if self.path.startswith("/api/system-info"):
+            self.api_system_info()
+        elif self.path.startswith("/api/list-files"):
+            query = self.path.split("?", 1)[1] if "?" in self.path else ""
+            self.api_list_files(query)
+        elif self.path.startswith("/api/read-caption"):
+            query = self.path.split("?", 1)[1] if "?" in self.path else ""
+            self.api_read_caption(query)
+        elif self.path.startswith("/api/specs"):
+             self.api_list_specs()
+        elif self.path.startswith("/api/requests"):
+             self.api_list_requests()
+        elif self.path.startswith("/api/checkpoints"):
+             self.api_list_checkpoints()
+        elif self.path.startswith("/api/image"):
+            query = self.path.split("?", 1)[1] if "?" in self.path else ""
+            self.api_serve_image(query)
+        elif self.path.startswith("/assets/"):
+            self.serve_asset_file()
+        else:
+            self.serve_react_app()
+
+def run_server():
+    print(f"Starting Asset Studio at http://localhost:{PORT}")
+    with socketserver.ThreadingTCPServer(("", PORT), StudioHandler) as httpd:
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

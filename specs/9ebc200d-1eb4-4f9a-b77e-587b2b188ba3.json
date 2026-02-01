@@ -1,0 +1,12 @@
+{
+  "path": "assets/sprites/astro-duck/outfits/outfit-pirate.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "outfit-pirate",
+  "id": "9ebc200d-1eb4-4f9a-b77e-587b2b188ba3"
+}

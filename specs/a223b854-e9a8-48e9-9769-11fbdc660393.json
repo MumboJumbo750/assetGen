@@ -1,0 +1,12 @@
+{
+  "path": "assets/effects/portal-energy.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "portal-energy",
+  "id": "a223b854-e9a8-48e9-9769-11fbdc660393"
+}

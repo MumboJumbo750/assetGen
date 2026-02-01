@@ -1,0 +1,12 @@
+{
+  "path": "assets/effects/stargate-ring.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "default": ""
+    }
+  },
+  "status": "planned",
+  "name": "stargate-ring",
+  "id": "760ea682-8e00-4faa-a735-f1b67509a986"
+}
