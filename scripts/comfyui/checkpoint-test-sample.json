@@ -1,0 +1,138 @@
+{
+  "_comment": "Checkpoint evaluation sample set - representative assets per category for quick testing",
+  "version": 2,
+  "description": "A diverse sample of asset types to quickly evaluate a new checkpoint's suitability",
+  "usage": [
+    "1. Create an empty variant folder: mkdir assets/zelos_variants/<newckpt>",
+    "2. Run validator to get a report: py -3.11 scripts/validate-assets.py --root assets/zelos_variants/<newckpt> --report json --report-path build/<newckpt>-report.json",
+    "3. Generate the test samples: py -3.11 scripts/comfyui/generate-assets.py --report build/<newckpt>-report.json --variant <newckpt> --ckpt <ckpt_filename> --prompt-style <juggernaut|animagine|protovision|sdxl|copax> --fit-vram --auto-alpha --only \"<REGEX_FROM_BELOW>\"",
+    "   Or: powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant <newckpt> -Checkpoint <ckpt_filename> -PromptStyle <juggernaut|animagine|protovision|sdxl|copax>",
+    "4. Review the outputs in assets/zelos_variants/<newckpt>/sprites/..."
+  ],
+  "regex_filter": "(astro-duck-base-(front|side|three-quarter)|astro-duck-(happy|excited|curious)-(front|side)|outfit-(default-suit|pirate|wizard)-(front|side)|texture-(ocean|lava|ice|gas-giant|tech)|satellite-(config|portals|modules)|ring-cyan|atmosphere-(thin|normal|thick)|state-(selected|hovered|error)|glow-(hover|selected)|badge-(warning|error))",
+  "samples": [
+    {
+      "category": "Character base",
+      "paths": [
+        "sprites/astro-duck/base/astro-duck-base-front.png",
+        "sprites/astro-duck/base/astro-duck-base-side.png",
+        "sprites/astro-duck/base/astro-duck-base-three-quarter.png"
+      ],
+      "size": "1024x1024",
+      "notes": "Core character - check proportions, lineart quality, transparency, view consistency"
+    },
+    {
+      "category": "Character expressions",
+      "paths": [
+        "sprites/astro-duck/expressions/astro-duck-happy-front.png",
+        "sprites/astro-duck/expressions/astro-duck-happy-side.png",
+        "sprites/astro-duck/expressions/astro-duck-excited-front.png",
+        "sprites/astro-duck/expressions/astro-duck-excited-side.png",
+        "sprites/astro-duck/expressions/astro-duck-curious-front.png",
+        "sprites/astro-duck/expressions/astro-duck-curious-side.png"
+      ],
+      "size": "1024x1024",
+      "notes": "Expression overlays - should be face-only, not full character; check alignment potential"
+    },
+    {
+      "category": "Character outfits",
+      "paths": [
+        "sprites/astro-duck/outfits/outfit-default-suit-front.png",
+        "sprites/astro-duck/outfits/outfit-default-suit-side.png",
+        "sprites/astro-duck/outfits/outfit-pirate-front.png",
+        "sprites/astro-duck/outfits/outfit-pirate-side.png",
+        "sprites/astro-duck/outfits/outfit-wizard-front.png",
+        "sprites/astro-duck/outfits/outfit-wizard-side.png"
+      ],
+      "size": "1024x1024",
+      "notes": "Outfit overlays - should be costume pieces only, no body redraw"
+    },
+    {
+      "category": "Planet textures",
+      "paths": [
+        "sprites/planets/texture-ocean.png",
+        "sprites/planets/texture-lava.png",
+        "sprites/planets/texture-ice.png",
+        "sprites/planets/texture-gas-giant.png",
+        "sprites/planets/texture-tech.png"
+      ],
+      "size": "512x512",
+      "notes": "Spherical planets - check round silhouette, terminator shadow, no background, variety"
+    },
+    {
+      "category": "Planet rings",
+      "paths": [
+        "sprites/planets/ring-cyan.png"
+      ],
+      "size": "512x256",
+      "notes": "Ring overlay - should be semi-transparent, no planet body"
+    },
+    {
+      "category": "Planet atmospheres",
+      "paths": [
+        "sprites/planets/atmosphere-thin.png",
+        "sprites/planets/atmosphere-normal.png",
+        "sprites/planets/atmosphere-thick.png"
+      ],
+      "size": "600x600",
+      "notes": "Atmosphere overlays - soft gradient halos, no planet body, visible thickness difference"
+    },
+    {
+      "category": "Planet states",
+      "paths": [
+        "sprites/planets/state-selected.png",
+        "sprites/planets/state-hovered.png",
+        "sprites/planets/state-error.png"
+      ],
+      "size": "512x512",
+      "notes": "State overlays - neon accent ring/glow, no planet body, distinguishable states"
+    },
+    {
+      "category": "Satellite icons",
+      "paths": [
+        "sprites/satellites/satellite-config.png",
+        "sprites/satellites/satellite-portals.png",
+        "sprites/satellites/satellite-modules.png"
+      ],
+      "size": "128x128",
+      "notes": "UI icons - clean readable silhouette, crisp edges at small size, distinguishable"
+    },
+    {
+      "category": "Satellite states",
+      "paths": [
+        "sprites/satellites/state-selected.png",
+        "sprites/satellites/state-hovered.png",
+        "sprites/satellites/state-error.png"
+      ],
+      "size": "128x128",
+      "notes": "State overlays - ring/glow variants, clearly distinguishable at 128x128"
+    },
+    {
+      "category": "Satellite glows",
+      "paths": [
+        "sprites/satellites/glow-hover.png",
+        "sprites/satellites/glow-selected.png"
+      ],
+      "size": "128x128",
+      "notes": "Glow overlays - soft neon halo rings, distinguishable intensity"
+    },
+    {
+      "category": "Satellite badges",
+      "paths": [
+        "sprites/satellites/badge-warning.png",
+        "sprites/satellites/badge-error.png"
+      ],
+      "size": "128x128",
+      "notes": "Badge overlays - small badges anchored to corner area, distinguishable"
+    }
+  ],
+  "total_assets": 37,
+  "evaluation_criteria": {
+    "transparency": "Background should be cleanly transparent (check corners for leftover pixels)",
+    "sharpness": "Lineart should be crisp, not blurry or fuzzy",
+    "consistency": "Style should match across samples (line weight, shading, palette)",
+    "isolation": "Subject should be centered with no cropping or edge bleeding",
+    "prompt_adherence": "Asset should match the requested type (overlay vs full character, etc.)",
+    "variety": "Different variants (planets, expressions) should be visually distinguishable"
+  }
+}
