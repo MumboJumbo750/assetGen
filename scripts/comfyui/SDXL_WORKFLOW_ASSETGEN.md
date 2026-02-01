@@ -40,14 +40,15 @@ Use your existing launcher:
 Default URL:
 - `http://127.0.0.1:8188`
 
-### 3) Save the workflow JSON (API format)
-Create this file (exact path recommended):
-- `C:\projects\imageai\ComfyUI\user\default\workflows\assetgen_sdxl_api.json`
+### 3) Workflow JSON (API format)
 
-If you're using the in-repo ComfyUI clone (`.comfyui/ComfyUI`), use this path instead:
-- `.comfyui/ComfyUI/user/default/workflows/assetgen_sdxl_api.json`
+This repo ships tracked workflow JSONs you can use directly with `--workflow`:
+- `scripts/comfyui/workflows/assetgen_sdxl_api.json`
+- `scripts/comfyui/workflows/assetgen_sdxl_api_pony.json` (adds CLIP skip 2 for Pony)
 
-Paste the JSON below and **only change** `ckpt_name` to match your checkpoint filename.
+If you prefer, you can also copy the JSON into your ComfyUI `user/default/workflows/` folder, but it is not required.
+
+Paste the JSON below and **only change** `ckpt_name` to match your checkpoint filename (optional; the generator can also override it via `--ckpt`).
 
 This JSON is in ComfyUI **API prompt** format (the format used by the `/prompt` endpoint).
 
@@ -171,10 +172,10 @@ The repo script [scripts/comfyui/generate-assets.py](scripts/comfyui/generate-as
 - `py -3.11 scripts/validate-assets.py --root assets/zelos --report json --report-path build/zelos-report.json`
 
 2) Dry run (no Comfy calls):
-- `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --workflow C:\projects\imageai\ComfyUI\user\default\workflows\assetgen_sdxl_api.json --dry-run --limit 10`
+- `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --workflow scripts/comfyui/workflows/assetgen_sdxl_api.json --dry-run --limit 10`
 
 3) Generate only planets (small + fast):
-- `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --workflow C:\projects\imageai\ComfyUI\user\default\workflows\assetgen_sdxl_api.json --only "^sprites/planets/" --limit 20`
+- `py -3.11 scripts/comfyui/generate-assets.py --report build/zelos-report.json --workflow scripts/comfyui/workflows/assetgen_sdxl_api.json --only "^sprites/planets/" --limit 20`
 
 ## Important limitation: transparency
 

@@ -47,9 +47,14 @@ The generator supports different prompt styles via `--prompt-style`:
 
 - `juggernaut` (default): natural language prompts for Juggernaut XL and similar checkpoints
 - `animagine`: tag-based prompts for Animagine XL 3.x checkpoints
+- `pony`: tag-based prompts for Pony Diffusion v6 XL
 - `protovision`: high-fidelity anime/hyperreal prompting for ProtoVision XL
 - `sdxl`: neutral prompting for SDXL base checkpoints
 - `copax`: timeless illustration prompting for Copax Timeless
+
+Optional VAE override:
+
+- `--vae <vae_file.safetensors>` (requires the workflow to include a `VAELoader`/`VAELoaderSimple` node)
 
 ### Quick checkpoint test (sample set)
 
@@ -63,7 +68,10 @@ py -3.11 scripts/comfyui/generate-assets.py --report build/<variant>-report.json
 Or use the generic runner:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant <variant> -Checkpoint <ckpt_file> -PromptStyle <juggernaut|animagine|protovision|sdxl|copax>
+powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant <variant> -Checkpoint <ckpt_file> -PromptStyle <juggernaut|animagine|pony|protovision|sdxl|copax>
+
+# Optional VAE override (if your workflow supports it)
+powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant <variant> -Checkpoint <ckpt_file> -PromptStyle <...> -Vae sdxl_vae.safetensors
 ```
 
 ### Juggernaut XL
@@ -96,6 +104,7 @@ Use the SDXL API workflow JSON described in:
 
 - Juggernaut XL: `specs/mage/zelos-juggernaut-prompts.md`
 - Animagine XL: `specs/mage/zelos-animagine-prompts.md`
+- Pony Diffusion v6 XL: (uses `--prompt-style pony` presets in `scripts/comfyui/generate-assets.py`)
 - ProtoVision XL: `specs/mage/zelos-protovision-prompts.md`
 - SDXL base: `specs/mage/zelos-sdxl-prompts.md`
 - Copax Timeless: `specs/mage/zelos-copax-prompts.md`
@@ -107,6 +116,10 @@ Use the SDXL API workflow JSON described in:
 ## Prompting guide (Animagine XL)
 
 - [scripts/comfyui/ANIMAGINE_XL_PROMPTING.md](scripts/comfyui/ANIMAGINE_XL_PROMPTING.md)
+
+## Prompting guide (Pony Diffusion v6 XL)
+
+- [scripts/comfyui/PONY_DIFFUSION_V6_XL_PROMPTING.md](scripts/comfyui/PONY_DIFFUSION_V6_XL_PROMPTING.md)
 
 ## Prompting guide template (future checkpoints)
 

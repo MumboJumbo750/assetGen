@@ -2,7 +2,8 @@ param(
     [string]$ComfyUrl = "http://127.0.0.1:8188",
     [Parameter(Mandatory = $true)][string]$Checkpoint,
     [Parameter(Mandatory = $true)][string]$Variant,
-    [ValidateSet('juggernaut','animagine','protovision','sdxl','copax')][string]$PromptStyle = "juggernaut",
+    [ValidateSet('juggernaut','animagine','pony','protovision','sdxl','copax')][string]$PromptStyle = "juggernaut",
+    [string]$Vae = $null,
     [int]$MaxRenderDim = 768,
     [int]$Seed = 12345,
     [int]$ComfyStartTimeoutSec = 240,
@@ -132,6 +133,10 @@ $genArgs = @(
     "--seed", $Seed,
     "--only", $onlyRegex
 )
+
+if ($Vae) {
+    $genArgs += @("--vae", $Vae)
+}
 
 if ($DryRun) {
     $genArgs += "--dry-run"

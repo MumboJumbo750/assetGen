@@ -7,7 +7,7 @@ Reference model page (for screenshots + author notes):
 
 ## What we’re using
 - Checkpoint: `juggernautXL_ragnarokBy.safetensors`
-- Local ComfyUI workflow: `.comfyui/ComfyUI/user/default/workflows/assetgen_sdxl_api.json`
+- Workflow JSON (tracked in repo): `scripts/comfyui/workflows/assetgen_sdxl_api.json`
 - Generator: `scripts/comfyui/generate-assets.py`
 
 Related prompt pack (path-based recipes matching this repo’s specs):

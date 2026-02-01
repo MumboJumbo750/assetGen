@@ -22,6 +22,11 @@ These are *repo presets* (prompt header + negative prompt) used by `scripts/comf
   - URL: https://civitai.com/models/101055/sd-xl?modelVersionId=128078
   - Suggested: `--prompt-style sdxl`
 
+- **Pony Diffusion v6 XL** (CivitAI)
+  - URL (HF): https://huggingface.co/LyliaEngine/Pony_Diffusion_V6_XL
+  - Suggested: `--prompt-style pony`
+  - Note: requires CLIP skip 2 (repo uses a Pony-specific workflow by default)
+
 - **Copax Timeless** (CivitAI)
   - URL: https://civitai.com/models/118111/copax-timeless?modelVersionId=1108377
   - Suggested: `--prompt-style copax`
@@ -33,6 +38,9 @@ Use the generic runner:
 ```powershell
 # Example (replace checkpoint filename with the one you downloaded)
 powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant protovision -Checkpoint <your_file.safetensors> -PromptStyle protovision
+
+# Pony Diffusion example
+powershell -ExecutionPolicy Bypass -File scripts/comfyui/run-checkpoint-sample.ps1 -Variant pony -Checkpoint ponyDiffusionV6XL_v6StartWithThisOne.safetensors -PromptStyle pony
 ```
 
 Notes:

@@ -11,7 +11,7 @@ Use this template when adding a new checkpoint (SDXL model) to the AssetGen pipe
 
 ## How we run it in this repo
 
-- ComfyUI workflow: `.comfyui/ComfyUI/user/default/workflows/assetgen_sdxl_api.json`
+- Workflow JSON (tracked in repo): `scripts/comfyui/workflows/assetgen_sdxl_api.json`
 - Generator: `scripts/comfyui/generate-assets.py`
 - Variant output folder: `assets/zelos_variants/<variant>/...`
 

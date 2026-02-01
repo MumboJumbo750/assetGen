@@ -147,8 +147,8 @@ def _apply_auto_alpha(image, tolerance: int, samples_per_edge: int) -> bool:
 
 # Juggernaut XL (default) - natural language style
 JUGGERNAUT_STYLE_HEADER = (
-    "Zelos V2 cartoon illustration style, crisp lineart, consistent line weight, simple soft shading, "
-    "subtle gradients, vibrant but controlled palette, neon cyan accents, top-left key light, gentle rim light, "
+    "Zelos V2 cyberpunk comic style, bold lineart, consistent line weight, cel shading with hard shadows, "
+    "high contrast palette, neon cyan and magenta accents, dramatic lighting, "
     "clean edges, game asset, centered, isolated subject, transparent background"
 )
 
@@ -163,7 +163,7 @@ ANIMAGINE_STYLE_HEADER = (
     # Follow the model card guidance: tag ordering + optional quality modifiers.
     # We keep it safe via rating: general (positive) + nsfw (negative).
     "rating: general, masterpiece, best quality, newest, "
-    "anime illustration, clean lineart, crisp edges, simple soft shading, vibrant colors, neon cyan accents, "
+    "cyberpunk, comic style, bold lineart, cel shading, high contrast, neon cyan, neon magenta, "
     "game asset, centered, isolated, simple background, white background"
 )
 
@@ -176,8 +176,8 @@ ANIMAGINE_NEGATIVE = (
 
 # ProtoVision XL (CivitAI) - high fidelity / 3D-ish anime-hyperreal look
 PROTOVISION_STYLE_HEADER = (
-    "Zelos V2, high fidelity anime illustration, crisp lineart, clean edges, sharp focus, "
-    "subtle 3D shading, soft studio lighting, vibrant but controlled colors, neon cyan accents, "
+    "Zelos V2, cyberpunk comic illustration, bold lineart, clean edges, sharp focus, "
+    "cel shading with hard shadows, dramatic lighting, high contrast, neon cyan and magenta accents, "
     "game asset, centered, isolated, plain white background"
 )
 
@@ -189,9 +189,9 @@ PROTOVISION_NEGATIVE = (
 # SDXL base (official 1.0) - natural language style, minimal negative prompt
 # Per official guidance: describe in detail, easy on negatives, easy on weights
 SDXL_STYLE_HEADER = (
-    "Zelos V2 game asset, clean digital illustration, crisp outlines, simple flat shading, "
-    "vibrant saturated colors with neon cyan accents, centered composition, isolated subject, "
-    "solid plain white background, studio lighting, high quality"
+    "Zelos V2 game asset, cyberpunk comic illustration, bold outlines, cel shading with hard shadows, "
+    "high contrast palette with neon cyan and magenta accents, centered composition, isolated subject, "
+    "solid plain white background, dramatic lighting, high quality"
 )
 
 SDXL_NEGATIVE = (
@@ -201,13 +201,28 @@ SDXL_NEGATIVE = (
 
 # Copax Timeless (CivitAI) - classic, slightly painterly/illustration vibe
 COPAX_STYLE_HEADER = (
-    "Zelos V2, timeless illustration, clean lineart, crisp edges, elegant shapes, gentle shading, "
-    "vibrant but controlled palette, neon cyan accents, game asset, centered, isolated, plain white background"
+    "Zelos V2, cyberpunk comic illustration, bold lineart, crisp edges, dynamic shapes, cel shading, "
+    "high contrast palette, neon cyan and magenta accents, game asset, centered, isolated, plain white background"
 )
 
 COPAX_NEGATIVE = (
     "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, clutter, "
     "overly photorealistic, deformed, bad anatomy, extra limbs"
+)
+
+# Pony Diffusion v6 XL - supports both tags and natural language.
+# Per model card: use full score_9..score_4_up string; clip skip 2 required; mostly no negative needed.
+# Keep header concise: score tags + rating + source + minimal game-asset guidance.
+PONY_STYLE_HEADER = (
+    "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, "
+    "rating_safe, cyberpunk, comic style, bold lineart, cel shading, high contrast, neon colors, "
+    "game asset, centered, isolated subject, simple white background"
+)
+
+# Model rarely needs negatives; keep minimal to block text/watermarks and force isolation.
+PONY_NEGATIVE = (
+    "nsfw, signature, watermark, logo, text, username, url, "
+    "background scene, scenery, clutter"
 )
 
 # Active style pointers - set by --prompt-style argument
@@ -223,6 +238,10 @@ def set_prompt_style(style: str) -> None:
         STYLE_HEADER = ANIMAGINE_STYLE_HEADER
         NEGATIVE_PROMPT = ANIMAGINE_NEGATIVE
         PROMPT_STYLE = "animagine"
+    elif style == "pony":
+        STYLE_HEADER = PONY_STYLE_HEADER
+        NEGATIVE_PROMPT = PONY_NEGATIVE
+        PROMPT_STYLE = "pony"
     elif style == "protovision":
         STYLE_HEADER = PROTOVISION_STYLE_HEADER
         NEGATIVE_PROMPT = PROTOVISION_NEGATIVE
@@ -406,6 +425,51 @@ def _set_workflow_checkpoint_inputs(workflow: dict, ckpt_name: str | None) -> No
                 inputs[key] = ckpt_name
 
 
+def _set_workflow_vae_inputs(workflow: dict, vae_name: str | None) -> bool:
+    """Best-effort VAE override.
+
+    If the workflow contains a VAELoader-like node, this will:
+    - set its `vae_name`
+    - rewire VAEDecode nodes to use that VAE
+    """
+
+    if not vae_name:
+        return False
+
+    vae_loader_ids: list[str] = []
+
+    for node_id, node in workflow.items():
+        if not isinstance(node, dict):
+            continue
+        class_type = node.get("class_type")
+        inputs = node.get("inputs")
+        if not isinstance(inputs, dict):
+            continue
+
+        if class_type in ("VAELoader", "VAELoaderSimple") and "vae_name" in inputs:
+            if isinstance(inputs.get("vae_name"), str):
+                inputs["vae_name"] = vae_name
+                vae_loader_ids.append(str(node_id))
+
+    if not vae_loader_ids:
+        return False
+
+    vae_node_id = vae_loader_ids[0]
+
+    for _node_id, node in workflow.items():
+        if not isinstance(node, dict):
+            continue
+        if node.get("class_type") != "VAEDecode":
+            continue
+        inputs = node.get("inputs")
+        if not isinstance(inputs, dict):
+            continue
+        if "vae" in inputs and isinstance(inputs.get("vae"), list):
+            inputs["vae"] = [vae_node_id, 0]
+
+    return True
+
+
 def _set_workflow_filename_prefix_inputs(workflow: dict, filename_prefix: str) -> None:
     # Ensure SaveImage nodes don't get fully cached across runs.
     # ComfyUI caching can result in an empty "outputs" block in /history for cached executions,
@@ -462,7 +526,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     )
     if match:
         view = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "1animal",
@@ -470,7 +534,6 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
                 "astronaut",
                 "mascot",
                 "original character",
-                "chibi",
                 "full body",
                 f"{view} view",
                 "minimal undersuit",
@@ -478,14 +541,14 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
             )
         else:
             positive = (
-                f"{STYLE_HEADER}. Cute astronaut duck mascot wearing a minimal undersuit (no outer suit), "
-                "chibi proportions (large head), smooth simple materials, bubble helmet optional and transparent, "
+                f"{STYLE_HEADER}. Astronaut duck mascot wearing a minimal undersuit (no outer suit), "
+                "sleek proportions, smooth simple materials, bubble helmet optional and transparent, "
                 f"full body, {view} view"
             )
         return positive, NEGATIVE_PROMPT
 
     if rel_path == "sprites/astro-duck/base/astro-duck-base-idle-sheet.png":
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "sprite sheet",
@@ -493,7 +556,6 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
                 "horizontal",
                 "duck",
                 "astronaut",
-                "chibi",
                 "idle animation",
                 "floating",
                 "each frame 256x256",
@@ -502,13 +564,13 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
             )
         else:
             positive = (
-                f"{STYLE_HEADER}. 8-frame horizontal sprite sheet, cute astronaut duck in minimal undersuit, "
+                f"{STYLE_HEADER}. 8-frame horizontal sprite sheet, astronaut duck in minimal undersuit, "
                 "floating idle animation, each frame 256x256, total size 2048x256, consistent spacing, aligned frames"
             )
         return positive, NEGATIVE_PROMPT
 
     if rel_path == "sprites/astro-duck/base/astro-duck-base-fly-sheet.png":
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "sprite sheet",
@@ -516,7 +578,6 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
                 "horizontal",
                 "duck",
                 "astronaut",
-                "chibi",
                 "flying animation",
                 "jetpack",
                 "each frame 256x256",
@@ -525,7 +586,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
             )
         else:
             positive = (
-                f"{STYLE_HEADER}. 6-frame horizontal sprite sheet, cute astronaut duck in minimal undersuit, "
+                f"{STYLE_HEADER}. 6-frame horizontal sprite sheet, astronaut duck in minimal undersuit, "
                 "jetpack flying animation, each frame 256x256, total size 1536x256, consistent spacing, aligned frames"
             )
         return positive, NEGATIVE_PROMPT
@@ -538,7 +599,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     if match:
         expression = match.group(1)
         view = match.group(2)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "duck",
@@ -567,7 +628,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
         outfit_id = match.group(1)
         view = match.group(2)
         desc = OUTFIT_DESCRIPTIONS.get(outfit_id, outfit_id)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "duck",
@@ -592,7 +653,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     if match:
         outfit_id = match.group(1)
         desc = OUTFIT_DESCRIPTIONS.get(outfit_id, outfit_id)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "sprite sheet",
@@ -617,7 +678,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     if match:
         outfit_id = match.group(1)
         desc = OUTFIT_DESCRIPTIONS.get(outfit_id, outfit_id)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "sprite sheet",
@@ -643,7 +704,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/planets/texture-([a-z-]+)\.png", rel_path)
     if match:
         texture = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             texture_tag = texture.replace("-", " ")
             positive = _animagine_tags(
                 STYLE_HEADER,
@@ -668,7 +729,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/planets/ring-([a-z-]+)\.png", rel_path)
     if match:
         ring = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "saturn rings",
@@ -687,7 +748,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/planets/atmosphere-([a-z-]+)\.png", rel_path)
     if match:
         atmo = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "atmosphere halo",
@@ -706,7 +767,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/planets/state-([a-z-]+)\.png", rel_path)
     if match:
         state = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "planet state",
@@ -727,7 +788,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/satellites/satellite-([a-z-]+)\.png", rel_path)
     if match:
         icon = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "game UI icon",
@@ -746,7 +807,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/satellites/state-([a-z-]+)\.png", rel_path)
     if match:
         state = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(STYLE_HEADER, "satellite state", "overlay", state, "ring", "glow")
         else:
             positive = f"{STYLE_HEADER}. Satellite state overlay ring/glow ({state}), centered"
@@ -755,7 +816,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/satellites/glow-([a-z-]+)\.png", rel_path)
     if match:
         state = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(STYLE_HEADER, "neon halo", "overlay", state, "ring")
         else:
             positive = f"{STYLE_HEADER}. Soft neon halo ring overlay ({state}), centered"
@@ -764,7 +825,7 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"sprites/satellites/badge-([a-z-]+)\.png", rel_path)
     if match:
         state = match.group(1)
-        if PROMPT_STYLE == "animagine":
+        if PROMPT_STYLE in ("animagine", "pony"):
             positive = _animagine_tags(
                 STYLE_HEADER,
                 "badge",
@@ -828,6 +889,14 @@ def main() -> int:
         help=(
             "Optional ComfyUI checkpoint filename to force into the workflow (best-effort). "
             "Example: animagineXLV31_v31.safetensors"
+        ),
+    )
+    parser.add_argument(
+        "--vae",
+        default=None,
+        help=(
+            "Optional ComfyUI VAE filename to force into the workflow (best-effort; requires a VAELoader node in the workflow). "
+            "Example: sdxl_vae.safetensors"
         ),
     )
     parser.add_argument(
@@ -897,10 +966,11 @@ def main() -> int:
     parser.add_argument(
         "--prompt-style",
         default="juggernaut",
-        choices=["juggernaut", "animagine", "protovision", "sdxl", "copax"],
+        choices=["juggernaut", "animagine", "pony", "protovision", "sdxl", "copax"],
         help=(
             "Prompt style to use. 'juggernaut' = natural language (default), "
             "'animagine' = tag-based for Animagine XL 3.x checkpoints, "
+            "'pony' = tag-based for Pony Diffusion v6 XL, "
             "'protovision' = high-fidelity anime/hyperreal, "
             "'sdxl' = neutral SDXL base prompting, "
             "'copax' = timeless illustration prompting."
@@ -913,15 +983,25 @@ def main() -> int:
     set_prompt_style(args.prompt_style)
 
     repo_root = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    default_workflow = os.path.join(
+    workflow_default_name = "assetgen_sdxl_api.json"
+    if args.prompt_style == "pony":
+        workflow_default_name = "assetgen_sdxl_api_pony.json"
+
+    # Prefer the tracked in-repo workflow JSONs.
+    default_workflow = os.path.join(repo_root, "scripts", "comfyui", "workflows", workflow_default_name)
+
+    # Back-compat: if user runs a local ComfyUI clone under .comfyui and has workflows there, allow it.
+    comfyui_workflow = os.path.join(
         repo_root,
         ".comfyui",
         "ComfyUI",
         "user",
         "default",
         "workflows",
-        "assetgen_sdxl_api.json",
+        workflow_default_name,
     )
+    if not os.path.exists(default_workflow) and os.path.exists(comfyui_workflow):
+        default_workflow = comfyui_workflow
 
     workflow_path = args.workflow or default_workflow
     if not os.path.exists(workflow_path):
@@ -942,6 +1022,14 @@ def main() -> int:
     # Some Windows tooling writes UTF-8 with BOM; json.load() will fail unless we use utf-8-sig.
     with open(workflow_path, "r", encoding="utf-8-sig") as f:
         workflow_base = json.load(f)
+
+    if args.vae:
+        applied = _set_workflow_vae_inputs(workflow_base, args.vae)
+        if not applied:
+            print(
+                "WARN: --vae was provided but the workflow has no VAELoader node. "
+                "Update your workflow to include VAELoader/VAELoaderSimple, or omit --vae to use the checkpoint VAE."
+            )
 
     if args.variant and not args.output_root:
         args.output_root = os.path.join(repo_root, "assets", "zelos_variants", args.variant)

@@ -35,6 +35,11 @@
       "root": "../assets/zelos_variants/sdxl"
     },
     {
+      "id": "pony",
+      "label": "Pony Diffusion v6 XL",
+      "root": "../assets/zelos_variants/pony"
+    },
+    {
       "id": "copax",
       "label": "Copax Timeless",
       "root": "../assets/zelos_variants/copax"
