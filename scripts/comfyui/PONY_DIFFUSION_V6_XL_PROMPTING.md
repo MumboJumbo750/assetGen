@@ -26,7 +26,7 @@ From the model card guidance:
 - Recommended: `Euler a`, ~`25` steps, resolution ~`1024px`.
 
 The Pony workflow shipped in this repo uses:
-- `sampler_name: euler_a`
+- `sampler_name: euler_ancestral` (ComfyUI name for "Euler a")
 - `steps: 25`
 - `scheduler: karras`
 
@@ -44,7 +44,7 @@ It also supports optional dataset tags:
 
 In this repo, `--prompt-style pony` sets a global style header that follows the model card guidance and keeps things SFW by default:
 - Includes the full `score_9..score_4_up` string (mandatory per the model card)
-- Adds `rating_safe` and `source_cartoon`
+- Adds `rating_safe` (you can optionally add a `source_*` tag per the model card if desired)
 - Keeps additional style descriptors **minimal** (no extra quality boosters like "masterpiece", no redundant aesthetic tags) since the model is designed to not need them
 
 The prompt header is intentionally concise:
@@ -63,7 +63,7 @@ The model may still occasionally produce pseudo-signatures (a known training art
 This repo supports an optional VAE override:
 - `--vae sdxl_vae.safetensors`
 
-The default SDXL workflow in this repo includes a `VAELoaderSimple` node so `--vae` can be applied.
+The default SDXL workflows in this repo include a `VAELoader` node so `--vae` can be applied.
 
 ## Quick sample run (Pony)
 

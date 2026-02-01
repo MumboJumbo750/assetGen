@@ -4,6 +4,7 @@ import os
 import re
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 import uuid
 from collections import deque
@@ -288,7 +289,19 @@ PLANET_TEXTURE_DESCRIPTIONS = {
 }
 
 
-def _http_json(url: str, payload: dict) -> dict:
+def _write_debug_file(repo_root: str, filename: str, content: str) -> None:
+    try:
+        build_dir = os.path.join(repo_root, "build")
+        os.makedirs(build_dir, exist_ok=True)
+        path = os.path.join(build_dir, filename)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception:  # noqa: BLE001
+        # Best-effort only.
+        return
+
+
+def _http_json(url: str, payload: dict, *, debug_tag: str | None = None, repo_root: str | None = None) -> dict:
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
         url,
@@ -296,13 +309,44 @@ def _http_json(url: str, payload: dict) -> dict:
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raw = b""
+        try:
+            raw = e.read() or b""
+        except Exception:  # noqa: BLE001
+            raw = b""
+        body_text = raw.decode("utf-8", errors="replace") if raw else ""
+
+        # Persist details for debugging (especially useful for long workflows).
+        if repo_root and debug_tag:
+            ts = time.strftime("%Y%m%d_%H%M%S")
+            _write_debug_file(repo_root, f"comfyui-{debug_tag}-http-error-{ts}.txt", body_text or "(no body)")
+            try:
+                pretty = json.dumps(payload, indent=2, ensure_ascii=False)
+            except Exception:  # noqa: BLE001
+                pretty = "(failed to serialize payload for debug)"
+            _write_debug_file(repo_root, f"comfyui-{debug_tag}-payload-{ts}.json", pretty)
+
+        detail = body_text.strip() or "(no response body)"
+        raise RuntimeError(f"ComfyUI request failed: HTTP {e.code} {e.reason} for {url}\n{detail}") from e
 
 
 def _http_get(url: str) -> bytes:
-    with urllib.request.urlopen(url, timeout=60) as resp:
-        return resp.read()
+    try:
+        with urllib.request.urlopen(url, timeout=60) as resp:
+            return resp.read()
+    except urllib.error.HTTPError as e:
+        raw = b""
+        try:
+            raw = e.read() or b""
+        except Exception:  # noqa: BLE001
+            raw = b""
+        body_text = raw.decode("utf-8", errors="replace") if raw else ""
+        detail = body_text.strip() or "(no response body)"
+        raise RuntimeError(f"ComfyUI GET failed: HTTP {e.code} {e.reason} for {url}\n{detail}") from e
 
 
 def _normalize_base_url(base_url: str) -> str:
@@ -1028,7 +1072,7 @@ def main() -> int:
         if not applied:
             print(
                 "WARN: --vae was provided but the workflow has no VAELoader node. "
-                "Update your workflow to include VAELoader/VAELoaderSimple, or omit --vae to use the checkpoint VAE."
+                "Update your workflow to include a VAELoader node, or omit --vae to use the checkpoint VAE."
             )
 
     if args.variant and not args.output_root:
@@ -1090,7 +1134,12 @@ def main() -> int:
         _set_workflow_filename_prefix_inputs(workflow, filename_prefix=f"assetgen_{run_nonce}_{safe_stem}")
 
         payload = {"prompt": workflow}
-        res = _http_json(f"{base_url}/prompt", payload)
+        res = _http_json(
+            f"{base_url}/prompt",
+            payload,
+            debug_tag="prompt",
+            repo_root=repo_root,
+        )
         prompt_id = res.get("prompt_id")
         if not prompt_id:
             raise RuntimeError(f"ComfyUI /prompt did not return prompt_id: {res}")
@@ -1151,7 +1200,7 @@ def main() -> int:
 
         info_bits = []
         if args.fit_vram and (render_w != width or render_h != height):
-            info_bits.append(f"rendered {render_w}x{render_h} → upscaled {width}x{height}")
+            info_bits.append(f"rendered {render_w}x{render_h} -> upscaled {width}x{height}")
         if args.auto_alpha and auto_alpha_applied:
             info_bits.append("auto-alpha")
         if info_bits:

@@ -6,7 +6,7 @@
     }
   },
   "8": {
-    "class_type": "VAELoaderSimple",
+    "class_type": "VAELoader",
     "inputs": {
       "vae_name": "sdxl_vae.safetensors"
     }
@@ -85,7 +85,7 @@
       "seed": 123456,
       "steps": 25,
       "cfg": 7,
-      "sampler_name": "euler_a",
+      "sampler_name": "euler_ancestral",
       "scheduler": "karras",
       "denoise": 1
     }
