@@ -54,7 +54,7 @@ The generator supports different prompt styles via `--prompt-style`:
 
 Optional VAE override:
 
-- `--vae <vae_file.safetensors>` (requires the workflow to include a `VAELoader`/`VAELoaderSimple` node)
+- `--vae <vae_file.safetensors>` (requires the workflow to include a `VAELoader` node)
 
 ### Quick checkpoint test (sample set)
 
