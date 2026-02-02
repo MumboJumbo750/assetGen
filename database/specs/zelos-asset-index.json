@@ -1,0 +1,856 @@
+{
+  "version": 1,
+  "root": "assets/zelos",
+  "lists": {
+    "viewFiles": ["front", "side", "three-quarter"],
+    "expressions": [
+      "happy",
+      "excited",
+      "curious",
+      "concerned",
+      "celebrating",
+      "sleeping",
+      "waving",
+      "pointing"
+    ],
+    "poseIds": [
+      "celebrating",
+      "sleeping",
+      "waving",
+      "pointing"
+    ],
+    "outfits": [
+      "outfit-default-suit",
+      "outfit-pirate",
+      "outfit-wizard",
+      "outfit-detective",
+      "outfit-chef",
+      "outfit-superhero",
+      "outfit-scientist",
+      "outfit-musician",
+      "outfit-explorer",
+      "outfit-ninja",
+      "outfit-royal"
+    ],
+    "planetTextures": [
+      "solid",
+      "gradient",
+      "marble",
+      "rocky",
+      "gas-giant",
+      "ice",
+      "lava",
+      "ocean",
+      "forest",
+      "tech"
+    ],
+    "planetRings": ["cyan"],
+    "planetAtmospheres": ["thin", "normal", "thick", "stormy"],
+    "planetStates": [
+      "selected",
+      "hovered",
+      "warning",
+      "error",
+      "inherited",
+      "new"
+    ],
+    "satelliteIcons": [
+      "config",
+      "portals",
+      "style",
+      "modules",
+      "entrypoints",
+      "statistics",
+      "users",
+      "offerers",
+      "email",
+      "wordpress"
+    ],
+    "satelliteStates": [
+      "selected",
+      "hovered",
+      "error",
+      "unsaved",
+      "inherited",
+      "own-config"
+    ],
+    "satelliteGlows": ["hover", "selected", "error"],
+    "satelliteBadges": ["warning", "error"],
+    "badgeRarities": ["common", "uncommon", "rare", "epic", "legendary"],
+    "achievementIcons": [
+      "first-flight",
+      "explorer",
+      "speed-demon",
+      "night-owl",
+      "perfectionist",
+      "piano-master"
+    ],
+    "cinematicClips": [
+      "office-briefing",
+      "intro-briefing-l1",
+      "boss-intro-l1",
+      "intro-briefing-l2",
+      "boss-intro-l2",
+      "mid-arc-l3-stargate",
+      "boss-intro-l3",
+      "intro-briefing-l4",
+      "boss-intro-l4",
+      "intro-briefing-l5",
+      "final-boss-intro-l5",
+      "outro-wrap",
+      "stargate-travel"
+    ]
+  },
+  "animationTypes": {
+    "idle": {
+      "frameCount": 8,
+      "fps": 12,
+      "loop": true,
+      "promptHints": {
+        "consistency": "Maintain identical character design, colors, and proportions across all frames",
+        "motion": "Subtle breathing motion, gentle bobbing, blinking eyes - keep movements minimal",
+        "technique": "Generate frames in sequence with incrementing seed for natural variation"
+      }
+    },
+    "fly": {
+      "frameCount": 6,
+      "fps": 16,
+      "loop": true,
+      "promptHints": {
+        "consistency": "Maintain identical character design, colors, and proportions across all frames",
+        "motion": "Jetpack flames flickering, slight body tilt forward, arms back - dynamic flying pose",
+        "technique": "Generate frames in sequence with incrementing seed for natural variation"
+      }
+    },
+    "run": {
+      "frameCount": 8,
+      "fps": 14,
+      "loop": true,
+      "promptHints": {
+        "consistency": "Maintain identical character design across all frames",
+        "motion": "Full run cycle: contact, down, passing, up positions for both legs",
+        "technique": "Plan key poses first (contact/passing) then generate in-betweens"
+      }
+    },
+    "attack": {
+      "frameCount": 6,
+      "fps": 18,
+      "loop": false,
+      "promptHints": {
+        "consistency": "Maintain character design, weapon should stay consistent",
+        "motion": "Anticipation, swing, impact, follow-through - quick snappy motion",
+        "technique": "Emphasize anticipation and impact frames, speed through middle"
+      }
+    },
+    "hit": {
+      "frameCount": 4,
+      "fps": 12,
+      "loop": false,
+      "promptHints": {
+        "consistency": "Character recoils but maintains recognizable design",
+        "motion": "Quick knockback, flash/blink effect, recovery to neutral",
+        "technique": "First frame should be dramatic impact pose"
+      }
+    },
+    "death": {
+      "frameCount": 6,
+      "fps": 10,
+      "loop": false,
+      "promptHints": {
+        "consistency": "Character should remain recognizable even in defeat",
+        "motion": "Dramatic collapse or explosion, consider fade/dissolve effect",
+        "technique": "Hold final frame longer in-game, make it read clearly"
+      }
+    },
+    "explode": {
+      "frameCount": 8,
+      "fps": 20,
+      "loop": false,
+      "promptHints": {
+        "consistency": "Explosion colors should match game palette",
+        "motion": "Rapid expansion, debris, smoke trails, dissipation",
+        "technique": "Start small and bright, expand and fade"
+      }
+    }
+  },
+  "compositeTypes": {
+    "base": {
+      "layerOrder": 0,
+      "description": "Full character base layer - minimal undersuit, no armor/outfit",
+      "promptHints": {
+        "content": "Generate complete character with minimal undersuit/bodysuit only - no accessories, costumes, or equipment",
+        "background": "Transparent/alpha background required for compositing",
+        "consistency": "Lock pose, proportions, and lighting for all views (front/side/three-quarter)",
+        "anchors": "Center character in frame, maintain consistent eye-line height across views"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, clean lines, cute cartoon duck astronaut character, {VIEW} view, small orange beak, round body, minimal dark gray undersuit #252538, neon cyan trim #00f5ff, subtle gradients, consistent line weight, top-left lighting, transparent background, centered composition, full body visible, isolated subject",
+        "negative": "outfit, costume, armor, accessories, equipment, helmet, cape, hat, weapon, complex clothing, photorealistic, pixel art, 3d render, noisy, grainy, blurry, watermark, text, logo, bad anatomy, extra limbs, background scenery",
+        "variables": {
+          "VIEW": ["facing forward", "side profile", "three-quarter angle"]
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "body-center" }
+    },
+    "expression": {
+      "layerOrder": 1,
+      "compositeOver": "base",
+      "description": "Face-only overlay for emotions - covers head/face area only",
+      "promptHints": {
+        "content": "Generate ONLY face/head region - eyes, beak, expression. No body, no neck below chin",
+        "background": "Transparent background, face elements only",
+        "alignment": "Eye-line must match base at same pixel height. Beak position identical to base",
+        "masking": "Should composite cleanly over base without visible seams at neck/head boundary"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, duck face only, {EXPRESSION} expression, {VIEW} view, expressive cartoon eyes, small orange beak, clean lines, neon cyan eye highlights #00f5ff, isolated face crop, transparent background, head region only, no body, no neck",
+        "negative": "full body, torso, wings, feet, clothing, outfit, background, scenery, multiple faces, blurry, noisy, watermark",
+        "variables": {
+          "EXPRESSION": ["happy with wide smile", "excited with sparkle eyes", "curious with tilted head", "surprised with open beak", "sleepy with half-closed eyes", "determined with focused gaze"],
+          "VIEW": ["front facing", "side profile", "three-quarter angle"]
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.25, "reference": "eye-line" }
+    },
+    "outfit": {
+      "layerOrder": 2,
+      "compositeOver": "base",
+      "description": "Costume/clothing overlay - covers body, preserves head",
+      "promptHints": {
+        "content": "Generate costume elements ONLY - no body redraw, no face. Clothes, armor, accessories",
+        "background": "Transparent background, costume elements only",
+        "alignment": "Shoulders, waist, wing joints must align with base anchor points",
+        "silhouette": "Do NOT change character silhouette or scale. Outfit fits within base bounds",
+        "style": "Maintain consistent neon trim language (cyan #00f5ff accents)"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {OUTFIT_TYPE} costume overlay, {VIEW} view, clothing elements only, neon cyan accents #00f5ff, clean lines, transparent background, no character body visible, costume pieces floating, subtle glow on tech elements, isolated overlay asset",
+        "negative": "character body, duck, face, beak, eyes, skin, full figure, background scenery, photorealistic, 3d render, noisy, blurry, watermark",
+        "variables": {
+          "OUTFIT_TYPE": {
+            "default-suit": "astronaut space suit with helmet, sleek dark gray #252538 plating",
+            "pirate": "space pirate tricorn hat, glowing eye patch, tattered cape with neon edge",
+            "wizard": "starry wizard hat with constellation patterns, mystical robe, glowing cyan wand",
+            "detective": "deerstalker cap, magnifying glass with neon rim, trench coat collar",
+            "chef": "tall chef hat, apron with glowing trim, spatula with neon blade",
+            "superhero": "flowing cape with energy edges, small domino mask, heroic chest emblem",
+            "scientist": "lab goggles with cyan lenses, lab coat, beaker with glowing liquid",
+            "musician": "DJ headphones with neon glow, synthesizer keyboard, music note particles",
+            "explorer": "safari pith helmet, binoculars with glowing lenses, adventure vest",
+            "ninja": "dark hood with cyan eye slit, throwing star accessories, shadow wrap"
+          },
+          "VIEW": ["front facing", "side profile", "three-quarter angle"]
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "body-center" }
+    },
+    "pose": {
+      "layerOrder": 0,
+      "description": "Full character in specific pose - replaces base for that pose",
+      "promptHints": {
+        "content": "Complete character in specific pose (celebrating, waving, etc) with minimal undersuit",
+        "background": "Transparent background",
+        "consistency": "Match base character design exactly - same proportions, colors, line weight",
+        "framing": "Keep within same 1024x1024 bounds, character may shift position for pose"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, cute cartoon duck astronaut character, {POSE_DESC}, {VIEW} view, small orange beak, round body, minimal dark gray undersuit #252538, neon cyan trim #00f5ff, dynamic pose, clean lines, top-left lighting, transparent background, full body visible",
+        "negative": "outfit, costume, armor, static pose, stiff, photorealistic, pixel art, 3d render, noisy, grainy, blurry, watermark, background scenery",
+        "variables": {
+          "POSE_DESC": {
+            "celebrating": "arms raised in celebration, joyful pose, confetti energy",
+            "sleeping": "curled up sleeping, peaceful expression, floating Z particles",
+            "waving": "one wing raised waving hello, friendly gesture",
+            "pointing": "wing pointing forward, indicating direction, engaged pose"
+          },
+          "VIEW": ["front facing", "side profile", "three-quarter angle"]
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "body-center" }
+    },
+    "outfitPose": {
+      "layerOrder": 2,
+      "compositeOver": "pose",
+      "description": "Outfit overlay for specific pose - must align to pose, not base",
+      "promptHints": {
+        "content": "Costume elements only, shaped to fit the specific pose",
+        "alignment": "Must align to the POSE base, not the standard base. Joints must match exactly",
+        "deformation": "Clothes should deform naturally with pose (sleeves stretch, cape flows, etc)"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {OUTFIT_TYPE} costume overlay, {POSE_DESC} pose deformation, {VIEW} view, clothing stretched and flowing with movement, neon cyan accents #00f5ff, transparent background, costume elements only, natural cloth physics",
+        "negative": "character body, duck, static clothing, stiff fabric, face, beak, background, photorealistic, 3d render, noisy, blurry",
+        "variables": {
+          "OUTFIT_TYPE": "inherits from outfit type",
+          "POSE_DESC": "inherits from pose type",
+          "VIEW": ["front facing", "side profile", "three-quarter angle"]
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "pose-center" }
+    },
+    "ring": {
+      "layerOrder": 3,
+      "compositeOver": "planet",
+      "description": "Planetary ring overlay - semi-transparent ring system",
+      "promptHints": {
+        "content": "Ring system only - NO planet body. Thin debris rings with subtle transparency",
+        "background": "Fully transparent except for ring particles/dust",
+        "style": "Subtle glow, semi-transparent, particle-based look"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {RING_TYPE} planetary ring system, top-down angled view, debris particles, dust bands, subtle transparency, neon edge glow #00f5ff, clean lines, transparent background, ring only no planet, isolated asset, space debris aesthetic",
+        "negative": "planet body, sphere, solid center, moon, star, background nebula, photorealistic, 3d render, noisy, cluttered",
+        "variables": {
+          "RING_TYPE": {
+            "thin": "thin delicate single ring band, sparse particles",
+            "thick": "wide multi-band ring system, dense debris, saturn-like",
+            "ice": "icy crystalline ring, blue-white particles, frozen debris",
+            "rocky": "rocky asteroid ring, brown-gray chunks, scattered boulders"
+          }
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "ring-center" }
+    },
+    "atmosphere": {
+      "layerOrder": 1,
+      "compositeOver": "planet",
+      "description": "Atmospheric halo/glow around planet",
+      "promptHints": {
+        "content": "Soft gradient halo/glow only - NO planet body",
+        "background": "Transparent, only the atmospheric haze visible",
+        "variants": "Thin (subtle), Normal (visible), Thick (dramatic), Stormy (animated/swirling)"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {ATMOSPHERE_TYPE} planetary atmosphere glow, soft gradient halo, circular glow effect, transparent center, neon tinted edge, clean gradient falloff, isolated atmospheric layer, no planet surface, transparent background",
+        "negative": "planet body, surface details, landmass, solid sphere, stars, background, photorealistic, noisy, sharp edges",
+        "variables": {
+          "ATMOSPHERE_TYPE": {
+            "thin": "subtle thin atmospheric haze, barely visible glow, delicate rim light",
+            "normal": "standard atmospheric glow, visible halo, soft blue-white tint",
+            "thick": "dense dramatic atmosphere, heavy glow, visible cloud bands",
+            "stormy": "turbulent swirling atmosphere, storm patterns, lightning hints, dynamic flow"
+          }
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "planet-center" }
+    },
+    "stateOverlay": {
+      "layerOrder": 4,
+      "compositeOver": "any",
+      "description": "Interactive state indicators - selection rings, hover glows, error highlights",
+      "promptHints": {
+        "content": "Neon accent ring/glow only - no object redraw",
+        "background": "Transparent with glow/ring effect",
+        "colors": "Use state-specific colors: selected=cyan, hover=white, error=red, warning=yellow"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {STATE_TYPE} indicator effect, glowing ring outline, pulsing energy effect, clean geometric shape, transparent center, isolated UI overlay, game state indicator",
+        "negative": "object, character, item, solid fill, background, complex detail, photorealistic, noisy",
+        "variables": {
+          "STATE_TYPE": {
+            "selected": "cyan selection ring #00f5ff, bright glow, active state, double ring",
+            "hover": "white hover glow #f0f0f5, subtle highlight, soft edge",
+            "error": "red error pulse #ff073a, warning glow, alert indicator",
+            "warning": "yellow caution ring #fff01f, attention indicator, moderate alert",
+            "locked": "gray locked state #606070, muted glow, inactive indicator",
+            "complete": "green success ring #39ff14, achievement glow, completion state"
+          }
+        }
+      },
+      "anchor": { "x": 0.5, "y": 0.5, "reference": "target-center" }
+    },
+    "badge": {
+      "layerOrder": 5,
+      "compositeOver": "any",
+      "description": "Small corner badges/indicators",
+      "promptHints": {
+        "content": "Small badge icon only - anchored to corner",
+        "size": "Typically 16x16 to 32x32 within parent asset",
+        "position": "Top-right corner default, with padding from edge"
+      },
+      "promptTemplate": {
+        "positive": "Zelos V2 style, 2D flat vector, {BADGE_TYPE} badge icon, small compact design, clean lines, neon glow accent, simple shape, transparent background, UI element, corner indicator, crisp edges",
+        "negative": "large, complex, detailed, character, background, photorealistic, noisy, blurry, text heavy",
+        "variables": {
+          "BADGE_TYPE": {
+            "new": "star burst NEW badge, yellow glow #fff01f, exciting indicator",
+            "sale": "discount tag badge, magenta accent #ff00ff, price indicator",
+            "locked": "padlock badge, gray #606070, locked content indicator",
+            "premium": "crown badge, gold/orange glow #ff6b35, premium content",
+            "notification": "number circle badge, red alert #ff073a, count indicator",
+            "checkmark": "green checkmark badge #39ff14, complete/verified indicator"
+          }
+        }
+      },
+      "anchor": { "x": 0.9, "y": 0.1, "reference": "top-right" }
+    }
+  },
+  "entries": [
+    {
+      "id": "astroDuckBaseViews",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/base/astro-duck-base-{view}.png",
+      "vars": { "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "compositeType": "base",
+      "compositeGroup": "astro-duck"
+    },
+    {
+      "id": "astroDuckBaseIdle",
+      "type": "file",
+      "path": "sprites/astro-duck/base/astro-duck-base-idle-sheet.png",
+      "format": "png",
+      "size": "2048x256",
+      "compositeType": "base",
+      "compositeGroup": "astro-duck",
+      "animation": {
+        "type": "idle",
+        "frameCount": 8,
+        "frameSize": { "width": 256, "height": 256 },
+        "fps": 12,
+        "loop": true,
+        "layout": "horizontal-strip",
+        "pivot": { "x": 0.5, "y": 0.6 }
+      }
+    },
+    {
+      "id": "astroDuckBaseFly",
+      "type": "file",
+      "path": "sprites/astro-duck/base/astro-duck-base-fly-sheet.png",
+      "format": "png",
+      "size": "1536x256",
+      "compositeType": "base",
+      "compositeGroup": "astro-duck",
+      "animation": {
+        "type": "fly",
+        "frameCount": 6,
+        "frameSize": { "width": 256, "height": 256 },
+        "fps": 16,
+        "loop": true,
+        "layout": "horizontal-strip",
+        "pivot": { "x": 0.5, "y": 0.6 }
+      }
+    },
+    {
+      "id": "astroDuckExpressions",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/expressions/astro-duck-{expression}-{view}.png",
+      "vars": { "expression": "expressions", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "compositeType": "expression",
+      "compositeGroup": "astro-duck",
+      "compositeOver": ["astroDuckBaseViews", "astroDuckPoses"]
+    },
+    {
+      "id": "astroDuckPoses",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/poses/astro-duck-{pose}-{view}.png",
+      "vars": { "pose": "poseIds", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "compositeType": "pose",
+      "compositeGroup": "astro-duck",
+      "status": "planned"
+    },
+    {
+      "id": "astroDuckOutfitViews",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-{view}.png",
+      "vars": { "outfit": "outfits", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "compositeType": "outfit",
+      "compositeGroup": "astro-duck",
+      "compositeOver": ["astroDuckBaseViews"]
+    },
+    {
+      "id": "astroDuckOutfitPoses",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-{pose}-{view}.png",
+      "vars": { "outfit": "outfits", "pose": "poseIds", "view": "viewFiles" },
+      "format": "png",
+      "size": "1024x1024",
+      "compositeType": "outfitPose",
+      "compositeGroup": "astro-duck",
+      "compositeOver": ["astroDuckPoses"],
+      "status": "planned"
+    },
+    {
+      "id": "astroDuckOutfitIdle",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-idle-sheet.png",
+      "vars": { "outfit": "outfits" },
+      "format": "png",
+      "size": "2048x256",
+      "compositeType": "outfit",
+      "compositeGroup": "astro-duck",
+      "compositeOver": ["astroDuckBaseIdle"],
+      "animation": {
+        "type": "idle",
+        "frameCount": 8,
+        "frameSize": { "width": 256, "height": 256 },
+        "fps": 12,
+        "loop": true,
+        "layout": "horizontal-strip",
+        "pivot": { "x": 0.5, "y": 0.6 }
+      }
+    },
+    {
+      "id": "astroDuckOutfitFly",
+      "type": "pattern",
+      "pattern": "sprites/astro-duck/outfits/{outfit}-fly-sheet.png",
+      "vars": { "outfit": "outfits" },
+      "format": "png",
+      "size": "1536x256",
+      "compositeType": "outfit",
+      "compositeGroup": "astro-duck",
+      "compositeOver": ["astroDuckBaseFly"],
+      "animation": {
+        "type": "fly",
+        "frameCount": 6,
+        "frameSize": { "width": 256, "height": 256 },
+        "fps": 16,
+        "loop": true,
+        "layout": "horizontal-strip",
+        "pivot": { "x": 0.5, "y": 0.6 }
+      }
+    },
+    {
+      "id": "planetTextures",
+      "type": "pattern",
+      "pattern": "sprites/planets/texture-{texture}.png",
+      "vars": { "texture": "planetTextures" },
+      "format": "png",
+      "size": "512x512",
+      "compositeType": "base",
+      "compositeGroup": "planet"
+    },
+    {
+      "id": "planetMoonSmall",
+      "type": "file",
+      "path": "sprites/planets/moon-small.png",
+      "format": "png",
+      "size": "64x64",
+      "status": "planned"
+    },
+    {
+      "id": "planetRings",
+      "type": "pattern",
+      "pattern": "sprites/planets/ring-{ring}.png",
+      "vars": { "ring": "planetRings" },
+      "format": "png",
+      "size": "512x256",
+      "compositeType": "ring",
+      "compositeGroup": "planet",
+      "compositeOver": ["planetTextures"]
+    },
+    {
+      "id": "planetAtmospheres",
+      "type": "pattern",
+      "pattern": "sprites/planets/atmosphere-{atmosphere}.png",
+      "vars": { "atmosphere": "planetAtmospheres" },
+      "format": "png",
+      "size": "600x600",
+      "compositeType": "atmosphere",
+      "compositeGroup": "planet",
+      "compositeOver": ["planetTextures"]
+    },
+    {
+      "id": "planetStates",
+      "type": "pattern",
+      "pattern": "sprites/planets/state-{state}.png",
+      "vars": { "state": "planetStates" },
+      "format": "png",
+      "size": "512x512",
+      "compositeType": "stateOverlay",
+      "compositeGroup": "planet",
+      "compositeOver": ["planetTextures"]
+    },
+    {
+      "id": "satelliteIcons",
+      "type": "pattern",
+      "pattern": "sprites/satellites/satellite-{icon}.png",
+      "vars": { "icon": "satelliteIcons" },
+      "format": "png",
+      "size": "128x128",
+      "compositeType": "base",
+      "compositeGroup": "satellite"
+    },
+    {
+      "id": "satelliteStates",
+      "type": "pattern",
+      "pattern": "sprites/satellites/state-{state}.png",
+      "vars": { "state": "satelliteStates" },
+      "format": "png",
+      "size": "128x128",
+      "compositeType": "stateOverlay",
+      "compositeGroup": "satellite",
+      "compositeOver": ["satelliteIcons"]
+    },
+    {
+      "id": "satelliteGlows",
+      "type": "pattern",
+      "pattern": "sprites/satellites/glow-{glow}.png",
+      "vars": { "glow": "satelliteGlows" },
+      "format": "png",
+      "size": "128x128",
+      "compositeType": "stateOverlay",
+      "compositeGroup": "satellite",
+      "compositeOver": ["satelliteIcons"]
+    },
+    {
+      "id": "satelliteBadges",
+      "type": "pattern",
+      "pattern": "sprites/satellites/badge-{badge}.png",
+      "vars": { "badge": "satelliteBadges" },
+      "format": "png",
+      "size": "128x128",
+      "compositeType": "badge",
+      "compositeGroup": "satellite",
+      "compositeOver": ["satelliteIcons"]
+    },
+    {
+      "id": "backgroundStarfield",
+      "type": "file",
+      "path": "backgrounds/starfield-tile.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundNebula",
+      "type": "file",
+      "path": "backgrounds/nebula-overlay.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundConstellation",
+      "type": "file",
+      "path": "backgrounds/constellation-pattern.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundVignette",
+      "type": "file",
+      "path": "backgrounds/vignette-soft.png",
+      "format": "png",
+      "size": "1920x1080"
+    },
+    {
+      "id": "backgroundOfficeVignette",
+      "type": "file",
+      "path": "backgrounds/office-vignette.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "uiModal",
+      "type": "file",
+      "path": "ui/modal-frame.png",
+      "format": "png",
+      "size": "800x600"
+    },
+    {
+      "id": "uiButton",
+      "type": "file",
+      "path": "ui/button-primary-states.png",
+      "format": "png",
+      "size": "800x50"
+    },
+    {
+      "id": "uiInput",
+      "type": "file",
+      "path": "ui/input-states.png",
+      "format": "png",
+      "size": "1200x50"
+    },
+    {
+      "id": "uiToast",
+      "type": "file",
+      "path": "ui/toast-variants.png",
+      "format": "png",
+      "size": "1400x80"
+    },
+    {
+      "id": "uiSpacePianoPanel",
+      "type": "file",
+      "path": "ui/space-piano-panel.png",
+      "format": "png",
+      "size": "600x200",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowWhite",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-white.png",
+      "format": "png",
+      "size": "50x150",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowBlack",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-black.png",
+      "format": "png",
+      "size": "30x100",
+      "status": "planned"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowWhiteSheet",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-white-sheet.png",
+      "format": "png",
+      "size": "200x150",
+      "status": "optional"
+    },
+    {
+      "id": "uiSpacePianoKeyGlowBlackSheet",
+      "type": "file",
+      "path": "ui/space-piano-key-glow-black-sheet.png",
+      "format": "png",
+      "size": "120x100",
+      "status": "optional"
+    },
+    {
+      "id": "uiLoadingSpinner",
+      "type": "file",
+      "path": "ui/loading-spinner.png",
+      "format": "png",
+      "size": "64x64",
+      "status": "optional"
+    },
+    {
+      "id": "uiLoadingSpinnerSheet",
+      "type": "file",
+      "path": "ui/loading-spinner-sheet.png",
+      "format": "png",
+      "size": "512x64",
+      "status": "planned"
+    },
+    {
+      "id": "uiCursorSet",
+      "type": "file",
+      "path": "ui/cursor-set.png",
+      "format": "png",
+      "size": "128x32",
+      "status": "planned"
+    },
+    {
+      "id": "uiEmptyState",
+      "type": "file",
+      "path": "ui/empty-state.png",
+      "format": "png",
+      "size": "400x300",
+      "status": "planned"
+    },
+    {
+      "id": "uiQuizPrompt",
+      "type": "file",
+      "path": "ui/quiz-glyphs-prompt.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "uiQuizPanel",
+      "type": "file",
+      "path": "ui/quiz-glyphs-panel.png",
+      "format": "png",
+      "size": "800x240",
+      "status": "planned"
+    },
+    {
+      "id": "effectsStargateRing",
+      "type": "file",
+      "path": "effects/stargate-ring.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateGlyphs",
+      "type": "file",
+      "path": "effects/stargate-glyphs.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateGlyphsActive",
+      "type": "file",
+      "path": "effects/stargate-glyphs-active.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsPortalEnergy",
+      "type": "file",
+      "path": "effects/portal-energy.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsWarpStreaks",
+      "type": "file",
+      "path": "effects/warp-streaks.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsStargateParticles",
+      "type": "file",
+      "path": "effects/stargate-particles.png",
+      "format": "png",
+      "size": "1024x1024"
+    },
+    {
+      "id": "effectsGlowCyan",
+      "type": "file",
+      "path": "effects/glow-cyan.png",
+      "format": "png",
+      "size": "512x512"
+    },
+    {
+      "id": "achievementFrames",
+      "type": "pattern",
+      "pattern": "icons/achievements/frame-{rarity}.png",
+      "vars": { "rarity": "badgeRarities" },
+      "format": "png",
+      "size": "128x128"
+    },
+    {
+      "id": "achievementIcons",
+      "type": "pattern",
+      "pattern": "icons/achievements/{icon}.png",
+      "vars": { "icon": "achievementIcons" },
+      "format": "png",
+      "size": "64x64"
+    },
+    {
+      "id": "cinematicClips",
+      "type": "pattern",
+      "pattern": "video/{clip}.mp4",
+      "vars": {
+        "clip": "cinematicClips"
+      },
+      "format": "mp4",
+      "status": "planned"
+    },
+    {
+      "id": "cinematicPosters",
+      "type": "pattern",
+      "pattern": "video/{clip}.png",
+      "vars": {
+        "clip": "cinematicClips"
+      },
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    }
+  ],
+  "notes": {
+    "audio": "Audio assets are specified in specs/games/zelos-audio.md"
+  }
+}
