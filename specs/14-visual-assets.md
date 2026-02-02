@@ -1,4 +1,4 @@
-# Zelos V2 Asset Plan and Decisions
+﻿# Zelos V2 Asset Plan and Decisions
 
 This file captures the resolved decisions for `requests/14-visual-assets.md`, plus
 open uncertainties and the best-practice defaults chosen so production can proceed.
@@ -219,8 +219,8 @@ assets/zelos/
 - Keep prefixes consistent: `outfit-`, `astro-duck-`, `satellite-`, `texture-`.
 
 ## Asset index and validation
-- Asset index: `specs/zelos-asset-index.json`
-- Audio index: `specs/zelos-audio-index.json`
+- Asset index: `database/specs/zelos-asset-index.json`
+- Audio index: `database/specs/zelos-audio-index.json`
 - Validation script: `scripts/validate-assets.py`
 - Example: `python scripts/validate-assets.py --root assets/zelos`
 - Optional size check: `python scripts/validate-assets.py --root assets/zelos --check-size`
@@ -228,7 +228,7 @@ assets/zelos/
   - `python scripts/validate-assets.py --root assets/zelos --spritesheet-spec specs/games/zelos-minigame-spritesheets.md`
   - Add `--strict-spritesheets` to fail on missing files.
 - Audio validation:
-  - `python scripts/validate-assets.py --index specs/zelos-audio-index.json --root assets/zelos --include-planned`
+  - `python scripts/validate-assets.py --index database/specs/zelos-audio-index.json --root assets/zelos --include-planned`
 - The validator checks file presence against the index (sizes are documented but
   size validation runs only when `--check-size` is provided).
 
@@ -237,7 +237,7 @@ assets/zelos/
   - `assets/zelos/sprites/astro-duck/base/astro-duck-base-front.png`
   - `assets/zelos/sprites/astro-duck/base/astro-duck-base-side.png`
   - `assets/zelos/sprites/astro-duck/base/astro-duck-base-three-quarter.png`
-- Layout and metadata described in `specs/astro-duck-character-sheet.json`
+- Layout and metadata described in `database/specs/astro-duck-character-sheet.json`
 - Note: this plan overrides request sizes; use 1024x1024 for base views and
   expressions, and 256x256 frames for sheets as documented here and in Mage prompts.
 
@@ -267,7 +267,7 @@ Include the full original action set from the request:
   - Same pose and framing box for consistent alignment
 - Outfit items sit on top of the base character; do not alter beak/eyes shape
 - Outfit outputs documented in:
-  - `specs/astro-duck-outfits.json`
+  - `database/specs/astro-duck-outfits.json`
   - Full outfit list and files are defined there; the tree shows examples only.
 - Output files must be drop-in replacements for the base views so swapping
   outfits is a resource replacement only.
@@ -321,7 +321,7 @@ Include the full original action set from the request:
   - Same sheet dimensions and layout (horizontal strip)
   - Same pivot/anchor and alignment per frame
   - Use the same file naming with outfit prefix or suffix as documented in
-    `specs/astro-duck-animation-variants.json`
+    `database/specs/astro-duck-animation-variants.json`
 - Frame alignment rule: keep head height and suit size consistent across all sheets.
 
 ## Composite usage beyond Astro-Duck
@@ -556,3 +556,4 @@ app.stage.addChild(planet.container);
 - `specs/games/zelos-minigame-spritesheets.md`
 - Outfit overlay sheets reuse the same frame layout and pivots as the base sheets.
 - Add new spec files for any additional animated assets (loading spinner, stargate glyphs if animated).
+

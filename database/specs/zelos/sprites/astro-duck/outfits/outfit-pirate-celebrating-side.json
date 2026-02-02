@@ -1,0 +1,31 @@
+{
+  "id": "e1a88556-a0fc-5bf7-a3aa-740ccf72a98e",
+  "name": "outfit-pirate-celebrating-side",
+  "path": "assets/zelos/sprites/astro-duck/outfits/outfit-pirate-celebrating-side.png",
+  "type": "image",
+  "params": {
+    "prompts": {
+      "juggernaut": "Zelos V2 cyberpunk comic style, bold lineart, consistent line weight, cel shading with hard shadows, high contrast palette, neon cyan and magenta accents, dramatic lighting, clean edges, game asset, centered, isolated subject, transparent background. Astro-Duck outfit overlay only (costume pieces only), outfit-pirate-celebrating, do not redraw body or head, aligned to base undersuit silhouette, side view",
+      "default": "Zelos V2 cyberpunk comic style, bold lineart, consistent line weight, cel shading with hard shadows, high contrast palette, neon cyan and magenta accents, dramatic lighting, clean edges, game asset, centered, isolated subject, transparent background. Astro-Duck outfit overlay only (costume pieces only), outfit-pirate-celebrating, do not redraw body or head, aligned to base undersuit silhouette, side view",
+      "animagine": "rating: general, masterpiece, best quality, newest, cyberpunk, comic style, bold lineart, cel shading, high contrast, neon cyan, neon magenta, game asset, centered, isolated, simple background, white background, duck, astronaut, outfit overlay, costume pieces only, no body, no head redraw, outfit-pirate-celebrating, side view, aligned",
+      "pony": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, rating_safe, cyberpunk, comic style, bold lineart, cel shading, high contrast, neon colors, game asset, centered, isolated subject, simple white background, duck, astronaut, outfit overlay, costume pieces only, no body, no head redraw, outfit-pirate-celebrating, side view, aligned",
+      "protovision": "Zelos V2, cyberpunk comic illustration, bold lineart, clean edges, sharp focus, cel shading with hard shadows, dramatic lighting, high contrast, neon cyan and magenta accents, game asset, centered, isolated, plain white background. Astro-Duck outfit overlay only (costume pieces only), outfit-pirate-celebrating, do not redraw body or head, aligned to base undersuit silhouette, side view",
+      "sdxl": "Zelos V2 game asset, cyberpunk comic illustration, bold outlines, cel shading with hard shadows, high contrast palette with neon cyan and magenta accents, centered composition, isolated subject, solid plain white background, dramatic lighting, high quality. Astro-Duck outfit overlay only (costume pieces only), outfit-pirate-celebrating, do not redraw body or head, aligned to base undersuit silhouette, side view",
+      "copax": "Zelos V2, cyberpunk comic illustration, bold lineart, crisp edges, dynamic shapes, cel shading, high contrast palette, neon cyan and magenta accents, game asset, centered, isolated, plain white background. Astro-Duck outfit overlay only (costume pieces only), outfit-pirate-celebrating, do not redraw body or head, aligned to base undersuit silhouette, side view"
+    },
+    "negative_prompt": "photorealistic, realistic skin, 3d render, pixel art, lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, typography, background scene, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs, face, eyes, mouth, character, mascot, animal",
+    "negative_prompts": {
+      "juggernaut": "photorealistic, realistic skin, 3d render, pixel art, lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, typography, background scene, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs, face, eyes, mouth, character, mascot, animal",
+      "animagine": "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, background scene, scenery, detailed background, clutter",
+      "pony": "nsfw, signature, watermark, logo, text, username, url, background scene, scenery, clutter",
+      "protovision": "lowres, blurry, soft focus, out of focus, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, scenery, detailed background, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs",
+      "sdxl": "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, signature, text, background scenery, cluttered background, deformed, bad anatomy",
+      "copax": "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, clutter, overly photorealistic, deformed, bad anatomy, extra limbs"
+    },
+    "size": "1024x1024"
+  },
+  "status": "planned",
+  "domain": "cosmic",
+  "kit": "astroDuck",
+  "role": "outfit"
+}

@@ -1,0 +1,168 @@
+{
+  "id": "astro-duck-outfits",
+  "sourceRequest": "requests/14-visual-assets.md",
+  "baseCharacter": "assets/zelos/sprites/astro-duck/base",
+  "outputFolder": "assets/zelos/sprites/astro-duck/outfits",
+  "outputSize": {
+    "views": {
+      "width": 1024,
+      "height": 1024
+    },
+    "animations": {
+      "frameWidth": 256,
+      "frameHeight": 256
+    }
+  },
+  "standardization": {
+    "pose": "match base views (front, side, three-quarter)",
+    "framing": "centered, same margins as base views",
+    "proportions": "match base character (head ~40% of body height)",
+    "lineWeight": "consistent across all outfits",
+    "lighting": "top-left",
+    "glow": "same intensity as base",
+    "palette": {
+      "suitBase": "#252538",
+      "accent": "#00f5ff"
+    }
+  },
+  "compatibilityRules": [
+    "Overlays must not change base scale or silhouette.",
+    "Keep head size, eye line, beak position, and wing joints unchanged.",
+    "Costume elements must fit within the 1024x1024 framing box.",
+    "Align helmet center to eye line and collar to base neckline.",
+    "Use the same cyan trim language for sci-fi consistency.",
+    "Future costumes must follow the same naming and view split rules."
+  ],
+  "layers": {
+    "base": {
+      "front": "assets/zelos/sprites/astro-duck/base/astro-duck-base-front.png",
+      "side": "assets/zelos/sprites/astro-duck/base/astro-duck-base-side.png",
+      "three-quarter": "assets/zelos/sprites/astro-duck/base/astro-duck-base-three-quarter.png"
+    },
+    "defaultSuit": {
+      "front": "assets/zelos/sprites/astro-duck/outfits/outfit-default-suit-front.png",
+      "side": "assets/zelos/sprites/astro-duck/outfits/outfit-default-suit-side.png",
+      "three-quarter": "assets/zelos/sprites/astro-duck/outfits/outfit-default-suit-three-quarter.png"
+    }
+  },
+  "poseVariants": {
+    "poses": [
+      "celebrating",
+      "sleeping",
+      "waving",
+      "pointing"
+    ],
+    "views": [
+      "front",
+      "side",
+      "three-quarter"
+    ],
+    "pattern": "assets/zelos/sprites/astro-duck/outfits/{outfit}-{pose}-{view}.png",
+    "notes": [
+      "Pose overlays must align to the matching base pose view.",
+      "Keep overlays body-free; only costume elements should render."
+    ]
+  },
+  "animationVariantsSpec": "database/specs/astro-duck-animation-variants.json",
+  "outfits": [
+    {
+      "id": "outfit-default-suit",
+      "files": {
+        "front": "outfit-default-suit-front.png",
+        "side": "outfit-default-suit-side.png",
+        "three-quarter": "outfit-default-suit-three-quarter.png"
+      },
+      "notes": "Default astronaut suit overlay (cyan trim) on top of minimal undersuit base"
+    },
+    {
+      "id": "outfit-pirate",
+      "files": {
+        "front": "outfit-pirate-front.png",
+        "side": "outfit-pirate-side.png",
+        "three-quarter": "outfit-pirate-three-quarter.png"
+      },
+      "notes": "Space pirate hat, eye patch with neon glow, small cape"
+    },
+    {
+      "id": "outfit-wizard",
+      "files": {
+        "front": "outfit-wizard-front.png",
+        "side": "outfit-wizard-side.png",
+        "three-quarter": "outfit-wizard-three-quarter.png"
+      },
+      "notes": "Starry wizard hat with constellation patterns, glowing cyan wand"
+    },
+    {
+      "id": "outfit-detective",
+      "files": {
+        "front": "outfit-detective-front.png",
+        "side": "outfit-detective-side.png",
+        "three-quarter": "outfit-detective-three-quarter.png"
+      },
+      "notes": "Deerstalker hat, neon-rim magnifying glass"
+    },
+    {
+      "id": "outfit-chef",
+      "files": {
+        "front": "outfit-chef-front.png",
+        "side": "outfit-chef-side.png",
+        "three-quarter": "outfit-chef-three-quarter.png"
+      },
+      "notes": "Chef hat and apron, glowing spatula"
+    },
+    {
+      "id": "outfit-superhero",
+      "files": {
+        "front": "outfit-superhero-front.png",
+        "side": "outfit-superhero-side.png",
+        "three-quarter": "outfit-superhero-three-quarter.png"
+      },
+      "notes": "Cape, small mask, heroic pose cues only"
+    },
+    {
+      "id": "outfit-scientist",
+      "files": {
+        "front": "outfit-scientist-front.png",
+        "side": "outfit-scientist-side.png",
+        "three-quarter": "outfit-scientist-three-quarter.png"
+      },
+      "notes": "Lab goggles on head, beaker with glowing liquid"
+    },
+    {
+      "id": "outfit-musician",
+      "files": {
+        "front": "outfit-musician-front.png",
+        "side": "outfit-musician-side.png",
+        "three-quarter": "outfit-musician-three-quarter.png"
+      },
+      "notes": "Headphones with neon glow, small synthesizer"
+    },
+    {
+      "id": "outfit-explorer",
+      "files": {
+        "front": "outfit-explorer-front.png",
+        "side": "outfit-explorer-side.png",
+        "three-quarter": "outfit-explorer-three-quarter.png"
+      },
+      "notes": "Safari hat, binoculars, adventure gear"
+    },
+    {
+      "id": "outfit-ninja",
+      "files": {
+        "front": "outfit-ninja-front.png",
+        "side": "outfit-ninja-side.png",
+        "three-quarter": "outfit-ninja-three-quarter.png"
+      },
+      "notes": "Ninja headband, throwing star in wing"
+    },
+    {
+      "id": "outfit-royal",
+      "files": {
+        "front": "outfit-royal-front.png",
+        "side": "outfit-royal-side.png",
+        "three-quarter": "outfit-royal-three-quarter.png"
+      },
+      "notes": "Small crown with gems, royal cape"
+    }
+  ]
+}

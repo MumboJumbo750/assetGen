@@ -28,8 +28,8 @@ consistent style and reliable metadata.
    - If the request calls for a single-sheet character turnaround, add a JSON
      layout descriptor in `specs/` with view coordinates.
 6) Preview and verify.
-   - Add assets to `preview/data/manifest.json`.
-   - Open `preview/` in a local server and verify alignment and style consistency.
+   - Add assets to `studio/preview/data/manifest.json`.
+   - Access via Asset Studio UI or directly at `http://localhost:8002/preview/`.
 
 ## Naming and folders
 - Use kebab-case.
@@ -101,7 +101,7 @@ can iterate quickly:
 
 5) Re-validate and preview
    - `py -3.11 scripts/validate-assets.py --root assets/zelos --check-size`
-   - `cd preview; py -3.11 -m http.server 5173`
+   - Access the previewer via the Asset Studio dashboard or at `/preview/`.
 
 Notes
 - The ComfyUI driver currently has prompt mappings for Astro-Duck base/views/sheets,

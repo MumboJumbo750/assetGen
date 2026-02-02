@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Book, HelpCircle, AlertTriangle, Layers, Info } from 'lucide-react';
 
 const Checkpoints = [
@@ -109,6 +109,58 @@ export default function KnowledgeBase() {
                 </div>
             </div>
 
+            {/* New Sections: Use Cases & Copilot */}
+            <div className="grid md:grid-cols-2 gap-8 mt-8">
+                <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
+                    <h2 className="text-xl font-bold mb-4 text-indigo-300 flex items-center gap-2">
+                        <Layers size={20} />
+                        Core Workflows
+                    </h2>
+                    <ul className="space-y-3 text-sm text-slate-300">
+                        <li className="flex gap-2">
+                            <span className="font-bold text-white min-w-[80px]">Dashboard:</span>
+                            <span>Manage project specs. Import requests (MD files) -> Generate Assets.</span>
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="font-bold text-white min-w-[80px]">Preview:</span>
+                            <span>Test assets in context. Play games (Space Shooter) to verify sprites.</span>
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="font-bold text-white min-w-[80px]">Training:</span>
+                            <span>Create LoRAs. Tag images -> Configure -> Train.</span>
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="font-bold text-white min-w-[80px]">Explorer:</span>
+                            <span>Manage physical files. Manual regeneration of specific artifacts.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
+                    <h2 className="text-xl font-bold mb-4 text-pink-300 flex items-center gap-2">
+                        <Info size={20} />
+                        Global Copilot Behavior
+                    </h2>
+                    <p className="text-sm text-slate-400 mb-4">
+                        The AI Assistant adapts its persona based on your current view:
+                    </p>
+                    <ul className="space-y-2 text-sm">
+                        <li className="bg-slate-800/50 p-2 rounded border-l-2 border-blue-500">
+                            <span className="font-bold text-blue-400 block">Dashboard Mode</span>
+                            Acts as <b>Project Manager</b>. Reviews specs, suggests tasks, and analyzes consistency.
+                        </li>
+                        <li className="bg-slate-800/50 p-2 rounded border-l-2 border-green-500">
+                            <span className="font-bold text-green-400 block">Preview Mode</span>
+                            Acts as <b>QA Specialist</b>. Critiques visual quality and animation loops.
+                        </li>
+                        <li className="bg-slate-800/50 p-2 rounded border-l-2 border-orange-500">
+                            <span className="font-bold text-orange-400 block">Training Mode</span>
+                            Acts as <b>Data Specialist</b>. Helps with dataset balance, tagging strategies, and caption style.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <div className="mt-8 bg-yellow-500/10 border border-yellow-500/20 p-6 rounded-xl flex items-start gap-4">
                 <AlertTriangle className="text-yellow-500 shrink-0" />
                 <div>
@@ -122,3 +174,4 @@ export default function KnowledgeBase() {
         </div>
     );
 }
+

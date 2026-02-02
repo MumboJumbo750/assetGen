@@ -1,9 +1,9 @@
-# Prompt Pack: Zelos V2 + SDXL Base 1.0
+﻿# Prompt Pack: Zelos V2 + SDXL Base 1.0
 
 This prompt pack is tailored for the **official SDXL Base 1.0** checkpoint while keeping the **Zelos V2** asset requirements consistent.
 
 Aligns with:
-- `specs/zelos-asset-index.json`
+- `database/specs/zelos-asset-index.json`
 - `scripts/comfyui/generate-assets.py`
 
 ---
@@ -11,26 +11,26 @@ Aligns with:
 ## Key Findings from Official Sources
 
 ### From Stability AI GitHub & HuggingFace
-- **Native resolution**: 1024×1024, but supports multiple aspect ratios (see below)
-- **Text encoders**: Dual CLIP (OpenCLIP-ViT/G + CLIP-ViT/L) — understands natural language well
+- **Native resolution**: 1024Ã—1024, but supports multiple aspect ratios (see below)
+- **Text encoders**: Dual CLIP (OpenCLIP-ViT/G + CLIP-ViT/L) â€” understands natural language well
 - **Prompt style**: Natural language descriptions work best (not tag-based like some anime models)
-- **CFG scale**: 5–7 recommended (SDXL is sensitive; higher causes artifacts)
-- **Sampling steps**: 20–40 typical (official demos use 20-30 for base, optional +10 for refiner)
+- **CFG scale**: 5â€“7 recommended (SDXL is sensitive; higher causes artifacts)
+- **Sampling steps**: 20â€“40 typical (official demos use 20-30 for base, optional +10 for refiner)
 - **Samplers**: Euler, Euler Ancestral, DPM++ 2M, DPMPP2SAncestral all work well
-- **Negative prompts**: Keep minimal — only list things you actually want to avoid
+- **Negative prompts**: Keep minimal â€” only list things you actually want to avoid
 
 ### Supported Aspect Ratios (official)
 | Ratio | Resolution   | Use Case              |
 |-------|-------------|-----------------------|
-| 1:1   | 1024×1024   | Default / square      |
-| 3:2   | 1152×768    | Landscape             |
-| 2:3   | 768×1152    | Portrait              |
-| 16:9  | 1344×768    | Wide cinematic        |
-| 9:16  | 768×1344    | Tall / mobile         |
-| 4:3   | 1152×896    | Classic landscape     |
-| 3:4   | 896×1152    | Classic portrait      |
+| 1:1   | 1024Ã—1024   | Default / square      |
+| 3:2   | 1152Ã—768    | Landscape             |
+| 2:3   | 768Ã—1152    | Portrait              |
+| 16:9  | 1344Ã—768    | Wide cinematic        |
+| 9:16  | 768Ã—1344    | Tall / mobile         |
+| 4:3   | 1152Ã—896    | Classic landscape     |
+| 3:4   | 896Ã—1152    | Classic portrait      |
 
-For our GTX 1060 6GB, stick to **768×768** max per our `--max-render-dim 768` constraint.
+For our GTX 1060 6GB, stick to **768Ã—768** max per our `--max-render-dim 768` constraint.
 
 ---
 
@@ -50,11 +50,11 @@ Zelos V2 game asset, clean digital illustration, crisp outlines, simple flat sha
 ```
 
 ### Why this works
-- "clean digital illustration" → tells SDXL the art style
-- "crisp outlines, simple flat shading" → avoids painterly softness
-- "solid plain white background" → critical for alpha extraction
-- "studio lighting" → even illumination for game assets
-- "high quality" → SDXL responds well to quality cues (but don't overdo it)
+- "clean digital illustration" â†’ tells SDXL the art style
+- "crisp outlines, simple flat shading" â†’ avoids painterly softness
+- "solid plain white background" â†’ critical for alpha extraction
+- "studio lighting" â†’ even illumination for game assets
+- "high quality" â†’ SDXL responds well to quality cues (but don't overdo it)
 
 ---
 
@@ -67,8 +67,8 @@ lowres, blurry, noisy, grainy, jpeg artifacts, watermark, signature, text, backg
 ```
 
 ### Notes
-- Don't pile on dozens of negative keywords — SDXL doesn't need it
-- Avoid excessive weights like `(keyword:1.5)` — SDXL is sensitive; stay ≤1.3
+- Don't pile on dozens of negative keywords â€” SDXL doesn't need it
+- Avoid excessive weights like `(keyword:1.5)` â€” SDXL is sensitive; stay â‰¤1.3
 
 ---
 
@@ -76,11 +76,11 @@ lowres, blurry, noisy, grainy, jpeg artifacts, watermark, signature, text, backg
 
 | Parameter     | Value                | Notes                                      |
 |---------------|---------------------|--------------------------------------------|
-| Steps         | 25–30               | Sweet spot for quality vs speed            |
-| CFG Scale     | 5.5–7.0             | Lower than SD 1.5; 6.0 is safe default     |
+| Steps         | 25â€“30               | Sweet spot for quality vs speed            |
+| CFG Scale     | 5.5â€“7.0             | Lower than SD 1.5; 6.0 is safe default     |
 | Sampler       | Euler or DPM++ 2M   | Both work well; Euler is faster            |
 | Scheduler     | Karras              | Standard choice                            |
-| Resolution    | 768×768             | Our VRAM-safe max (native is 1024×1024)    |
+| Resolution    | 768Ã—768             | Our VRAM-safe max (native is 1024Ã—1024)    |
 | VAE           | Built-in (VAE fix)  | Use `sdXL_v10VAEFix.safetensors`           |
 
 ---
@@ -140,26 +140,27 @@ python scripts/comfyui/generate-assets.py `
 
 ### No Workflow Changes Needed
 The existing SDXL workflow (`scripts/comfyui/workflow-sdxl-api.json`) is already compatible with SDXL Base 1.0:
-- Uses `CLIPTextEncodeSDXL` with dual text encoder outputs ✓
-- KSampler with standard Euler/Karras ✓
-- VAEDecode → SaveImage pipeline ✓
+- Uses `CLIPTextEncodeSDXL` with dual text encoder outputs âœ“
+- KSampler with standard Euler/Karras âœ“
+- VAEDecode â†’ SaveImage pipeline âœ“
 
 ### Refiner (Optional)
 SDXL has an optional refiner model for extra detail. For game assets, the base model alone is usually sufficient. If you want to experiment:
 1. Download `sd_xl_refiner_1.0.safetensors`
-2. Chain base → refiner with denoising_start=0.8 on refiner
+2. Chain base â†’ refiner with denoising_start=0.8 on refiner
 3. This adds latency; skip for batch asset generation
 
 ---
 
 ## Quality Tips
 
-1. **Be descriptive, not tag-dumpy** — "a cute cartoon duck wearing a space helmet, facing forward" beats "duck, space, helmet, front, cute"
+1. **Be descriptive, not tag-dumpy** â€” "a cute cartoon duck wearing a space helmet, facing forward" beats "duck, space, helmet, front, cute"
 
-2. **Keyword weights** — Use sparingly; `(keyword:1.2)` max. SDXL is more sensitive than SD 1.5.
+2. **Keyword weights** â€” Use sparingly; `(keyword:1.2)` max. SDXL is more sensitive than SD 1.5.
 
-3. **Background control** — Always mention "plain white background" or "solid color background" explicitly.
+3. **Background control** â€” Always mention "plain white background" or "solid color background" explicitly.
 
-4. **Composition** — "centered", "isolated subject", "no other objects" help keep assets clean.
+4. **Composition** â€” "centered", "isolated subject", "no other objects" help keep assets clean.
 
-5. **Avoid** — Don't ask for legible text (SDXL struggles with it).
+5. **Avoid** â€” Don't ask for legible text (SDXL struggles with it).
+

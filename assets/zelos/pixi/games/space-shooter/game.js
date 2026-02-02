@@ -13,7 +13,7 @@ const defaultInput = {
   axisX: 0,
   axisY: 0,
   actions: { jump: false, shoot: false, dash: false, pause: false },
-  poll() {},
+  poll() { },
 };
 
 function createLocalBus() {
@@ -998,4 +998,36 @@ export async function createGame({ pixi, root = "../../..", input, bus }) {
   return { app, resize, destroy };
 }
 
-createGame({ pixi: PIXI, root: "../../.." });
+// Standalone Launcher
+if (typeof window !== "undefined") {
+  const keys = { ArrowUp: 0, ArrowDown: 0, ArrowLeft: 0, ArrowRight: 0, Space: 0, ShiftLeft: 0, Escape: 0 };
+  window.addEventListener('keydown', e => { if (keys[e.code] !== undefined) keys[e.code] = 1; });
+  window.addEventListener('keyup', e => { if (keys[e.code] !== undefined) keys[e.code] = 0; });
+
+  // Input Abstraction
+  const input = {
+    poll: () => {
+      input.axisX = keys.ArrowRight - keys.ArrowLeft;
+      input.axisY = keys.ArrowDown - keys.ArrowUp;
+      input.actions = {
+        shoot: keys.Space,
+        dash: keys.ShiftLeft,
+        pause: keys.Escape
+      };
+    },
+    axisX: 0,
+    axisY: 0,
+    actions: { jump: false, shoot: false, dash: false, pause: false }
+  };
+
+  // Auto-launch
+  createGame({
+    pixi: window.PIXI,
+    root: "../../../", // assets/zelos/pixi/games/space-shooter/ -> assets/
+    input,
+    bus: createLocalBus()
+  }).then(game => {
+    window.ZelosGameInstance = game;
+  });
+}
+

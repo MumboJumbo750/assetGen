@@ -1,9 +1,9 @@
-# Prompt Pack: Zelos V2 + ProtoVision XL (SDXL)
+﻿# Prompt Pack: Zelos V2 + ProtoVision XL (SDXL)
 
 This prompt pack is tailored for **ProtoVision XL** while keeping the **Zelos V2** asset requirements (naming, sizes, overlays) consistent.
 
 It is designed to align with:
-- `specs/zelos-asset-index.json`
+- `database/specs/zelos-asset-index.json`
 - `scripts/comfyui/generate-assets.py` (path-based prompt mapping)
 
 ## High-level goals
@@ -22,8 +22,8 @@ Use this as a stable prefix:
 "lowres, blurry, soft focus, out of focus, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, scenery, detailed background, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs"
 
 ## Starting generation settings (recommended)
-- Steps: 24–32 (start 28)
-- CFG: 5–7 (start 6)
+- Steps: 24â€“32 (start 28)
+- CFG: 5â€“7 (start 6)
 - Sampler: Euler (or Euler a)
 - Scheduler: Karras
 
@@ -32,3 +32,4 @@ Use this as a stable prefix:
 - `--prompt-style protovision`
 - `--ckpt <your protovision .safetensors filename>`
 - Variant output folder: `assets/zelos_variants/protovision/...`
+

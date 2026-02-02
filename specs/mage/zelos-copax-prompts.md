@@ -1,9 +1,9 @@
-# Prompt Pack: Zelos V2 + Copax Timeless (SDXL)
+﻿# Prompt Pack: Zelos V2 + Copax Timeless (SDXL)
 
 This prompt pack is tailored for **Copax Timeless** while keeping the **Zelos V2** asset requirements consistent.
 
 Aligns with:
-- `specs/zelos-asset-index.json`
+- `database/specs/zelos-asset-index.json`
 - `scripts/comfyui/generate-assets.py`
 
 ## Goals
@@ -20,8 +20,8 @@ Aligns with:
 "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, clutter, overly photorealistic, deformed, bad anatomy, extra limbs"
 
 ## Starting settings
-- Steps: 24–32 (start 28)
-- CFG: 5–7
+- Steps: 24â€“32 (start 28)
+- CFG: 5â€“7
 - Sampler: Euler (or Euler a)
 - Scheduler: Karras
 
@@ -30,3 +30,4 @@ Aligns with:
 - `--prompt-style copax`
 - `--ckpt <your copax .safetensors filename>`
 - Variant output folder: `assets/zelos_variants/copax/...`
+

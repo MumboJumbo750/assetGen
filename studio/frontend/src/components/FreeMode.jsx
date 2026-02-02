@@ -29,7 +29,11 @@ export default function FreeMode() {
         }
     };
 
-    const currentPromptValue = activePromptScope === 'default'
+    const checkpointOptions = checkpoints
+        .map((cp) => (typeof cp === 'string' ? { id: cp, label: cp } : cp))
+        .filter((cp) => cp && cp.id && cp.id !== 'default');
+
+    const currentPromptValue = activePromptScope === 'default' || !selectedCheckpoint
         ? prompts.default
         : (prompts[selectedCheckpoint] || "");
 
@@ -94,15 +98,17 @@ export default function FreeMode() {
                         <select
                             value={selectedCheckpoint}
                             onChange={(e) => {
-                                setSelectedCheckpoint(e.target.value);
-                                // If we were editing a specific checkpoint that changed, switch scope or update?
-                                // If scope was 'checkpoint', it now points to the new checkpoint's prompt
+                                const next = e.target.value;
+                                setSelectedCheckpoint(next);
+                                if (!next) {
+                                    setActivePromptScope('default');
+                                }
                             }}
                             className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-slate-200 focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         >
                             <option value="">-- Use Workflow Default --</option>
-                            {checkpoints.map(cp => (
-                                <option key={cp} value={cp}>{cp}</option>
+                            {checkpointOptions.map(cp => (
+                                <option key={cp.id} value={cp.id}>{cp.label || cp.id}</option>
                             ))}
                         </select>
                     </div>

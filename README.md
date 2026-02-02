@@ -1,4 +1,4 @@
-# AssetsGen
+﻿# AssetsGen
 
 A unified toolkit for AI-powered visual asset creation and management, featuring:
 - **Asset Studio**: A web UI for importing requests, refining specifications, and batch generating assets.
@@ -7,24 +7,26 @@ A unified toolkit for AI-powered visual asset creation and management, featuring
 
 ## Quick Start (UI)
 
-1.  **Build the Frontend**:
-    ```bash
-    cd studio/frontend
-    npm install && npm run build
+1.  **Run the Studio**:
+    ```powershell
+    .\start_studio.ps1
     ```
-2.  **Run the Studio Server**:
-    ```bash
-    cd studio/backend
-    py -3.11 -m studio.backend.server
-    # Or, from repo root:
-    # py -3.11 -m studio.backend.server
-    ```
-3.  **Open in Browser**: Navigate to `http://localhost:8002`.
-4.  **Workflow**:
+    This script will start both the backend server (Port 8002) and frontend (Port 5173).
+    Press **ENTER** in the console window to stop the servers and exit cleanly.
+
+2.  **Open in Browser**: Navigate to `http://localhost:5173`.
+
+3.  **Workflow**:
     -   **Import Requests**: Place markdown files in `requests/`. click "Import" in the Dashboard.
     -   **Refine Specs**: View and edit imported JSON specs.
     -   **Batch Generate**: Select assets, choose a checkpoint, and click "Generate".
     -   **Train Models**: Switch to the "Training" tab to prepare LoRA datasets.
+
+## Manual Start
+
+If you prefer running services separately:
+- **Backend**: `python -m studio.backend.server` (runs on port 8002)
+- **Frontend**: `cd studio/frontend && npm run dev` (runs on port 5173)
 
 ## Quick Start (CLI)
 
@@ -38,14 +40,17 @@ A unified toolkit for AI-powered visual asset creation and management, featuring
 
 ```
 .
-├── ASSET_WORKFLOW.md    # Detailed CLI workflow and quality bar
-├── README.md            # This file
-├── requests/            # Incoming asset request markdown files
-├── specs/               # JSON specifications for assets
-├── assets/              # Exported, web-optimized final assets
-├── scripts/             # CLI tools (validator, ComfyUI driver, etc.)
-├── studio/              # Unified web UI application
-│   ├── backend/         # Python server (API, generation)
-│   └── frontend/        # React/Vite web app
-└── preview/             # Pixi.js app to inspect generated assets
+|-- ASSET_WORKFLOW.md    # Detailed CLI workflow and quality bar
+|-- README.md            # This file
+|-- requests/            # Incoming asset request markdown files
+|-- specs/               # Markdown specs, prompt docs, and project notes
+|-- database/            # JSON data used by the app
+|   |-- specs/           # JSON specifications for assets
+|-- assets/              # Exported, web-optimized final assets
+|-- scripts/             # CLI tools (validator, ComfyUI driver, etc.)
+|-- studio/              # Unified web UI application
+|   |-- backend/         # Python server (API, generation)
+|   |-- frontend/        # React/Vite web app
+`-- preview/             # Pixi.js app to inspect generated assets
 ```
+

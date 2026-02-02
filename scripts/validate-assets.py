@@ -196,7 +196,7 @@ def main():
     )
     parser.add_argument(
         "--index",
-        default="specs/zelos-asset-index.json",
+        default="database/specs/zelos-asset-index.json",
         help="Path to asset index JSON",
     )
     parser.add_argument(

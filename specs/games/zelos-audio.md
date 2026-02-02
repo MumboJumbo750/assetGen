@@ -1,9 +1,9 @@
-# Zelos Game Audio SFX - Requirements
+﻿# Zelos Game Audio SFX - Requirements
 
 This spec lists the sound effects needed for the two Pixi mini-games. Provide
 clean, game-ready WAV (or OGG) at 48kHz, normalized, short tails, no clipping.
 
-Audio index: `specs/zelos-audio-index.json`
+Audio index: `database/specs/zelos-audio-index.json`
 
 ## Global guidelines
 - Format: WAV 48kHz (primary), OGG optional
@@ -141,4 +141,5 @@ Music (loopable, `assets/zelos/audio/`)
 - `bgm-boss-loop.wav`
 - `bgm-platformer-loop.wav`
 - `bgm-win-sting.wav`
+
 

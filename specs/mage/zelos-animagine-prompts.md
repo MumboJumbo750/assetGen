@@ -1,16 +1,16 @@
-# Prompt Pack: Zelos V2 + Animagine XL (SDXL)
+﻿# Prompt Pack: Zelos V2 + Animagine XL (SDXL)
 
 This prompt pack is tailored for **Animagine XL 3.x** (e.g. Animagine XL v3.1 checkpoints) while keeping the **Zelos V2** asset requirements (naming, sizes, overlays) consistent.
 
 It is designed to align with the asset paths in:
-- `specs/zelos-asset-index.json`
+- `database/specs/zelos-asset-index.json`
 
 And the automation path-based prompt mapping in:
 - `scripts/comfyui/generate-assets.py`
 
 ## High-level goals
 
-- **Anime-leaning, clean game-asset look** while still reading as “Zelos UI/game art”.
+- **Anime-leaning, clean game-asset look** while still reading as â€œZelos UI/game artâ€.
 - **Consistency** across the whole set: stable lighting, stable line weight, stable palette bias.
 - **Overlay friendliness**: outfits/expressions should not redraw the base body.
 
@@ -27,7 +27,7 @@ Where:
 
 ## Animagine-friendly style tail (append to all prompts)
 
-Use this as a stable “style lock” tail:
+Use this as a stable â€œstyle lockâ€ tail:
 
 - `sharp focus, crisp lineart, consistent line weight, simple soft shading, subtle gradients, vibrant but controlled palette, neon cyan accents, top-left key light, gentle rim light, clean edges, game asset, centered, isolated, white background, simple background, no background`
 
@@ -39,7 +39,7 @@ If results get too flat, append:
 
 ## Global negative prompt (Animagine baseline)
 
-Animagine’s docs recommend a broad negative list to avoid common failure modes. Use this as a stable baseline and add Zelos-specific exclusions.
+Animagineâ€™s docs recommend a broad negative list to avoid common failure modes. Use this as a stable baseline and add Zelos-specific exclusions.
 
 **Critical for transparency and sharpness:** always include `blurry, out of focus, background scene, scenery, detailed background`.
 
@@ -49,8 +49,8 @@ Animagine’s docs recommend a broad negative list to avoid common failure modes
 
 Good starting points (tune in the workflow):
 
-- Steps: 24–28 (lower is often sharper for Animagine; start 25)
-- CFG: 5–6 (lower CFG helps sharpness; start 5)
+- Steps: 24â€“28 (lower is often sharper for Animagine; start 25)
+- CFG: 5â€“6 (lower CFG helps sharpness; start 5)
 - Sampler: Euler a (or Euler)
 - Scheduler: Karras (if your workflow uses it)
 - VRAM: use `--fit-vram --max-render-dim 768` and upscale
@@ -71,7 +71,7 @@ Prompt template:
 - `rating: general, high quality, newest, 1animal, duck mascot, astronaut, original character, minimal undersuit (no outer suit), chibi proportions, <VIEW> view, full body, clean lineart, simple shading, neon cyan accents, centered, isolated, transparent background`
 
 Notes:
-- Keep “undersuit only” consistent; outfits are separate overlays.
+- Keep â€œundersuit onlyâ€ consistent; outfits are separate overlays.
 - Avoid props; they shift silhouette and break overlays.
 
 ### 2) Astro-duck base spritesheets
@@ -89,7 +89,7 @@ Prompt templates:
   - `rating: general, high quality, newest, sprite sheet, 6-frame horizontal, cute astronaut duck in minimal undersuit, jetpack flying animation, each frame 256x256, aligned frames, consistent spacing, clean lineart, transparent background`
 
 Notes:
-- Text-to-image alignment is “best effort” until we add a dedicated spritesheet workflow.
+- Text-to-image alignment is â€œbest effortâ€ until we add a dedicated spritesheet workflow.
 
 ### 3) Astro-duck expressions (face-only overlays)
 
@@ -130,7 +130,7 @@ Prompt template:
 - `rating: general, high quality, newest, Astro-Duck outfit overlay only, costume pieces only, no body, no head redraw, <OUTFIT_DESCRIPTION>, aligned to base undersuit silhouette, <VIEW> view, clean lineart, centered, isolated, transparent background`
 
 Notes:
-- Be aggressive about “overlay only” or the model will redraw the character.
+- Be aggressive about â€œoverlay onlyâ€ or the model will redraw the character.
 
 ### 5) Outfit animation overlays (idle/fly sheets)
 
@@ -192,7 +192,7 @@ Prompt templates:
 
 ## Notes on transparency
 
-Many SDXL txt2img workflows produce opaque images even if you say “transparent background”.
+Many SDXL txt2img workflows produce opaque images even if you say â€œtransparent backgroundâ€.
 For now:
 
 - Keep the prompt constraint `transparent background` to encourage clean backgrounds.
@@ -200,8 +200,9 @@ For now:
 
 ## How to use this with AssetGen
 
-- If you’re using the generator, it already generates prompts per asset path.
-- This file is the “style target” prompt language for Animagine XL; you can:
+- If youâ€™re using the generator, it already generates prompts per asset path.
+- This file is the â€œstyle targetâ€ prompt language for Animagine XL; you can:
 
   - keep it as a human reference, or
-  - update the generator’s prompt templates if you want stronger Animagine-optimized phrasing.
+  - update the generatorâ€™s prompt templates if you want stronger Animagine-optimized phrasing.
+

@@ -884,6 +884,286 @@ def build_prompts_for_rel_path(rel_path: str) -> tuple[str, str] | None:
             )
         return positive, NEGATIVE_PROMPT
 
+    # Astro-duck legacy paths (no /base or /expressions subfolder)
+    if rel_path == "sprites/astro-duck/astro-duck-idle-sheet.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "sprite sheet",
+                "8 frames",
+                "horizontal",
+                "duck",
+                "astronaut",
+                "idle animation",
+                "floating",
+                "each frame 256x256",
+                "aligned frames",
+                "consistent spacing",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. 8-frame horizontal sprite sheet, astronaut duck in minimal undersuit, "
+                "floating idle animation, each frame 256x256, total size 2048x256, consistent spacing, aligned frames"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "sprites/astro-duck/astro-duck-fly-sheet.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "sprite sheet",
+                "6 frames",
+                "horizontal",
+                "duck",
+                "astronaut",
+                "flying animation",
+                "jetpack",
+                "each frame 256x256",
+                "aligned frames",
+                "consistent spacing",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. 6-frame horizontal sprite sheet, astronaut duck in minimal undersuit, "
+                "jetpack flying animation, each frame 256x256, total size 1536x256, consistent spacing, aligned frames"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    match = re.fullmatch(r"sprites/astro-duck/astro-duck-([a-z-]+)\.png", rel_path)
+    if match:
+        expression = match.group(1)
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "duck",
+                "astronaut",
+                "mascot",
+                "face only",
+                "overlay",
+                "no body",
+                f"{expression} expression",
+                "aligned",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Astro-Duck face overlay only (no body), {expression} expression, "
+                "matches base head shape and eye placement, aligned to base face"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    match = re.fullmatch(r"sprites/astro-duck/outfits/(outfit-[a-z-]+)\.png", rel_path)
+    if match:
+        outfit_id = match.group(1)
+        desc = OUTFIT_DESCRIPTIONS.get(outfit_id, outfit_id)
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "outfit overlay",
+                "costume pieces only",
+                "no body",
+                desc,
+                "aligned",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Astro-Duck outfit overlay only (no body), {desc}, "
+                "aligned to base undersuit silhouette"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    # Backgrounds
+    if rel_path == "backgrounds/starfield-tile.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "space",
+                "starfield",
+                "background",
+                "tile",
+                "seamless",
+                "subtle glow",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Seamless starfield tile, deep blue-black background, varied star sizes, subtle glow"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "backgrounds/nebula-overlay.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "nebula",
+                "space clouds",
+                "overlay",
+                "semi-transparent",
+                "cyan",
+                "magenta",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Subtle nebula clouds overlay, semi-transparent, cyan and magenta hints"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "backgrounds/constellation-pattern.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "constellation",
+                "line art",
+                "pattern",
+                "tileable",
+                "overlay",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Constellation line overlay, thin lines, subtle gray, tileable"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    # Effects
+    if rel_path == "effects/stargate-ring.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "sci-fi portal",
+                "ring",
+                "metallic",
+                "cyan glow",
+                "geometric",
+                "transparent center",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Sci-fi portal ring, dark metallic gray, cyan inner glow, geometric engravings, transparent center"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "effects/portal-energy.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "portal energy",
+                "swirl",
+                "blue",
+                "cyan",
+                "magenta",
+                "texture",
+                "tileable",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Swirling portal energy texture, blue to cyan gradient, hints of magenta, seamless tile"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "effects/warp-streaks.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "warp speed",
+                "star streaks",
+                "radial blur",
+                "cyan",
+                "magenta",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Warp speed star streaks, radial blur lines, cyan and magenta trails"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "effects/glow-cyan.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "glow",
+                "cyan",
+                "radial gradient",
+                "bloom",
+                "overlay",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Soft cyan glow blob, radial gradient, subtle bloom, transparent background"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    # UI
+    if rel_path == "ui/modal-frame.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "UI panel",
+                "modal frame",
+                "futuristic",
+                "cyan glow",
+                "transparent",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Futuristic modal frame, cyan border glow, dark translucent panel"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "ui/button-primary-states.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "UI buttons",
+                "normal",
+                "hover",
+                "pressed",
+                "disabled",
+                "cyan gradient",
+                "sprite sheet",
+                "horizontal strip",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Primary button states in one sheet: normal, hover, pressed, disabled, cyan gradient, "
+                "200x50 each, horizontal strip"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "ui/input-states.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "UI input field",
+                "normal",
+                "focused",
+                "error",
+                "disabled",
+                "sprite sheet",
+                "horizontal strip",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Input field states in one sheet: normal, focused, error, disabled, "
+                "300x50 each, horizontal strip"
+            )
+        return positive, NEGATIVE_PROMPT
+
+    if rel_path == "ui/toast-variants.png":
+        if PROMPT_STYLE in ("animagine", "pony"):
+            positive = _animagine_tags(
+                STYLE_HEADER,
+                "toast notification",
+                "success",
+                "error",
+                "warning",
+                "info",
+                "sprite sheet",
+                "horizontal strip",
+            )
+        else:
+            positive = (
+                f"{STYLE_HEADER}. Toast notifications sheet: success, error, warning, info, 350x80 each, horizontal strip"
+            )
+        return positive, NEGATIVE_PROMPT
+
     # Backgrounds / UI / Effects / Icons can be added later.
     return None
 

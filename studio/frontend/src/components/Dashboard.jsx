@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, Activity, AlertCircle, CheckCircle, Package, ArrowRight, RefreshCw, Box, FileText, Download, GraduationCap, LayoutDashboard } from 'lucide-react';
 import SpecView from './SpecView';
-import TrainingWizard from './training/TrainingWizard';
+import { Database, Image, Music, Gamepad2, ChevronRight } from 'lucide-react';
 
-export default function Dashboard({ onNavigateToStudio }) {
-    const [activeView, setActiveView] = useState('dashboard'); // 'dashboard' | 'training'
+const INDEX_META = {
+    'zelos-asset-index': { label: 'Core Assets', icon: Image, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    'zelos-audio-index': { label: 'Audio Assets', icon: Music, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    'zelos-minigame-asset-index': { label: 'Minigame Assets', icon: Gamepad2, color: 'text-green-400', bg: 'bg-green-500/10' },
+};
+
+export default function Dashboard({ onNavigateToStudio, onNavigateToTab }) {
     const [requests, setRequests] = useState([]);
-    const [importing, setImporting] = useState(null);
+    const [indexes, setIndexes] = useState([]);
 
     useEffect(() => {
         fetchRequests();
+        fetchIndexes();
     }, []);
 
     const fetchRequests = async () => {
@@ -22,8 +27,17 @@ export default function Dashboard({ onNavigateToStudio }) {
         }
     };
 
+    const fetchIndexes = async () => {
+        try {
+            const res = await fetch('/api/indexes');
+            const json = await res.json();
+            setIndexes(json.indexes || []);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     const handleImport = async (filename) => {
-        setImporting(filename);
         try {
             const res = await fetch('/api/import-request', {
                 method: 'POST',
@@ -33,103 +47,115 @@ export default function Dashboard({ onNavigateToStudio }) {
             const json = await res.json();
             if (json.status === 'success') {
                 alert(`Imported ${json.imported} specs from ${filename}`);
+                window.location.reload();
             } else {
                 alert(`Error: ${json.message}`);
             }
         } catch (e) {
             alert(`Import failed: ${e.message}`);
-        } finally {
-            setImporting(null);
         }
     };
 
-    const handleGenerate = async (spec) => {
-        if (onNavigateToStudio) {
-            onNavigateToStudio(spec.path);
-        }
-    };
+    const totalAssets = indexes.reduce((sum, idx) => sum + (idx.expanded_count || 0), 0);
+    const totalGenerated = indexes.reduce((sum, idx) => sum + (idx.generated_count || 0), 0);
+    const completionPercent = totalAssets > 0 ? Math.round((totalGenerated / totalAssets) * 100) : 0;
 
     return (
-        <div className="h-full flex flex-col p-8 max-w-6xl mx-auto">
-            <header className="mb-8 flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold flex items-center gap-3">
-                        <Activity className="text-blue-500" />
-                        Asset Studio
-                    </h1>
-                    <p className="text-slate-400 mt-2">Manage generation and training pipelines.</p>
-                </div>
-
-                {/* View Switcher */}
-                <div className="flex bg-slate-800 p-1 rounded-lg">
+        <div className="h-full flex flex-col p-6 overflow-y-auto">
+            {/* Index Summary Cards */}
+            <div className="mb-6">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <Database size={20} className="text-blue-400" />
+                        Asset Index Overview
+                    </h2>
                     <button
-                        onClick={() => setActiveView('dashboard')}
-                        className={`px-4 py-2 rounded-md flex items-center gap-2 transition-all ${activeView === 'dashboard' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+                        onClick={() => onNavigateToTab?.('indexes')}
+                        className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
                     >
-                        <LayoutDashboard size={18} /> Dashboard
-                    </button>
-                    <button
-                        onClick={() => setActiveView('training')}
-                        className={`px-4 py-2 rounded-md flex items-center gap-2 transition-all ${activeView === 'training' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
-                    >
-                        <GraduationCap size={18} /> Training
+                        View All <ChevronRight size={16} />
                     </button>
                 </div>
-            </header>
-
-            <div className="flex-1 min-h-0">
-                {activeView === 'training' ? (
-                    <div className="h-full bg-slate-900/30 rounded-xl border border-slate-800 p-6 overflow-hidden">
-                        <TrainingWizard />
+                
+                {/* Overall Progress */}
+                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800 mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-slate-400">Overall Progress</span>
+                        <span className="text-white font-bold">{completionPercent}%</span>
                     </div>
-                ) : (
-                    <div className="h-full grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Sidebar */}
-                        <div className="md:col-span-1 border-r border-slate-800 pr-6 space-y-6 overflow-y-auto">
-                            {/* Requests Section */}
-                            <div>
-                                <h2 className="text-xl font-semibold mb-4 text-slate-300 flex items-center gap-2">
-                                    <FileText size={20} /> Requests
-                                </h2>
-                                <div className="space-y-2">
-                                    {requests.length === 0 && (
-                                        <div className="text-sm text-slate-500 italic p-2">No MD requests found.</div>
-                                    )}
-                                    {requests.map(req => (
-                                        <div key={req} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700">
-                                            <span className="text-sm font-mono truncate w-32" title={req}>{req}</span>
-                                            <button
-                                                onClick={() => handleImport(req)}
-                                                disabled={importing === req}
-                                                className="text-xs bg-blue-600 hover:bg-blue-500 px-2 py-1 rounded flex items-center gap-1 disabled:opacity-50"
-                                            >
-                                                {importing === req ? <RefreshCw size={12} className="animate-spin" /> : <Download size={12} />}
-                                                Import
-                                            </button>
-                                        </div>
-                                    ))}
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div 
+                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
+                            style={{ width: `${completionPercent}%` }}
+                        />
+                    </div>
+                    <div className="flex justify-between mt-2 text-xs text-slate-500">
+                        <span>{totalGenerated} generated</span>
+                        <span>{totalAssets - totalGenerated} remaining</span>
+                    </div>
+                </div>
+
+                {/* Index Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {indexes.map(index => {
+                        const meta = INDEX_META[index.id] || { label: index.id, icon: Database, color: 'text-slate-400', bg: 'bg-slate-500/10' };
+                        const Icon = meta.icon;
+                        const percent = index.expanded_count > 0 
+                            ? Math.round((index.generated_count / index.expanded_count) * 100) 
+                            : 0;
+                        
+                        return (
+                            <div 
+                                key={index.id}
+                                onClick={() => onNavigateToTab?.('indexes')}
+                                className={`${meta.bg} rounded-xl p-4 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all group`}
+                            >
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className={`p-2 rounded-lg bg-slate-800 ${meta.color}`}>
+                                        <Icon size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
+                                            {meta.label}
+                                        </h3>
+                                        <p className="text-xs text-slate-500">{index.entry_count} patterns</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-end justify-between">
+                                    <div>
+                                        <div className="text-2xl font-bold text-white">{index.expanded_count}</div>
+                                        <div className="text-xs text-slate-500">total assets</div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className={`text-lg font-semibold ${meta.color}`}>{percent}%</div>
+                                        <div className="text-xs text-slate-500">{index.generated_count} ready</div>
+                                    </div>
+                                </div>
+                                
+                                <div className="mt-3 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                    <div 
+                                        className={`h-full rounded-full transition-all duration-500 ${
+                                            meta.color.includes('blue') ? 'bg-blue-500' :
+                                            meta.color.includes('purple') ? 'bg-purple-500' :
+                                            meta.color.includes('green') ? 'bg-green-500' : 'bg-slate-500'
+                                        }`}
+                                        style={{ width: `${percent}%` }}
+                                    />
                                 </div>
                             </div>
+                        );
+                    })}
+                </div>
+            </div>
 
-                            {/* Specs Section */}
-                            <div>
-                                <h2 className="text-xl font-semibold mb-4 text-slate-300 flex items-center gap-2">
-                                    <Layers size={20} /> Specifications
-                                </h2>
-                                <SpecView onGenerate={handleGenerate} />
-                            </div>
-                        </div>
-
-                        {/* Main Content Area */}
-                        <div className="md:col-span-2 bg-slate-900/30 rounded-xl p-6 border border-slate-800 flex items-center justify-center text-slate-500">
-                            <div className="text-center max-w-md">
-                                <Package size={48} className="mx-auto mb-4 opacity-20" />
-                                <h3 className="text-lg font-medium text-slate-300 mb-2">Workspace Ready</h3>
-                                <p>Select a specification from the left to view details, or import a request to populate your project.</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
+            {/* Existing SpecView */}
+            <div className="flex-1 min-h-0">
+                <SpecView
+                    onGenerate={(spec) => onNavigateToStudio && onNavigateToStudio(spec.path)}
+                    requests={requests}
+                    onImport={handleImport}
+                />
             </div>
         </div>
     );

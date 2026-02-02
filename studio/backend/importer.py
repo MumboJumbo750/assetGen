@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import uuid
 import logging
 from .specs import SpecManager
 
@@ -121,16 +122,60 @@ class RequestImporter:
     def _save_spec(self, rel_path, description, errors):
         # Clean path
         rel_path = rel_path.replace("\\", "/")
-        if not rel_path.startswith("assets/"):
-             # Ignore files not in assets? or prepend?
-             # If it parsed from tree under assets/, it starts with assets.
-             # If bullet point didn't have assets/, we might skip or assume.
-             pass
+        
+        # Calculate Domain Model fields based on path structure
+        # Expected: assets/{project}/{category}/{kit?}/{name}.png
+        path_parts = rel_path.split("/")
+        
+        domain = "cosmic" # Default
+        kit = "standalone"
+        role = "image"
+        
+        if len(path_parts) >= 3:
+            category = path_parts[2] # e.g., sprites, backgrounds, ui
+            
+            if category == "sprites" and len(path_parts) >= 4:
+                kit_name = path_parts[3] # e.g., astro-duck, planets, satellites
+                if kit_name == "astro-duck":
+                    kit = "astroDuck"
+                    if "base" in rel_path: role = "base"
+                    elif "outfits" in rel_path: role = "outfit"
+                    elif "expressions" in rel_path: role = "expression"
+                    elif "poses" in rel_path: role = "pose"
+                elif kit_name == "planets":
+                    kit = "planet"
+                    if "texture" in rel_path: role = "texture"
+                    elif "atmosphere" in rel_path: role = "atmosphere"
+                    elif "ring" in rel_path: role = "ring"
+                    elif "state" in rel_path: role = "state"
+                elif kit_name == "satellites":
+                    kit = "satellite"
+                    if "glow" in rel_path: role = "glow"
+                    elif "badge" in rel_path: role = "badge"
+                    elif "state" in rel_path: role = "state"
+                    else: role = "icon"
+            
+            elif category == "backgrounds":
+                kit = "background"
+                role = "layer"
+                
+            elif category == "ui":
+                domain = "ui"
+                kit = "ui"
+                role = "component"
 
         # Basic Spec Data
+        name = os.path.basename(rel_path)
+        clean_name = os.path.splitext(name)[0]
+
         spec_data = {
+            "id": str(uuid.uuid4()),
+            "name": clean_name,
             "path": rel_path,
-            "type": "image", 
+            "type": "image",
+            "domain": domain,
+            "kit": kit,
+            "role": role,
             "params": {
                 "prompts": {
                     "default": description.strip()
@@ -139,8 +184,14 @@ class RequestImporter:
             "status": "planned"
         }
         
-        name = os.path.basename(rel_path)
-        spec_data["name"] = os.path.splitext(name)[0]
+        # Mirror folder structure in database/specs
+        # e.g. assets/zelos/foo.png -> zelos/foo.json (relative to specs dir)
+        mirror_path = rel_path
+        if mirror_path.startswith("assets/"):
+            mirror_path = mirror_path[7:] # strip assets/
+        
+        base, _ = os.path.splitext(mirror_path)
+        spec_data["_rel_path"] = f"{base}.json"
 
         try:
             self.spec_manager.save_spec(spec_data)

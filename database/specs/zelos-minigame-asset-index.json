@@ -1,0 +1,722 @@
+{
+  "version": 1,
+  "root": "assets/zelos",
+  "lists": {
+    "shooterPlayerStates": [
+      "idle",
+      "thrust",
+      "bank-left",
+      "bank-right",
+      "shoot",
+      "hit",
+      "death"
+    ],
+    "shooterProjectiles": [
+      "shot-player",
+      "shot-charged",
+      "shot-enemy",
+      "impact-spark"
+    ],
+    "shooterEnemies": [
+      "enemy-a",
+      "enemy-b",
+      "enemy-c",
+      "enemy-d",
+      "enemy-e",
+      "enemy-f",
+      "enemy-g"
+    ],
+    "shooterEnemyStates": ["idle", "hit", "explode"],
+    "shooterBosses": ["boss-1-orbital-core", "boss-2-nebula-leviathan"],
+    "shooterBossStates": ["idle", "windup", "attack", "hit", "phase", "defeat"],
+    "shooterPickups": ["shield", "double-shot", "speed-boost", "coin"],
+    "shooterWeaponsBasic": ["w1-single", "w2-spread", "w7-rail", "w9-ice"],
+    "shooterWeaponsTrail": ["w4-homing", "w5-plasma"],
+    "shooterWeaponsExplode": ["w4-homing", "w6-bomb"],
+    "shooterWeaponsBeam": ["w3-laser"],
+    "shooterWeaponsShock": ["w8-shockwave"],
+    "shooterWeaponElementsBasic": ["projectile", "muzzle", "impact"],
+    "shooterWeaponElementsTrail": ["projectile", "trail", "impact"],
+    "shooterWeaponElementsExplode": ["projectile", "explosion"],
+    "shooterWeaponElementsBeam": ["beam-loop", "beam-cap-start", "beam-cap-end"],
+    "shooterWeaponElementsShock": ["ring", "impact"],
+    "shooterUpgradeProjectileSmallWeapons": ["w1-single", "w2-spread", "w7-rail", "w9-ice"],
+    "shooterUpgradeProjectileMediumWeapons": ["w4-homing", "w5-plasma"],
+    "shooterUpgradeProjectileBombWeapons": ["w6-bomb"],
+    "shooterUpgradeImpactSmallWeapons": ["w1-single", "w2-spread", "w7-rail", "w9-ice"],
+    "shooterUpgradeImpactLargeWeapons": ["w5-plasma"],
+    "shooterUpgradeExplosionMediumWeapons": ["w4-homing"],
+    "shooterUpgradeExplosionLargeWeapons": ["w6-bomb"],
+    "shooterUpgradeRingWeapons": ["w8-shockwave"],
+    "shooterUpgradeImpactRingWeapons": ["w8-shockwave"],
+    "shooterUpgradeLevels": ["l1", "l2", "l3", "l4", "l5"],
+    "platformerPlayerSheetStates": [
+      "idle",
+      "run",
+      "jump-start",
+      "fall",
+      "land",
+      "crouch",
+      "climb",
+      "hit",
+      "death"
+    ],
+    "platformerEnemies": ["slime", "drone", "spiker", "beetle", "bat", "cannon-bot"],
+    "platformerEnemyStates": ["idle", "hit", "defeat"],
+    "platformerBosses": ["boss-1-reactor-guardian", "boss-2-sky-serpent"],
+    "platformerBossStates": ["idle", "windup", "attack", "hit", "phase", "defeat"],
+    "badgeRarities": ["common", "uncommon", "rare", "epic", "legendary"],
+    "achievementIcons": [
+      "first-flight",
+      "explorer",
+      "speed-demon",
+      "night-owl",
+      "perfectionist",
+      "piano-master"
+    ]
+  },
+  "animationTypes": {
+    "idle": {
+      "frameCount": 8,
+      "fps": 12,
+      "loop": true,
+      "promptHints": {
+        "consistency": "Maintain identical design, colors, proportions across all frames",
+        "motion": "Subtle hovering, gentle bobbing, blinking - minimal movement",
+        "technique": "Generate frames in sequence with incrementing seed"
+      }
+    },
+    "thrust": {
+      "frameCount": 4,
+      "fps": 16,
+      "loop": true,
+      "promptHints": {
+        "motion": "Engine flames intensify, ship tilts forward slightly",
+        "technique": "Emphasize flame animation, keep ship stable"
+      }
+    },
+    "bank-left": {
+      "frameCount": 4,
+      "fps": 14,
+      "loop": false,
+      "promptHints": {
+        "motion": "Ship rolls and tilts left, perspective shifts",
+        "technique": "Show gradual rotation from center to banked position"
+      }
+    },
+    "bank-right": {
+      "frameCount": 4,
+      "fps": 14,
+      "loop": false,
+      "promptHints": {
+        "motion": "Ship rolls and tilts right, perspective shifts",
+        "technique": "Show gradual rotation from center to banked position"
+      }
+    },
+    "shoot": {
+      "frameCount": 3,
+      "fps": 20,
+      "loop": false,
+      "promptHints": {
+        "motion": "Muzzle flash, slight recoil, return to neutral",
+        "technique": "First frame is flash, quick recovery"
+      }
+    },
+    "hit": {
+      "frameCount": 4,
+      "fps": 12,
+      "loop": false,
+      "promptHints": {
+        "motion": "Flash white, shake, damage sparks",
+        "technique": "First frame is bright impact flash"
+      }
+    },
+    "death": {
+      "frameCount": 8,
+      "fps": 14,
+      "loop": false,
+      "promptHints": {
+        "motion": "Smoke, sparks, explosion fragments, fade out",
+        "technique": "Progressive destruction sequence"
+      }
+    },
+    "explode": {
+      "frameCount": 8,
+      "fps": 20,
+      "loop": false,
+      "promptHints": {
+        "motion": "Rapid expansion, debris, smoke trails, dissipation",
+        "technique": "Start small and bright, expand and fade"
+      }
+    },
+    "defeat": {
+      "frameCount": 10,
+      "fps": 12,
+      "loop": false,
+      "promptHints": {
+        "motion": "Dramatic collapse, multiple explosions, debris scatter",
+        "technique": "Boss-scale destruction, hold final frame"
+      }
+    },
+    "run": {
+      "frameCount": 8,
+      "fps": 14,
+      "loop": true,
+      "promptHints": {
+        "motion": "Full run cycle: contact, down, passing, up for both legs",
+        "technique": "Plan key poses first (contact/passing) then in-betweens"
+      }
+    },
+    "jump-start": {
+      "frameCount": 4,
+      "fps": 16,
+      "loop": false,
+      "promptHints": {
+        "motion": "Crouch anticipation, push off, arms up",
+        "technique": "Emphasize the push-off frame"
+      }
+    },
+    "fall": {
+      "frameCount": 4,
+      "fps": 12,
+      "loop": true,
+      "promptHints": {
+        "motion": "Arms out for balance, slight flutter",
+        "technique": "Can be shorter loop, maintain hang time feel"
+      }
+    },
+    "land": {
+      "frameCount": 4,
+      "fps": 16,
+      "loop": false,
+      "promptHints": {
+        "motion": "Impact crouch, dust puff, recovery",
+        "technique": "Quick squash on impact, spring back up"
+      }
+    },
+    "crouch": {
+      "frameCount": 2,
+      "fps": 10,
+      "loop": false,
+      "promptHints": {
+        "motion": "Quick duck down, hold crouched pose",
+        "technique": "Just transition frame and hold"
+      }
+    },
+    "climb": {
+      "frameCount": 6,
+      "fps": 10,
+      "loop": true,
+      "promptHints": {
+        "motion": "Hand over hand, legs pushing",
+        "technique": "Alternating limb positions for climbing loop"
+      }
+    },
+    "windup": {
+      "frameCount": 6,
+      "fps": 10,
+      "loop": false,
+      "promptHints": {
+        "motion": "Charging energy, glowing effects intensify",
+        "technique": "Build anticipation, glow increases each frame"
+      }
+    },
+    "attack": {
+      "frameCount": 6,
+      "fps": 18,
+      "loop": false,
+      "promptHints": {
+        "motion": "Release energy, projectiles/beams fire, recoil",
+        "technique": "Quick release, hold at peak for impact"
+      }
+    },
+    "phase": {
+      "frameCount": 8,
+      "fps": 12,
+      "loop": false,
+      "promptHints": {
+        "motion": "Transformation, damage reveals inner core, mode change",
+        "technique": "Show progressive change between boss phases"
+      }
+    }
+  },
+  "entries": [
+    {
+      "id": "shooterPlayer",
+      "type": "pattern",
+      "pattern": "sprites/shooter/player/astro-duck-ship-{state}-sheet.png",
+      "vars": { "state": "shooterPlayerStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterProjectiles",
+      "type": "pattern",
+      "pattern": "sprites/shooter/projectiles/{id}-sheet.png",
+      "vars": { "id": "shooterProjectiles" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponsBasic",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-{element}-sheet.png",
+      "vars": { "weapon": "shooterWeaponsBasic", "element": "shooterWeaponElementsBasic" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponsTrail",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-{element}-sheet.png",
+      "vars": { "weapon": "shooterWeaponsTrail", "element": "shooterWeaponElementsTrail" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponsExplode",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-{element}-sheet.png",
+      "vars": { "weapon": "shooterWeaponsExplode", "element": "shooterWeaponElementsExplode" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponsBeam",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-{element}-sheet.png",
+      "vars": { "weapon": "shooterWeaponsBeam", "element": "shooterWeaponElementsBeam" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponsShock",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-{element}-sheet.png",
+      "vars": { "weapon": "shooterWeaponsShock", "element": "shooterWeaponElementsShock" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeProjectileSmall",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-projectile-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeProjectileSmallWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "128x64",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeProjectileMedium",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-projectile-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeProjectileMediumWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "384x96",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeProjectileBomb",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-projectile-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeProjectileBombWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "192x96",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeImpactSmall",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-impact-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeImpactSmallWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "512x128",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeImpactLarge",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-impact-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeImpactLargeWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "1536x256",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeExplosionMedium",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-explosion-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeExplosionMediumWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "1536x256",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeExplosionLarge",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-explosion-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeExplosionLargeWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "3072x384",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeRing",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-ring-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeRingWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "1024x256",
+      "status": "planned"
+    },
+    {
+      "id": "shooterWeaponUpgradeImpactRing",
+      "type": "pattern",
+      "pattern": "sprites/shooter/weapons/{weapon}-impact-{level}-sheet.png",
+      "vars": {
+        "weapon": "shooterUpgradeImpactRingWeapons",
+        "level": "shooterUpgradeLevels"
+      },
+      "format": "png",
+      "size": "1024x256",
+      "status": "planned"
+    },
+    {
+      "id": "shooterEnemies",
+      "type": "pattern",
+      "pattern": "sprites/shooter/enemies/{enemy}-{state}-sheet.png",
+      "vars": { "enemy": "shooterEnemies", "state": "shooterEnemyStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterBosses",
+      "type": "pattern",
+      "pattern": "sprites/shooter/bosses/{boss}-{state}-sheet.png",
+      "vars": { "boss": "shooterBosses", "state": "shooterBossStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterPickups",
+      "type": "pattern",
+      "pattern": "sprites/shooter/pickups/{pickup}-sheet.png",
+      "vars": { "pickup": "shooterPickups" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterFx",
+      "type": "file",
+      "path": "sprites/shooter/fx/engine-trail-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterFx",
+      "type": "file",
+      "path": "sprites/shooter/fx/explosion-small-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterFx",
+      "type": "file",
+      "path": "sprites/shooter/fx/explosion-medium-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterFx",
+      "type": "file",
+      "path": "sprites/shooter/fx/explosion-large-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "shooterFx",
+      "type": "file",
+      "path": "sprites/shooter/fx/vignette.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "shooterBackgrounds",
+      "type": "file",
+      "path": "sprites/shooter/backgrounds/starfield-layer-1.png",
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "shooterBackgrounds",
+      "type": "file",
+      "path": "sprites/shooter/backgrounds/starfield-layer-2.png",
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "shooterBackgrounds",
+      "type": "file",
+      "path": "sprites/shooter/backgrounds/nebula-layer.png",
+      "format": "png",
+      "size": "2048x1024",
+      "status": "planned"
+    },
+    {
+      "id": "shooterUi",
+      "type": "file",
+      "path": "sprites/shooter/ui/health-bar-states.png",
+      "format": "png",
+      "size": "1024x32",
+      "status": "planned"
+    },
+    {
+      "id": "shooterUi",
+      "type": "file",
+      "path": "sprites/shooter/ui/weapon-icons.png",
+      "format": "png",
+      "size": "576x64",
+      "status": "planned"
+    },
+    {
+      "id": "shooterUi",
+      "type": "file",
+      "path": "sprites/shooter/ui/weapon-level-pips.png",
+      "format": "png",
+      "size": "80x16",
+      "status": "planned"
+    },
+    {
+      "id": "shooterUi",
+      "type": "file",
+      "path": "sprites/shooter/ui/score-icons.png",
+      "format": "png",
+      "size": "384x64",
+      "status": "planned"
+    },
+    {
+      "id": "shooterUi",
+      "type": "file",
+      "path": "sprites/shooter/ui/pause-overlay.png",
+      "format": "png",
+      "size": "1920x1080",
+      "status": "planned"
+    },
+    {
+      "id": "platformerPlayer",
+      "type": "pattern",
+      "pattern": "sprites/platformer/player/astro-duck-{state}-sheet.png",
+      "vars": { "state": "platformerPlayerSheetStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerPlayerApex",
+      "type": "file",
+      "path": "sprites/platformer/player/astro-duck-jump-apex.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/ground-tile.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/platform-mid.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/platform-end.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/platform-corner.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/moving-platform-idle.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/moving-platform-active.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/hazard-spikes.png",
+      "format": "png",
+      "size": "256x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerTiles",
+      "type": "file",
+      "path": "sprites/platformer/tiles/hazard-lava-sheet.png",
+      "format": "png",
+      "size": "1536x256",
+      "status": "planned"
+    },
+    {
+      "id": "platformerBackgrounds",
+      "type": "file",
+      "path": "sprites/platformer/backgrounds/starfield-layer-1.png",
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "platformerBackgrounds",
+      "type": "file",
+      "path": "sprites/platformer/backgrounds/starfield-layer-2.png",
+      "format": "png",
+      "size": "1024x1024",
+      "status": "planned"
+    },
+    {
+      "id": "platformerBackgrounds",
+      "type": "file",
+      "path": "sprites/platformer/backgrounds/nebula-layer.png",
+      "format": "png",
+      "size": "2048x1024",
+      "status": "planned"
+    },
+    {
+      "id": "platformerCollectibles",
+      "type": "file",
+      "path": "sprites/platformer/collectibles/coin-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerCollectibles",
+      "type": "file",
+      "path": "sprites/platformer/collectibles/checkpoint-flag-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerFx",
+      "type": "file",
+      "path": "sprites/platformer/fx/dust-puff-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerFx",
+      "type": "file",
+      "path": "sprites/platformer/fx/jump-trail-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerFx",
+      "type": "file",
+      "path": "sprites/platformer/fx/hit-spark-sheet.png",
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerEnemies",
+      "type": "pattern",
+      "pattern": "sprites/platformer/enemies/{enemy}-{state}-sheet.png",
+      "vars": { "enemy": "platformerEnemies", "state": "platformerEnemyStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerBosses",
+      "type": "pattern",
+      "pattern": "sprites/platformer/bosses/{boss}-{state}-sheet.png",
+      "vars": { "boss": "platformerBosses", "state": "platformerBossStates" },
+      "format": "png",
+      "status": "planned"
+    },
+    {
+      "id": "platformerUi",
+      "type": "file",
+      "path": "sprites/platformer/ui/health-hearts.png",
+      "format": "png",
+      "size": "192x64",
+      "status": "planned"
+    },
+    {
+      "id": "platformerUi",
+      "type": "file",
+      "path": "sprites/platformer/ui/score-icons.png",
+      "format": "png",
+      "size": "384x64",
+      "status": "planned"
+    },
+    {
+      "id": "achievementFrames",
+      "type": "pattern",
+      "pattern": "icons/achievements/frame-{rarity}.png",
+      "vars": { "rarity": "badgeRarities" },
+      "format": "png",
+      "size": "128x128",
+      "status": "planned"
+    },
+    {
+      "id": "achievementIcons",
+      "type": "pattern",
+      "pattern": "icons/achievements/{icon}.png",
+      "vars": { "icon": "achievementIcons" },
+      "format": "png",
+      "size": "64x64",
+      "status": "planned"
+    }
+  ]
+}

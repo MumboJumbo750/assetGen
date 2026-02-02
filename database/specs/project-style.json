@@ -1,0 +1,34 @@
+﻿{
+    "id":  "project-style",
+    "name":  "Zelos Global Style",
+    "type":  "config",
+    "art_style":  {
+                      "keyword":  "Zelos V2 style, 2D flat vector",
+                      "description":  "Zelos V2 style: 2D/2.5D flat vector, clean lines, subtle gradients, neon glow accents; top-left lighting; transparent background for sprites and UI. Palette lock: #0a0a0f #12121a #1a1a2e #252538 #2f2f45 #00f5ff #ff00ff #39ff14 #ff6b35 #ff073a #bf00ff #fff01f #ff69b4 #f0f0f5 #a0a0b0 #606070",
+                      "palette":  {
+                                      "void":  "#0a0a0f",
+                                      "space":  "#12121a",
+                                      "nebula":  "#1a1a2e",
+                                      "cosmic":  "#252538",
+                                      "stardust":  "#2f2f45",
+                                      "neonCyan":  "#00f5ff",
+                                      "neonMagenta":  "#ff00ff",
+                                      "neonLime":  "#39ff14",
+                                      "neonOrange":  "#ff6b35",
+                                      "neonRed":  "#ff073a",
+                                      "neonPurple":  "#bf00ff",
+                                      "neonYellow":  "#fff01f",
+                                      "neonPink":  "#ff69b4",
+                                      "textPrimary":  "#f0f0f5",
+                                      "textSecondary":  "#a0a0b0",
+                                      "textMuted":  "#606070"
+                                  }
+                  },
+    "prompts":  {
+                    "base_positive":  "Zelos V2 style, 2D flat vector, clean lines, subtle gradients, neon cyan accents, consistent line weight, top-left lighting, transparent background. Palette lock: #0a0a0f #12121a #1a1a2e #252538 #2f2f45 #00f5ff #ff00ff #39ff14 #ff6b35 #ff073a #bf00ff #fff01f #ff69b4 #f0f0f5 #a0a0b0 #606070",
+                    "base_negative":  "photorealistic, pixel art, 3d render, noisy, grainy, blurry, watermark, text, logo, low detail, bad anatomy, extra limbs, inconsistent line weight, inconsistent lighting"
+                },
+    "checkpoints":  {
+                        "default":  "juggernautXL_v8Rundiffusion.safetensors"
+                    }
+}

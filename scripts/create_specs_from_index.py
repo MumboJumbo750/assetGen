@@ -57,7 +57,7 @@ def expand_pattern(pattern, vars_def, lists_def):
     return expanded_paths
 
 def main():
-    index_path = os.path.join(repo_root, "specs", "zelos-asset-index.json")
+    index_path = os.path.join(repo_root, "database", "specs", "zelos-asset-index.json")
     if not os.path.exists(index_path):
         print("Index file not found!")
         return
@@ -69,7 +69,7 @@ def main():
     
     styles = ["juggernaut", "animagine", "pony", "protovision", "sdxl", "copax"]
     
-    specs_dir = os.path.join(repo_root, "specs")
+    specs_dir = os.path.join(repo_root, "database", "specs")
 
     created_count = 0
 
@@ -101,9 +101,9 @@ def main():
             # Or just hash the path.
             # Importer used uuid. Let's use name-based UUID?
             # Or just name matching the file?
-            # Spec format: specs/assets/zelos/... .json?
-            # The SpecManager loads from specs/ directory recursively.
-            # So we can mirror the folder structure inside specs/.
+            # Spec format: database/specs/assets/zelos/... .json?
+            # The SpecManager loads from database/specs directory recursively.
+            # So we can mirror the folder structure inside database/specs.
             
             spec_rel_path = os.path.splitext(full_rel_path)[0] + ".json"
             spec_abs_path = os.path.join(specs_dir, full_rel_path.replace("assets/", "")) # Strip assets/ prefix if sticking to specs/ path convention?
@@ -112,9 +112,9 @@ def main():
             # Wait, Step 226 showed `specs/EMBEDDING_TEMPLATE.md` and many GUID.json files.
             # AND `specs/astro-duck-idle.md`.
             # If I want to be clean, I should name json files by their content or path.
-            # Let's mirror the path: `specs/zelos/sprites/...`
+            # Let's mirror the path: `database/specs/zelos/sprites/...`
             
-            # Adjust spec path: `specs/zelos/sprites/foo.json`
+            # Adjust spec path: `database/specs/zelos/sprites/foo.json`
             spec_file_path = os.path.join(specs_dir, "zelos", rel_path)
             # Remove extension .png and add .json
             spec_file_path = os.path.splitext(spec_file_path)[0] + ".json"
