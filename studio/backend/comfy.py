@@ -49,7 +49,10 @@ def get_first_output_image(history_entry: dict) -> dict | None:
             return images[0]
     return None
 
-def set_workflow_inputs(workflow: dict, positive: str, negative: str, width: int, height: int, seed: int = None, ckpt_name: str = None):
+def set_workflow_inputs(workflow: dict, positive: str, negative: str, width: int, height: int,
+                        seed: int = None, ckpt_name: str = None,
+                        sampler_name: str = None, scheduler: str = None,
+                        steps: int = None, cfg: float = None):
     # Text Inputs
     for _, node in workflow.items():
         if not isinstance(node, dict): continue
@@ -86,4 +89,44 @@ def set_workflow_inputs(workflow: dict, positive: str, negative: str, width: int
             if "ckpt_name" in inputs: inputs["ckpt_name"] = ckpt_name
             elif "checkpoint" in inputs: inputs["checkpoint"] = ckpt_name
 
+    # Sampler settings (apply to KSampler nodes)
+    if sampler_name or scheduler or steps is not None or cfg is not None:
+        set_workflow_sampler_inputs(workflow, sampler_name, scheduler, steps, cfg)
+
     return workflow
+
+
+def set_workflow_sampler_inputs(workflow: dict, sampler_name: str = None, scheduler: str = None,
+                                 steps: int = None, cfg: float = None):
+    """Override sampler settings in the workflow.
+    
+    This finds KSampler nodes and updates their parameters.
+    Common class_types: KSampler, KSamplerAdvanced, SamplerCustom, etc.
+    """
+    for _, node in workflow.items():
+        if not isinstance(node, dict):
+            continue
+        class_type = node.get("class_type", "")
+        # Match common sampler node types
+        if "sampler" not in class_type.lower() and "ksampler" not in class_type.lower():
+            continue
+        inputs = node.get("inputs")
+        if not isinstance(inputs, dict):
+            continue
+        
+        # Update sampler_name if present and value provided
+        if sampler_name and "sampler_name" in inputs and isinstance(inputs.get("sampler_name"), str):
+            inputs["sampler_name"] = sampler_name
+        
+        # Update scheduler if present and value provided
+        if scheduler and "scheduler" in inputs and isinstance(inputs.get("scheduler"), str):
+            inputs["scheduler"] = scheduler
+        
+        # Update steps if present and value provided
+        if steps is not None and "steps" in inputs and isinstance(inputs.get("steps"), int):
+            inputs["steps"] = steps
+        
+        # Update cfg if present and value provided
+        if cfg is not None and "cfg" in inputs:
+            if isinstance(inputs.get("cfg"), (int, float)):
+                inputs["cfg"] = cfg

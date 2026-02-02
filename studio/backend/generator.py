@@ -10,7 +10,35 @@ COMFY_URL = "http://127.0.0.1:8188"
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 OUTPUT_DIR = os.path.join(REPO_ROOT, "assets")
 
+# Checkpoint-to-output-folder mapping
+CHECKPOINT_OUTPUT_PATHS = {
+    "juggernaut": "assets/zelos_variants/juggernaut",
+    "animagine": "assets/zelos_variants/animagine",
+    "pony": "assets/zelos_variants/pony",
+    "protovision": "assets/zelos_variants/protovision",
+    "copax": "assets/zelos_variants/copax",
+    "sdxl": "assets/zelos_variants/sdxl",
+    "default": "assets/zelos",
+}
+
 def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: dict = None):
+    if not isinstance(rel_path, str) or not rel_path.strip():
+        return {"status": "error", "error": "Missing or invalid rel_path"}
+
+    normalized_rel_path = rel_path.strip().replace("\\", "/")
+    normalized_rel_path = normalized_rel_path.lstrip("/")
+    normalized_rel_path = normalized_rel_path.rstrip("/")
+
+    base_name = os.path.basename(normalized_rel_path)
+    if base_name in {"", ".", ".."}:
+        return {"status": "error", "error": f"Invalid output path: {rel_path}"}
+
+    # If the user provided a filename without extension (or ended with a dot), default to PNG.
+    # This prevents PIL errors like: "unknown file extension: .".
+    root_name, ext = os.path.splitext(base_name)
+    if ext in {"", "."}:
+        normalized_rel_path = normalized_rel_path.rstrip(".") + ".png"
+
     if config:
         checkpoint = config.get("checkpoint")
         prompts_dict = config.get("prompts", {})
@@ -30,7 +58,12 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: di
         if not negative:
             negative = config.get("negative_prompt", "")
         seed = config.get("seed", random.randint(1, 999999999))
-        abs_output_dir = os.path.join(REPO_ROOT, config.get("output_folder", "assets"))
+        
+        # Determine output folder: prefer checkpoint-specific path if known checkpoint is selected
+        if checkpoint and checkpoint in CHECKPOINT_OUTPUT_PATHS:
+            abs_output_dir = os.path.join(REPO_ROOT, CHECKPOINT_OUTPUT_PATHS[checkpoint])
+        else:
+            abs_output_dir = os.path.join(REPO_ROOT, config.get("output_folder", "assets"))
     else:
         checkpoint = None
         positive, negative = prompts.get_prompts(rel_path)
@@ -75,6 +108,22 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: di
             else: frames_to_gen = 8  # Default for unknown sheets
     
     generated_images = []
+
+    ckpt_override = None
+    if config:
+        candidate = config.get("checkpoint")
+        if isinstance(candidate, str):
+            c = candidate.lower().strip()
+            if c.endswith((".safetensors", ".ckpt", ".pt", ".pth")):
+                ckpt_override = candidate
+        candidate = config.get("checkpoint_file")
+        if not ckpt_override and isinstance(candidate, str):
+            c = candidate.lower().strip()
+            if c.endswith((".safetensors", ".ckpt", ".pt", ".pth")):
+                ckpt_override = candidate
+    
+    # Get checkpoint-specific sampler settings
+    sampler_settings = prompts.get_sampler_settings(ckpt_override or checkpoint or "")
     
     for i in range(frames_to_gen):
         print(f"  Frame {i+1}/{frames_to_gen}...")
@@ -84,8 +133,18 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: di
         
         # Settings
         # Use provided seed or random
-        current_seed = seed + i 
-        comfy.set_workflow_inputs(workflow, positive, negative, 512, 512, seed=current_seed, ckpt_name=checkpoint)
+        current_seed = seed + i
+        
+        # Apply checkpoint-specific settings
+        comfy.set_workflow_inputs(
+            workflow, positive, negative, 512, 512,
+            seed=current_seed,
+            ckpt_name=ckpt_override,
+            sampler_name=sampler_settings.get("sampler_name"),
+            scheduler=sampler_settings.get("scheduler"),
+            steps=sampler_settings.get("steps"),
+            cfg=sampler_settings.get("cfg"),
+        )
         
         # Dispatch
         try:
@@ -115,9 +174,30 @@ def generate_asset(rel_path: str, workflow_path: str, count: int = 1, config: di
         final_img = generated_images[0]
         
     # Save
-    full_path = os.path.join(abs_output_dir, rel_path)
+    # Determine final output path.
+    # When a checkpoint-specific output dir is used, extract just the filename
+    # portion from the path to avoid nested "assets/..." issues.
+    if checkpoint and checkpoint in CHECKPOINT_OUTPUT_PATHS:
+        # Strip any leading folder structure, keep only the relative file path
+        # e.g. "assets/free/myfile.png" -> "myfile.png"
+        # or "sprites/duck.png" -> "sprites/duck.png"
+        path_for_file = normalized_rel_path
+        # Remove common prefixes that would cause nesting
+        for prefix in ["assets/free/", "assets/zelos/", "assets/"]:
+            if path_for_file.startswith(prefix):
+                path_for_file = path_for_file[len(prefix):]
+                break
+        full_path = os.path.join(abs_output_dir, path_for_file)
+    elif normalized_rel_path.startswith("assets/"):
+        # UI specs typically store paths like "assets/...". In that case we want
+        # to write relative to the repo root (so status checks work) rather than
+        # ending up with "assets/assets/...".
+        full_path = os.path.join(REPO_ROOT, normalized_rel_path)
+    else:
+        full_path = os.path.join(abs_output_dir, rel_path)
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
-    final_img.save(full_path)
+    # Force PNG so we don't depend on filename extension.
+    final_img.save(full_path, format="PNG")
     print(f"Saved to {full_path}")
     
     return {"status": "success", "path": full_path}

@@ -119,7 +119,7 @@ export default function KnowledgeBase() {
                     <ul className="space-y-3 text-sm text-slate-300">
                         <li className="flex gap-2">
                             <span className="font-bold text-white min-w-[80px]">Dashboard:</span>
-                            <span>Manage project specs. Import requests (MD files) -> Generate Assets.</span>
+                            <span>Manage project specs. Import requests (MD files) → Generate Assets.</span>
                         </li>
                         <li className="flex gap-2">
                             <span className="font-bold text-white min-w-[80px]">Preview:</span>
@@ -127,7 +127,7 @@ export default function KnowledgeBase() {
                         </li>
                         <li className="flex gap-2">
                             <span className="font-bold text-white min-w-[80px]">Training:</span>
-                            <span>Create LoRAs. Tag images -> Configure -> Train.</span>
+                            <span>Create LoRAs. Tag images → Configure → Train.</span>
                         </li>
                         <li className="flex gap-2">
                             <span className="font-bold text-white min-w-[80px]">Explorer:</span>

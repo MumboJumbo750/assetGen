@@ -11,7 +11,7 @@
       "pony": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, rating_safe, cyberpunk, comic style, bold lineart, cel shading, high contrast, neon colors, game asset, centered, isolated subject, simple white background, duck, astronaut, outfit overlay, costume pieces only, no body, no head redraw, outfit-scientist-waving, side view, aligned",
       "protovision": "Zelos V2, cyberpunk comic illustration, bold lineart, clean edges, sharp focus, cel shading with hard shadows, dramatic lighting, high contrast, neon cyan and magenta accents, game asset, centered, isolated, plain white background. Astro-Duck outfit overlay only (costume pieces only), outfit-scientist-waving, do not redraw body or head, aligned to base undersuit silhouette, side view",
       "sdxl": "Zelos V2 game asset, cyberpunk comic illustration, bold outlines, cel shading with hard shadows, high contrast palette with neon cyan and magenta accents, centered composition, isolated subject, solid plain white background, dramatic lighting, high quality. Astro-Duck outfit overlay only (costume pieces only), outfit-scientist-waving, do not redraw body or head, aligned to base undersuit silhouette, side view",
-      "copax": "Zelos V2, cyberpunk comic illustration, bold lineart, crisp edges, dynamic shapes, cel shading, high contrast palette, neon cyan and magenta accents, game asset, centered, isolated, plain white background. Astro-Duck outfit overlay only (costume pieces only), outfit-scientist-waving, do not redraw body or head, aligned to base undersuit silhouette, side view"
+      "copax": "Zelos V2, cyberpunk illustration, bold lineart, crisp edges, elegant shapes, cel shading with soft gradients, high contrast palette, neon cyan and magenta accents, dramatic lighting, game asset, centered, isolated, plain white background. Astro-Duck outfit overlay only (costume pieces only), outfit-scientist-waving, do not redraw body or head, aligned to base undersuit silhouette, side view"
     },
     "negative_prompt": "photorealistic, realistic skin, 3d render, pixel art, lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, typography, background scene, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs, face, eyes, mouth, character, mascot, animal",
     "negative_prompts": {
@@ -20,7 +20,7 @@
       "pony": "nsfw, signature, watermark, logo, text, username, url, background scene, scenery, clutter",
       "protovision": "lowres, blurry, soft focus, out of focus, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, scenery, detailed background, clutter, messy lineart, sketch, deformed, bad anatomy, extra limbs",
       "sdxl": "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, signature, text, background scenery, cluttered background, deformed, bad anatomy",
-      "copax": "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, clutter, overly photorealistic, deformed, bad anatomy, extra limbs"
+      "copax": "(worst quality, low quality), photorealistic, realistic skin, 3d render, lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, scenery, clutter, deformed, bad anatomy, extra limbs, open mouth, ugly face, old face, long neck"
     },
     "size": "1024x1024"
   },

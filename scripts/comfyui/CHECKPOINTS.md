@@ -30,6 +30,16 @@ These are *repo presets* (prompt header + negative prompt) used by `scripts/comf
 - **Copax Timeless** (CivitAI)
   - URL: https://civitai.com/models/118111/copax-timeless?modelVersionId=1108377
   - Suggested: `--prompt-style copax`
+  - Prompting guide: [COPAX_TIMELESS_PROMPTING.md](COPAX_TIMELESS_PROMPTING.md)
+  - **Optimal settings** (auto-applied with `--prompt-style copax`):
+    - Sampler: `dpmpp_3m_sde`
+    - Scheduler: `exponential`
+    - Steps: 35
+    - CFG: 6.0
+  - Notes:
+    - Good for versatile illustration styles
+    - Add `open mouth, ugly face, old face, long neck` to negative prompt
+    - Use `--auto-alpha` for transparent backgrounds
 
 ## Quick sample run (recommended)
 

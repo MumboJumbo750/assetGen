@@ -178,9 +178,30 @@ class StudioHandler(http.server.SimpleHTTPRequestHandler):
         length = int(self.headers["Content-Length"])
         try:
             config = json.loads(self.rfile.read(length))
-            workflow_path = os.path.join(self.repo_root, "scripts/comfyui/workflow-api.json")
+            workflow_candidates = [
+                os.path.join(self.repo_root, "scripts", "comfyui", "workflow-api.json"),
+                os.path.join(self.repo_root, "scripts", "comfyui", "workflows", "assetgen_sdxl_api.json"),
+                os.path.join(self.repo_root, "scripts", "comfyui", "workflows", "assetgen_sdxl_api_pony.json"),
+            ]
+            workflow_path = next((p for p in workflow_candidates if os.path.exists(p)), None)
+            if not workflow_path:
+                raise FileNotFoundError(
+                    "No ComfyUI workflow file found. Tried: " + ", ".join(workflow_candidates)
+                )
             
             path = config.get("path")
+            if not isinstance(path, str) or not path.strip():
+                self.send_error(400, "Missing or invalid 'path' in request body")
+                return
+
+            # Guard against paths that resolve to current/parent dir (e.g. assets/free/.)
+            # which later cause PIL save errors like "unknown file extension: .".
+            norm = path.strip().replace("\\", "/").rstrip("/")
+            base = os.path.basename(norm)
+            if base in {".", "..", ""}:
+                self.send_error(400, f"Invalid output filename in path: '{path}'")
+                return
+
             result = generate_asset(path, workflow_path, config=config)
             self.send_json(result)
         except Exception as e:
@@ -439,7 +460,12 @@ class StudioHandler(http.server.SimpleHTTPRequestHandler):
 
 def run_server():
     print(f"Starting Asset Studio at http://localhost:{PORT}")
-    with socketserver.ThreadingTCPServer(("", PORT), StudioHandler) as httpd:
+
+    class ReusableThreadingTCPServer(socketserver.ThreadingTCPServer):
+        allow_reuse_address = True
+        daemon_threads = True
+
+    with ReusableThreadingTCPServer(("", PORT), StudioHandler) as httpd:
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

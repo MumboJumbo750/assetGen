@@ -33,6 +33,19 @@ export default function FreeMode() {
         .map((cp) => (typeof cp === 'string' ? { id: cp, label: cp } : cp))
         .filter((cp) => cp && cp.id && cp.id !== 'default');
 
+    // Derive the actual output path based on checkpoint selection
+    const getEffectiveOutputPath = () => {
+        const selectedCp = checkpoints.find(cp => 
+            (typeof cp === 'object' ? cp.id : cp) === selectedCheckpoint
+        );
+        if (selectedCp && typeof selectedCp === 'object' && selectedCp.path) {
+            return selectedCp.path;
+        }
+        return outputFolder;
+    };
+
+    const effectiveOutputPath = getEffectiveOutputPath();
+
     const currentPromptValue = activePromptScope === 'default' || !selectedCheckpoint
         ? prompts.default
         : (prompts[selectedCheckpoint] || "");
@@ -169,8 +182,15 @@ export default function FreeMode() {
                                     value={outputFolder}
                                     onChange={(e) => setOutputFolder(e.target.value)}
                                     className="bg-transparent border-none focus:outline-none text-slate-200 w-full"
+                                    disabled={!!selectedCheckpoint}
                                 />
                             </div>
+                            {selectedCheckpoint && effectiveOutputPath !== outputFolder && (
+                                <div className="text-xs text-blue-400 flex items-center gap-1">
+                                    <span>→ Routed to:</span>
+                                    <span className="font-mono">{effectiveOutputPath}</span>
+                                </div>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-400">Filename (no ext)</label>

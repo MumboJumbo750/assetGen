@@ -4,6 +4,9 @@
 # Local ComfyUI install (kept out of git)
 /.comfyui/
 
+# Generated assets (Free Mode output)
+/assets/free/
+
 # Python
 __pycache__/
 *.pyc

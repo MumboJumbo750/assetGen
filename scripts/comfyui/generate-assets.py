@@ -200,15 +200,20 @@ SDXL_NEGATIVE = (
     "background scenery, cluttered background, deformed, bad anatomy"
 )
 
-# Copax Timeless (CivitAI) - classic, slightly painterly/illustration vibe
+# Copax Timeless (CivitAI) - versatile SDXL checkpoint, good for illustration
+# Ref: https://civitai.com/models/118111/copax-timeless
+# Recommended: Steps 30-50, CFG 5-7, Sampler dpmpp_3m_sde/euler_a, Scheduler exponential/karras
 COPAX_STYLE_HEADER = (
-    "Zelos V2, cyberpunk comic illustration, bold lineart, crisp edges, dynamic shapes, cel shading, "
-    "high contrast palette, neon cyan and magenta accents, game asset, centered, isolated, plain white background"
+    "Zelos V2, cyberpunk illustration, bold lineart, crisp edges, elegant shapes, "
+    "cel shading with soft gradients, high contrast palette, neon cyan and magenta accents, "
+    "dramatic lighting, game asset, centered, isolated, plain white background"
 )
 
 COPAX_NEGATIVE = (
-    "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, background scene, clutter, "
-    "overly photorealistic, deformed, bad anatomy, extra limbs"
+    "(worst quality, low quality), photorealistic, realistic skin, 3d render, "
+    "lowres, blurry, noisy, grainy, jpeg artifacts, watermark, logo, signature, text, "
+    "background scene, scenery, clutter, deformed, bad anatomy, extra limbs, "
+    "open mouth, ugly face, old face, long neck"
 )
 
 # Pony Diffusion v6 XL - supports both tags and natural language.
@@ -230,6 +235,23 @@ PONY_NEGATIVE = (
 STYLE_HEADER = JUGGERNAUT_STYLE_HEADER
 NEGATIVE_PROMPT = JUGGERNAUT_NEGATIVE
 PROMPT_STYLE = "juggernaut"
+
+# Checkpoint-specific sampler settings
+# Format: { sampler_name, scheduler, steps, cfg }
+CHECKPOINT_SAMPLER_SETTINGS = {
+    "juggernaut": {"sampler_name": "euler", "scheduler": "karras", "steps": 28, "cfg": 7.0},
+    "animagine": {"sampler_name": "euler_ancestral", "scheduler": "normal", "steps": 28, "cfg": 6.0},
+    "pony": {"sampler_name": "euler_ancestral", "scheduler": "karras", "steps": 25, "cfg": 7.0},
+    "protovision": {"sampler_name": "euler", "scheduler": "karras", "steps": 28, "cfg": 6.0},
+    "sdxl": {"sampler_name": "euler", "scheduler": "normal", "steps": 28, "cfg": 7.0},
+    # Copax Timeless: model recommends dpmpp_3m_sde + exponential, steps 30-50, cfg 5-7
+    "copax": {"sampler_name": "dpmpp_3m_sde", "scheduler": "exponential", "steps": 35, "cfg": 6.0},
+}
+
+
+def get_sampler_settings(style: str) -> dict:
+    """Get recommended sampler settings for a prompt style."""
+    return CHECKPOINT_SAMPLER_SETTINGS.get(style, CHECKPOINT_SAMPLER_SETTINGS["juggernaut"])
 
 
 def set_prompt_style(style: str) -> None:
@@ -526,6 +548,42 @@ def _set_workflow_filename_prefix_inputs(workflow: dict, filename_prefix: str) -
             continue
         if "filename_prefix" in inputs and isinstance(inputs.get("filename_prefix"), str):
             inputs["filename_prefix"] = filename_prefix
+
+
+def _set_workflow_sampler_inputs(workflow: dict, sampler_name: str = None, scheduler: str = None,
+                                   steps: int = None, cfg: float = None) -> None:
+    """Override sampler settings in the workflow.
+    
+    This finds KSampler nodes and updates their parameters.
+    Common class_types: KSampler, KSamplerAdvanced, SamplerCustom, etc.
+    """
+    for _, node in workflow.items():
+        if not isinstance(node, dict):
+            continue
+        class_type = node.get("class_type", "")
+        # Match common sampler node types
+        if "sampler" not in class_type.lower() and "ksampler" not in class_type.lower():
+            continue
+        inputs = node.get("inputs")
+        if not isinstance(inputs, dict):
+            continue
+        
+        # Update sampler_name if present and value provided
+        if sampler_name and "sampler_name" in inputs and isinstance(inputs.get("sampler_name"), str):
+            inputs["sampler_name"] = sampler_name
+        
+        # Update scheduler if present and value provided
+        if scheduler and "scheduler" in inputs and isinstance(inputs.get("scheduler"), str):
+            inputs["scheduler"] = scheduler
+        
+        # Update steps if present and value provided
+        if steps is not None and "steps" in inputs and isinstance(inputs.get("steps"), int):
+            inputs["steps"] = steps
+        
+        # Update cfg if present and value provided
+        if cfg is not None and "cfg" in inputs:
+            if isinstance(inputs.get("cfg"), (int, float)):
+                inputs["cfg"] = cfg
 
 
 def _first_output_image(history_entry: dict) -> dict | None:
@@ -1409,6 +1467,16 @@ def main() -> int:
         _set_workflow_size_inputs(workflow, width=render_w, height=render_h)
         _set_workflow_seed_inputs(workflow, seed=args.seed)
         _set_workflow_checkpoint_inputs(workflow, ckpt_name=args.ckpt)
+
+        # Apply checkpoint-specific sampler settings
+        sampler_settings = get_sampler_settings(PROMPT_STYLE)
+        _set_workflow_sampler_inputs(
+            workflow,
+            sampler_name=sampler_settings.get("sampler_name"),
+            scheduler=sampler_settings.get("scheduler"),
+            steps=sampler_settings.get("steps"),
+            cfg=sampler_settings.get("cfg"),
+        )
 
         safe_stem = re.sub(r"[^a-zA-Z0-9_-]+", "_", os.path.splitext(os.path.basename(rel_path))[0])
         _set_workflow_filename_prefix_inputs(workflow, filename_prefix=f"assetgen_{run_nonce}_{safe_stem}")
